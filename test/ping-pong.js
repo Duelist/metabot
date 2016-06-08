@@ -1,11 +1,11 @@
-var Discord = require("discord.js");
+var Discord = require('discord.js')
 
-var mybot = new Discord.Client();
+var mybot = new Discord.Client()
 
-mybot.on("message", function(message) {
-    if(message.content === "ping") {
-        mybot.reply(message, "pong");
-    }
-});
+mybot.on('message', function(message) {
+  if(message.content === 'ping') {
+    mybot.reply(message, 'pong')
+  }
+})
 
-mybot.loginWithToken("token");
+mybot.loginWithToken('token')
