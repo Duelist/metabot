@@ -1,3 +1,4 @@
+var config = require('./config')
 var Discord = require('discord.js')
 
 var bot = new Discord.Client()
@@ -8,4 +9,4 @@ bot.on('message', (message) => {
   }
 })
 
-bot.loginWithToken(process.env.METABOT_TOKEN)
+bot.loginWithToken(config.discordjs.key)
