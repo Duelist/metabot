@@ -1,0 +1,5 @@
+var config = require('./config.global')
+
+config.bot.token = '<Insert Token Here>'
+
+module.exports = config
