@@ -1,12 +1,9 @@
-var config = require('./config')
-var Discord = require('discord.js')
+require('./globals')
 
-var bot = new Discord.Client()
+var config  = require('./config')
+var metabot = require('./metabot')
 
-bot.on('message', (message) => {
-  if (message.content === 'ping') {
-    bot.reply(message, 'pong')
-  }
-})
 
-bot.loginWithToken(config.bot.token)
+
+// Log into Discord with bot token
+metabot.connect({ token: config.bot.token })
