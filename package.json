@@ -22,7 +22,8 @@
     "pretest-cover": "npm run lint",
     "start": "node index.js",
     "test": "mocha",
-    "test-cover": "istanbul cover _mocha && istanbul-coveralls"
+    "test-cover": "istanbul cover _mocha && istanbul-coveralls",
+    "test-grep": "mocha --bail --grep"
   },
   "dependencies": {
     "discordie": "0.6.5"
@@ -35,6 +36,7 @@
     "lodash": "4.13.1",
     "mocha": "2.5.3",
     "mocha-lcov-reporter": "1.2.0",
+    "should": "9.0.1",
     "sinon": "1.17.4"
   }
 }
