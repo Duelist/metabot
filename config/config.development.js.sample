@@ -1,5 +1,5 @@
 var config = require('./config.global')
 
-config.discordjs.key = '<Insert Key Here>'
+config.discord.key = '<Insert Key Here>'
 
 module.exports = config

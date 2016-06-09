@@ -9,4 +9,4 @@ bot.on('message', (message) => {
   }
 })
 
-bot.loginWithToken(config.discordjs.key)
+bot.loginWithToken(config.discord.key)
