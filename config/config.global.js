@@ -1,8 +1,12 @@
-var config = {}
+var METABOT = requireRoot('constants/metabot')
 
-config.env = 'development'
 
-config.bot = {}
-config.bot.token = process.env.METABOT_TOKEN
+
+var config = {
+  env : METABOT.ENVIRONMENT.DEV,
+  bot : { token: process.env.METABOT_TOKEN }
+}
+
+
 
 module.exports = config
