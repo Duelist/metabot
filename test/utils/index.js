@@ -1,0 +1,3 @@
+describe('redis', () => {
+  require('./redis')
+})

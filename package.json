@@ -26,7 +26,8 @@
     "test-grep": "mocha --bail --grep"
   },
   "dependencies": {
-    "discordie": "0.6.5"
+    "discordie": "0.6.5",
+    "ioredis": "2.1.0"
   },
   "devDependencies": {
     "co-mocha": "^1.1.2",
