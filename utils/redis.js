@@ -1,5 +1,8 @@
-var Redis = require('ioredis')
-var redis = new Redis()
+var Redis        = require('ioredis')
+
+var validateUtil = requireRoot('utils/validate')
+
+var redis        = new Redis()
 
 
 
@@ -12,7 +15,16 @@ var redis = new Redis()
  * @param {String} options.member Member to be added to the sorted set.
  */
 function* addToSortedSet(key, options) {
+
+  validateUtil(key).isA('string')
+
+  validateUtil(options).has({
+    score  : { type: 'number' },
+    member : { type: 'string' }
+  })
+
   yield redis.zadd(key, options.score, options.member)
+
 }
 
 
@@ -23,6 +35,7 @@ function* addToSortedSet(key, options) {
  * @return {Number}
  */
 function* exists(key) {
+  validateUtil(key).isA('string')
   return yield redis.exists(key)
 }
 
@@ -36,7 +49,15 @@ function* exists(key) {
  * @return {Array}
  */
 function* getBatchFromSortedSet(key, options) {
+
+  validateUtil(key).isA('string')
+
+  validateUtil(options).has({
+    limit : { type: 'number' }
+  })
+
   return yield redis.zrevrangebyscore(key, '+inf', '-inf')
+
 }
 
 
