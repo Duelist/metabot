@@ -26,10 +26,9 @@
     "test-grep": "mocha --bail --grep"
   },
   "dependencies": {
+    "cheerio": "^0.20.0",
     "discordie": "0.6.5",
-    "express"    : "latest",
-    "request"    : "latest",
-    "cheerio"    : "latest"
+    "request": "^2.72.0"
   },
   "devDependencies": {
     "co-mocha": "^1.1.2",
