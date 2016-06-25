@@ -43,6 +43,7 @@ function* exists(key) {
 
 /**
  * Gets a batch of members from the sorted set.
+ *
  * @param {String} key Redis key.
  * @param {Object} options
  * @param {Number} [options.limit] Batch size.

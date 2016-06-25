@@ -4,10 +4,17 @@ var ping = requireRoot('commands/ping')
 
 describe('@default', () => {
 
-  it('produces a pong', function* () {
+  it('produces a pong', () => {
+
+    // Create an expected result
     var expectedResult = 'pong'
-    var result         = ping()
+
+    // Run the command
+    var result = ping()
+
+    // Ensure the result is the expected result
     result.should.eql(expectedResult)
+
   })
 
 })

@@ -26,21 +26,21 @@
     "test-grep": "DEBUG=* mocha --bail --grep"
   },
   "dependencies": {
+    "ajv": "4.1.3",
+    "debug": "2.2.0",
     "discordie": "0.6.5",
-    "ioredis": "2.1.0"
+    "ioredis": "2.1.0",
+    "lodash": "4.13.1",
+    "should": "9.0.1",
+    "sinon": "1.17.4"
   },
   "devDependencies": {
-    "ajv": "4.1.3",
-    "co-mocha": "^1.1.2",
+    "co-mocha": "1.1.2",
     "coveralls": "2.11.9",
-    "debug": "2.2.0",
     "eslint": "2.11.1",
     "istanbul": "0.4.3",
     "istanbul-coveralls": "1.0.3",
-    "lodash": "4.13.1",
     "mocha": "2.5.3",
-    "mocha-lcov-reporter": "1.2.0",
-    "should": "9.0.1",
-    "sinon": "1.17.4"
+    "mocha-lcov-reporter": "1.2.0"
   }
 }
