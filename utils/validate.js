@@ -11,6 +11,11 @@ var ajv = new Ajv({ useDefaults: true })
  * @return {Object}
  */
 function validate(value) {
+
+  if (!value) {
+    return
+  }
+
   return {
     has : createHas(value),
     isA : createIsA(value)
@@ -27,8 +32,17 @@ function validate(value) {
 function createHas(object) {
 
   return properties => {
-    var validator = ajv.compile({ properties })
+
+    var validationSchema = {
+      properties,
+      type : 'object'
+    }
+
+    validationSchema = transformValidationSchema(validationSchema)
+
+    var validator = ajv.compile(validationSchema)
     return handleValidation(validator, object)
+
   }
 
 }
@@ -53,9 +67,12 @@ function createIsA(value) {
 
 /**
  * Handle the validation of the value.
+ *
  * @param {Validator} validator
  * @param {Any} value Value to be validated.
+ *
  * @return {Any}
+ *
  * @throws {Error} If the object is invalid.
  */
 function handleValidation(validator, value) {
@@ -68,6 +85,44 @@ function handleValidation(validator, value) {
   }
 
   return value
+
+}
+
+
+
+/**
+ * Transforms validation schema for compilation.
+ * @param {Object} schema Schema to be transformed.
+ * @return {Object}
+ */
+function transformValidationSchema(schema) {
+
+  if (!schema) {
+    return
+  }
+
+  var updatedSchema = schema
+
+  // Set required properties
+  var requiredProperties = _.map(updatedSchema.properties, (property, name) => {
+
+    var requiredProperty
+    if (property.required && property.required === true) {
+      requiredProperty = name
+      delete property.required
+    }
+
+    return requiredProperty
+
+  })
+
+  requiredProperties = _.compact(requiredProperties)
+
+  if (!_.isEmpty(requiredProperties)) {
+    updatedSchema.required = requiredProperties
+  }
+
+  return updatedSchema
 
 }
 

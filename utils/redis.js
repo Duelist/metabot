@@ -9,21 +9,26 @@ var redis        = new Redis()
 /**
  * Adds a member with a specified score to the sorted set.
  *
- * @param {String} key Redis key for sorted set.
  * @param {Object} options
+ * @param {String} options.key Redis key for sorted set.
  * @param {Number} options.score Score for the added member.
  * @param {String} options.member Member to be added to the sorted set.
  */
-function* addToSortedSet(key, options) {
-
-  validateUtil(key).isA('string')
+function* addToSortedSet(options) {
 
   validateUtil(options).has({
-    score  : { type: 'number' },
-    member : { type: 'string' }
+    key    : {
+      type : 'string'
+    },
+    score  : {
+      type: 'number'
+    },
+    member : {
+      type: 'string'
+    }
   })
 
-  yield redis.zadd(key, options.score, options.member)
+  yield redis.zadd(options.key, options.score, options.member)
 
 }
 
@@ -44,20 +49,44 @@ function* exists(key) {
 /**
  * Gets a batch of members from the sorted set.
  *
- * @param {String} key Redis key.
  * @param {Object} options
+ * @param {String} options.key Redis key.
+ * @param {Number} [options.lastScore='+inf'] Upper bound on score.
  * @param {Number} [options.limit] Batch size.
+ *
  * @return {Array}
  */
-function* getBatchFromSortedSet(key, options) {
-
-  validateUtil(key).isA('string')
+function* getBatchFromSortedSet(options) {
 
   validateUtil(options).has({
-    limit : { type: 'number' }
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    lastScore : {
+      type : 'number'
+    },
+    limit : {
+      default : 10,
+      type    : 'number'
+    }
   })
 
-  return yield redis.zrevrangebyscore(key, '+inf', '-inf')
+  var args = [options.key]
+
+  if (options.lastScore) {
+    args.push('(' + options.lastScore)
+  } else {
+    args.push('+inf')
+  }
+
+  args.push('-inf')
+
+  if (options.limit) {
+    args.push('limit', 0, options.limit)
+  }
+
+  return yield redis.zrevrangebyscore(args)
 
 }
 
