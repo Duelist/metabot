@@ -2,7 +2,7 @@
  * Error message for when a command fails.
  * @type {String}
  */
-const COMMAND_ERROR_MESSAGE = 'Command failed.'
+const COMMAND_ERROR_MESSAGE = 'Command failed'
 
 
 

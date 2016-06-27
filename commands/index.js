@@ -8,7 +8,6 @@ var ping = requireRoot('commands/ping')
  */
 var commands = {
   ping: {
-    name        : 'ping',
     description : 'Pongs your ping.',
     process     : ping
   }
