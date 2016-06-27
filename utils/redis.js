@@ -76,7 +76,8 @@ function* getBatchFromSortedSet(options) {
 
   if (options.lastScore) {
     args.push('(' + options.lastScore)
-  } else {
+  }
+  else {
     args.push('+inf')
   }
 

@@ -15,7 +15,7 @@ describe('#handleMessageCreate', () => {
         channel : {
           sendMessage : message => { return }
         },
-        content: '!ping'
+        content : '!ping'
       }
     }
 
@@ -43,7 +43,7 @@ describe('#handleMessageCreate', () => {
         channel : {
           sendMessage : message => { return }
         },
-        content: 'ping'
+        content : 'ping'
       }
     }
 
@@ -75,7 +75,7 @@ describe('#handleMessageCreate', () => {
         channel : {
           sendMessage : message => { return }
         },
-        content: '!eping'
+        content : '!eping'
       }
     }
 

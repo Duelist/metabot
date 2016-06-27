@@ -20,6 +20,7 @@ function validate(value) {
     has : createHas(value),
     isA : createIsA(value)
   }
+
 }
 
 
@@ -80,8 +81,14 @@ function handleValidation(validator, value) {
   var isValid = validator(value)
 
   if (!isValid) {
-    var errorMessages = _.map(validator.errors, error => `${error.keyword} ${error.message}`)
+
+    var errorMessages = _.map(
+      validator.errors,
+      error => `${error.keyword} ${error.message}`
+    )
+
     throw new Error(errorMessages.join('/n'))
+
   }
 
   return value
