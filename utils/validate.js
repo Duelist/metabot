@@ -13,7 +13,7 @@ var ajv = new Ajv({ useDefaults: true })
 function validate(value) {
 
   if (!value) {
-    return
+    throw new Error('Value must exist.')
   }
 
   return {

@@ -14,8 +14,22 @@ describe('@default', () => {
   })
 
 
-  it('does nothing if no value was provided', () => {
-    validateUtil()
+  it('throw an error if no value was provided', () => {
+
+    var isCaught = false
+
+    try {
+      validateUtil()
+    }
+    catch (err) {
+      // Ensure the correct error message was given
+      err.message.should.eql('Value must exist.')
+      isCaught = true
+    }
+
+    // Ensure an error was thrown
+    isCaught.should.eql(true)
+
   })
 
 })
