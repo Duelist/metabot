@@ -112,8 +112,10 @@ function transformValidationSchema(schema) {
 
   })
 
+  // Remove falsy values
   requiredProperties = _.compact(requiredProperties)
 
+  // Update the schema with the required properties
   if (!_.isEmpty(requiredProperties)) {
     updatedSchema.required = requiredProperties
   }

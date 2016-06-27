@@ -53,7 +53,7 @@ describe('#handleMessageCreate', () => {
     // Handle the send message event
     metabotUtil.handleMessageCreate(event)
 
-    // Ensure the send message function was called
+    // Ensure the send message function was not called
     sendMessageSpy.callCount.should.eql(0)
 
     // Restore the spy
