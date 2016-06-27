@@ -14,7 +14,7 @@ describe('@default', () => {
   })
 
 
-  it('throw an error if no value was provided', () => {
+  it('throws an error if no value was provided', () => {
 
     var isCaught = false
 
