@@ -97,10 +97,6 @@ function handleValidation(validator, value) {
  */
 function transformValidationSchema(schema) {
 
-  if (!schema) {
-    return
-  }
-
   var updatedSchema = schema
 
   // Set required properties
