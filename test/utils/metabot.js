@@ -7,13 +7,13 @@ var metabotUtil = requireRoot('utils/metabot')
 
 describe('#handleMessageCreate', () => {
 
-  it('sends a message', () => {
+  it('sends a message', function* () {
 
     // Create a test event
     var event = {
       message : {
         channel : {
-          sendMessage : message => { return }
+          sendMessage : message => { console.log('ibtest', 'sendMessage') }
         },
         content : '!ping'
       }
@@ -23,11 +23,13 @@ describe('#handleMessageCreate', () => {
     var sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
-    metabotUtil.handleMessageCreate(event)
+    yield metabotUtil.handleMessageCreate(event)
 
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
     sendMessageSpy.lastCall.args[0].should.eql('pong')
+
+    console.log('ibtest', 'restore')
 
     // Restore the spy
     sendMessageSpy.restore()
@@ -66,7 +68,9 @@ describe('#handleMessageCreate', () => {
 
     // Add a command that will fail on purpose
     commands.eping = {
-      process: (message) => { throw('fail ping') }
+      process: (message) => {
+        throw('fail ping')
+      }
     }
 
     // Create a test event

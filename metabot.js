@@ -8,7 +8,6 @@ var Events = Discordie.Events
 var client = new Discordie()
 
 
-
 client.Dispatcher.on(Events.MESSAGE_CREATE, metabotUtil.handleMessageCreate)
 
 

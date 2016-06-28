@@ -1,3 +1,4 @@
+var co       = require('co')
 var _        = require('lodash')
 
 var commands = requireRoot('commands')
@@ -5,7 +6,7 @@ var METABOT  = requireRoot('constants/metabot')
 
 
 
-function handleMessageCreate(event) {
+function* handleMessageCreate(event) {
 
   if (event.message.content[0] === METABOT.PREFIX) {
 
@@ -18,7 +19,7 @@ function handleMessageCreate(event) {
     if (command) {
 
       try {
-        var result = command.process(args)
+        var result = yield command.process(args)
         event.message.channel.sendMessage(result)
       }
       catch (err) {
@@ -36,5 +37,5 @@ function handleMessageCreate(event) {
 
 
 module.exports = {
-  handleMessageCreate
+  handleMessageCreate: co.wrap(handleMessageCreate)
 }

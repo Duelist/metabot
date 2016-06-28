@@ -1,3 +1,5 @@
+var co   = require('co')
+
 var ping = requireRoot('commands/ping')
 
 
@@ -9,7 +11,7 @@ var ping = requireRoot('commands/ping')
 var commands = {
   ping: {
     description : 'Pongs your ping.',
-    process     : ping
+    process     : co.wrap(ping)
   }
 }
 
