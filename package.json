@@ -22,8 +22,9 @@
     "pretest-cover": "npm run lint",
     "start": "node index.js",
     "test": "mocha",
-    "test-cover": "istanbul cover _mocha && istanbul-coveralls",
-    "test-grep": "DEBUG=* mocha --bail --grep"
+    "test-cover": "istanbul cover _mocha",
+    "test-grep": "DEBUG=* mocha --bail --grep",
+    "test-travis": "npm run test-cover && istanbul-coveralls"
   },
   "dependencies": {
     "ajv": "4.1.3",

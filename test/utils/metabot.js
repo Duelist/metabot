@@ -35,6 +35,33 @@ describe('#handleMessageCreate', () => {
   })
 
 
+  it('does nothing if the command does not exist', () => {
+
+    // Create a test event
+    let event = {
+      message : {
+        channel : {
+          sendMessage : message => { return }
+        },
+        content : '!pong'
+      }
+    }
+
+    // Create a spy on the send message function
+    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+
+    // Handle the send message event
+    metabotUtil.handleMessageCreate(event)
+
+    // Ensure the send message function was not called
+    sendMessageSpy.callCount.should.eql(0)
+
+    // Restore the spy
+    sendMessageSpy.restore()
+
+  })
+
+
   it('does nothing if the command does not contain the message prefix', () => {
   
     // Create a test event
