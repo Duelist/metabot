@@ -19,7 +19,7 @@ function* handleMessageCreate(event) {
     if (command) {
 
       try {
-        let result = yield command(args)
+        let result = yield command(event, args)
         event.message.channel.sendMessage(result)
       }
       catch (err) {

@@ -101,11 +101,54 @@ function* reset() {
 }
 
 
+/**
+  * Stores hash at key
+  */
+function* setHashForKey(options) {
+
+  // validateUtil(options).has({
+  //   key : {
+  //     required : true,
+  //     type     : 'string'
+  //   },
+  //   user : {
+  //     required : true,
+  //     type : 'string'
+  //   }
+  // })
+
+  yield redis.hset("topuser", "user", "testuser");
+  return yield redis.hset("topuser", "score", "10");
+
+}
+
+/**
+  * Fetches hash at key
+  */
+function* getHashForKey(options) {
+
+  // validateUtil(options).has({
+  //   key : {
+  //     required : true,
+  //     type     : 'string'
+  //   },
+  //   user : {
+  //     required : true,
+  //     type : 'string'
+  //   }
+  // })
+
+  return yield redis.hgetall("topuser");
+
+}
+
 
 
 module.exports = {
   addToSortedSet,
   exists,
   getBatchFromSortedSet,
-  reset
+  reset,
+  setHashForKey,
+  getHashForKey
 }
