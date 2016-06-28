@@ -1,4 +1,4 @@
-var METABOT = requireRoot('constants/metabot')
+let METABOT = requireRoot('constants/metabot')
 
 
 
@@ -6,7 +6,7 @@ var METABOT = requireRoot('constants/metabot')
  * Default configuration for the bot.
  * @type {Object}
  */
-var config = {
+let config = {
   env : METABOT.ENVIRONMENT.DEV,
   bot : { token: process.env.METABOT_TOKEN }
 }

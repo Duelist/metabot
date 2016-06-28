@@ -1,11 +1,11 @@
-var Discordie   = require('discordie')
+let Discordie   = require('discordie')
 
-var metabotUtil = requireRoot('utils/metabot')
+let metabotUtil = requireRoot('utils/metabot')
 
 
 
-var Events = Discordie.Events
-var client = new Discordie()
+let Events = Discordie.Events
+let client = new Discordie()
 
 
 client.Dispatcher.on(Events.MESSAGE_CREATE, metabotUtil.handleMessageCreate)

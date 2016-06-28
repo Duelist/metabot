@@ -1,8 +1,8 @@
-var co       = require('co')
-var _        = require('lodash')
+let co       = require('co')
+let _        = require('lodash')
 
-var commands = requireRoot('commands')
-var METABOT  = requireRoot('constants/metabot')
+let commands = requireRoot('commands')
+let METABOT  = requireRoot('constants/metabot')
 
 
 
@@ -11,15 +11,15 @@ function* handleMessageCreate(event) {
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    var tokens      = _.split(event.message.content.toLowerCase(), ' ')
-    var commandName = _.head(tokens).substring(1)
-    var args        = _.tail(tokens)
-    var command     = commands[commandName]
+    let tokens      = _.split(event.message.content.toLowerCase(), ' ')
+    let commandName = _.head(tokens).substring(1)
+    let args        = _.tail(tokens)
+    let command     = commands[commandName]
 
     if (command) {
 
       try {
-        var result = yield command(args)
+        let result = yield command(args)
         event.message.channel.sendMessage(result)
       }
       catch (err) {

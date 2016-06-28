@@ -1,6 +1,6 @@
-var co   = require('co')
-var fs   = require('fs')
-var path = require('path')
+let co   = require('co')
+let fs   = require('fs')
+let path = require('path')
 
 
 
@@ -8,12 +8,12 @@ var path = require('path')
  * Directory of commands for the bot.
  * @return {Object}
  */
-var commands = {}
+let commands = {}
 
 
 
 // Get the base name of this file
-var basename = path.basename(module.filename)
+let basename = path.basename(module.filename)
 
 fs
   .readdirSync(__dirname)
@@ -23,7 +23,7 @@ fs
   })
   // Add commands from their directories to the commands object
   .forEach(function(file) {
-    var filePath = __dirname + '/' + file
+    let filePath = __dirname + '/' + file
     if (fs.lstatSync(filePath).isDirectory()) {
       commands[file] = co.wrap(require(filePath))
     }
