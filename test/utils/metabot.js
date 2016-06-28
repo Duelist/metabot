@@ -13,7 +13,7 @@ describe('#handleMessageCreate', () => {
     var event = {
       message : {
         channel : {
-          sendMessage : message => { console.log('ibtest', 'sendMessage') }
+          sendMessage : message => { return }
         },
         content : '!ping'
       }
@@ -28,8 +28,6 @@ describe('#handleMessageCreate', () => {
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
     sendMessageSpy.lastCall.args[0].should.eql('pong')
-
-    console.log('ibtest', 'restore')
 
     // Restore the spy
     sendMessageSpy.restore()
@@ -67,10 +65,8 @@ describe('#handleMessageCreate', () => {
   it('notifies the user if the command failed', () => {
 
     // Add a command that will fail on purpose
-    commands.eping = {
-      process: (message) => {
-        throw('fail ping')
-      }
+    commands.eping = (message) => {
+      throw new Error('fail ping')
     }
 
     // Create a test event
@@ -91,7 +87,9 @@ describe('#handleMessageCreate', () => {
 
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
-    sendMessageSpy.lastCall.args[0].should.eql('Command failed: fail ping')
+    sendMessageSpy.lastCall.args[0].should.eql(
+      'Command failed: Error: fail ping'
+    )
 
     // Restore the spy
     sendMessageSpy.restore()

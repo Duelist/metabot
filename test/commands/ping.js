@@ -1,4 +1,4 @@
-var ping = requireRoot('commands/ping')
+var commands = requireRoot('commands')
 
 
 
@@ -10,7 +10,7 @@ describe('@default', () => {
     var expectedResult = 'pong'
 
     // Run the command
-    var result = yield ping()
+    var result = yield commands.ping()
 
     // Ensure the result is the expected result
     result.should.eql(expectedResult)
