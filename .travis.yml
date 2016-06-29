@@ -3,8 +3,11 @@ node_js:
   - "6.2.2"
 services:
   - redis-server
+addons:
+    code_climate:
+        repo_token: d8e0d5ce7691e094a655a16affa67495ce2325f3e9e6fc69539733e02788e004
 notifications:
   slack:
     secure: xH8PRkD6tEqMo8wqieNjmsCHkM/qCr9DyK0D2t9lUCmwB9FSTcrmiyii5JpnQkCYR7W8YJQgXAE84ZiPVvo+OnK5KLPwAHn3VCgBKJqHi82GvmMTmst0/+pFOcDfmoaM0hj9gbVqNVfzZ6aOa3dgAfKgXY81Oj2FzZCjSRPRcY7Y2a3noOyfbAPE77NAnBCJRLkudQascjiKNQOIIedxspuuEeqqOltj0/Mw9N/N7Zupp8OJwtwZRvXhw22YnyG0DvLozmCYG4kU1/NdX2n4XbwwjrEUXskEiWlsJunc5Or2voz4YNNdS6WvyYxHOrrYouBtigPDPyJnAR72GoRQwdsZ2FlpXHK53+reRw26oyH35Lx2jOt0+6ePDYe0kXnN5771CV/qaorWDI2+1acnNBjW40UgG95phRVDlGnsRiV7assBcV3QVQg6eA7eePO3F82ebSGe4zGrIembEvcaqpBehbkuEYO6NwUjGJQV3pK/NlV/f6Xoxodwd3bvAdcnZa/vHL+LRcqPn7VB20X2HY47/4pOqYDsniVbPktXGttiOYFf6eHoDrv2zdy31aEgPGBTvlMZ72JxE5Sw0w63Urkh1e9/aX8B4DlQ+n1ZiRFLAoElsmwUvj8xQwf+DRokVaySc/Zrw0yb4YpwM5WggsTt0fnWQ5mNOijdXn0g9CI=
 script:
-  - npm run test-cover
+  - npm run test-travis

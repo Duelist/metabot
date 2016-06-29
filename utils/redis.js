@@ -81,11 +81,11 @@ function* getBatchFromSortedSet(options) {
     args.push('+inf')
   }
 
+  // Set the lower bound on score
   args.push('-inf')
 
-  if (options.limit) {
-    args.push('limit', 0, options.limit)
-  }
+  // Set the batch size
+  args.push('limit', 0, options.limit)
 
   return yield redis.zrevrangebyscore(args)
 

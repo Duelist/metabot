@@ -16,18 +16,24 @@ function* handleMessageCreate(event) {
     let args        = _.tail(tokens)
     let command     = commands[commandName]
 
-    if (command) {
+    if (!command) {
+      return
+    }
 
-      try {
-        let result = yield command(args)
-        event.message.channel.sendMessage(result)
-      }
-      catch (err) {
-        event.message.channel.sendMessage(
-          METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
-        )
-      }
+    try {
 
+      let result = yield command({
+        args,
+        message : event.message
+      })
+
+      event.message.channel.sendMessage(result)
+
+    }
+    catch (err) {
+      event.message.channel.sendMessage(
+        METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
+      )
     }
 
   }
