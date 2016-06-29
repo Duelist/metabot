@@ -19,23 +19,32 @@ describe('#handleMessageCreate', () => {
       }
     }
 
-    // Create a spy on the send message function
+    // Create spies on the command and send message function
+    let pingSpy        = sinon.spy(commands, 'ping')
     let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
     yield metabotUtil.handleMessageCreate(event)
 
+    // Ensure the ping command was called with the correct arguments
+    pingSpy.callCount.should.eql(1)
+    pingSpy.lastCall.args[0].should.eql({
+      args    : [],
+      message : event.message
+    })
+
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
     sendMessageSpy.lastCall.args[0].should.eql('pong')
 
-    // Restore the spy
+    // Restore the spies
+    pingSpy.restore()
     sendMessageSpy.restore()
 
   })
 
 
-  it('does nothing if the command does not exist', () => {
+  it('does nothing if the command does not contain the message prefix', () => {
 
     // Create a test event
     let event = {
@@ -43,7 +52,7 @@ describe('#handleMessageCreate', () => {
         channel : {
           sendMessage : message => { return }
         },
-        content : '!pong'
+        content : 'ping'
       }
     }
 
@@ -62,15 +71,15 @@ describe('#handleMessageCreate', () => {
   })
 
 
-  it('does nothing if the command does not contain the message prefix', () => {
-  
+  it('does nothing if the command does not exist', () => {
+
     // Create a test event
     let event = {
       message : {
         channel : {
           sendMessage : message => { return }
         },
-        content : 'ping'
+        content : '!pong'
       }
     }
 
