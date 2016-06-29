@@ -1,6 +1,6 @@
 require('../globals')
 
-global.metabot = require('../metabot')
+global.metabot = requireRoot('metabot')
 global.metabot.connect({ token: process.env.METABOT_TOKEN })
 
 
