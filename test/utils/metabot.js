@@ -1,16 +1,16 @@
-var sinon       = require('sinon')
+let sinon       = require('sinon')
 
-var commands    = requireRoot('commands')
-var metabotUtil = requireRoot('utils/metabot')
+let commands    = requireRoot('commands')
+let metabotUtil = requireRoot('utils/metabot')
 
 
 
 describe('#handleMessageCreate', () => {
 
-  it('sends a message', () => {
+  it('sends a message', function* () {
 
     // Create a test event
-    var event = {
+    let event = {
       message : {
         channel : {
           sendMessage : message => { return }
@@ -20,10 +20,10 @@ describe('#handleMessageCreate', () => {
     }
 
     // Create a spy on the send message function
-    var sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
-    metabotUtil.handleMessageCreate(event)
+    yield metabotUtil.handleMessageCreate(event)
 
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
@@ -38,7 +38,7 @@ describe('#handleMessageCreate', () => {
   it('does nothing if the command does not contain the message prefix', () => {
   
     // Create a test event
-    var event = {
+    let event = {
       message : {
         channel : {
           sendMessage : message => { return }
@@ -48,7 +48,7 @@ describe('#handleMessageCreate', () => {
     }
 
     // Create a spy on the send message function
-    var sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
     metabotUtil.handleMessageCreate(event)
@@ -65,12 +65,12 @@ describe('#handleMessageCreate', () => {
   it('notifies the user if the command failed', () => {
 
     // Add a command that will fail on purpose
-    commands.eping = {
-      process: (message) => { throw('fail ping') }
+    commands.eping = (message) => {
+      throw new Error('fail ping')
     }
 
     // Create a test event
-    var event = {
+    let event = {
       message : {
         channel : {
           sendMessage : message => { return }
@@ -80,14 +80,16 @@ describe('#handleMessageCreate', () => {
     }
 
     // Create a spy on the send message function
-    var sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
     metabotUtil.handleMessageCreate(event)
 
     // Ensure the send message function was called
     sendMessageSpy.callCount.should.eql(1)
-    sendMessageSpy.lastCall.args[0].should.eql('Command failed: fail ping')
+    sendMessageSpy.lastCall.args[0].should.eql(
+      'Command failed: Error: fail ping'
+    )
 
     // Restore the spy
     sendMessageSpy.restore()

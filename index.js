@@ -1,7 +1,7 @@
 require('./globals')
 
-var config  = require('./config')
-var metabot = require('./metabot')
+let config  = require('./config')
+let metabot = require('./metabot')
 
 
 
