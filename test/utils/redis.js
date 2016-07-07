@@ -2,9 +2,16 @@ let redisUtil = requireRoot('utils/redis')
 
 
 
+let token
+
 beforeEach(function* () {
+
   // Reset the cache
   yield redisUtil.reset()
+
+  // Register a token
+  token = yield redisUtil.register()
+
 })
 
 
@@ -17,7 +24,8 @@ describe('#addToSortedSet', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'hi',
-      score  : 0
+      score  : 0,
+      token
     })
 
   })
@@ -25,7 +33,7 @@ describe('#addToSortedSet', () => {
 
   it('creates a sorted set with a key if it doesn’t exist yet', function* () {
 
-    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test' })
+    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test', token })
 
     // Ensure the sorted set was created with the member
     result.should.eql(['hi'])
@@ -39,10 +47,11 @@ describe('#addToSortedSet', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'hey',
-      score  : 1
+      score  : 1,
+      token
     })
 
-    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test' })
+    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test', token })
 
     // Ensure the member was added to the sorted set
     result.should.eql(['hey', 'hi'])
@@ -61,17 +70,18 @@ describe('#exists', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'hi',
-      score  : 0
+      score  : 0,
+      token
     })
 
     // Get the existence of the existing redis key
-    let result = yield redisUtil.exists('test')
+    let result = yield redisUtil.exists({ key: 'test', token })
 
     // Ensure the redis key exists
     result.should.eql(1)
 
     // Get the existence of a redis key that doesn't exist
-    result = yield redisUtil.exists('test2')
+    result = yield redisUtil.exists({ key: 'test2', token })
 
     // Ensure the redis key doesn't exist
     result.should.eql(0)
@@ -93,16 +103,18 @@ describe('#getBatchFromSortedSet', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : expectedResult[1],
-      score  : 0
+      score  : 0,
+      token
     })
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : expectedResult[0],
-      score  : 1
+      score  : 1,
+      token
     })
 
     // Get a batch from the sorted set
-    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test' })
+    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test', token })
 
     // Ensure the returned result matches the expected result
     result.should.eql(expectedResult)
@@ -111,7 +123,7 @@ describe('#getBatchFromSortedSet', () => {
 
 
   it('returns an empty array if the sorted set is empty or doesn’t exist', function* () {
-    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test' })
+    let result = yield redisUtil.getBatchFromSortedSet({ key: 'test', token })
     result.should.eql([])
   })
 
@@ -122,18 +134,21 @@ describe('#getBatchFromSortedSet', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'test',
-      score  : 1
+      score  : 1,
+      token
     })
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'another test',
-      score  : 2
+      score  : 3,
+      token
     })
 
     // Get a batch from the sorted set with batch score
     let result = yield redisUtil.getBatchFromSortedSet({
       key       : 'test',
-      lastScore : 2
+      lastScore : 2,
+      token
     })
 
     // Ensure the returned result is correct
@@ -148,18 +163,21 @@ describe('#getBatchFromSortedSet', () => {
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'test',
-      score  : 1
+      score  : 1,
+      token
     })
     yield redisUtil.addToSortedSet({
       key    : 'test',
       member : 'another test',
-      score  : 2
+      score  : 2,
+      token
     })
 
     // Get a batch from the sorted set with a limit
     let result = yield redisUtil.getBatchFromSortedSet({
       key   : 'test',
-      limit : 1
+      limit : 1,
+      token
     })
 
     // Ensure the returned result is correct
@@ -182,6 +200,18 @@ describe('#getBatchFromSortedSet', () => {
     // Ensure an error was thrown
     isCaught.should.eql(true)
 
+  })
+
+})
+
+
+
+describe('#register', () => {
+
+  it('registers a unique namespace', function* () {
+    let newToken = yield redisUtil.register()
+    newToken.should.be.type('string')
+    newToken.length.should.eql(10)
   })
 
 })
