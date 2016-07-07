@@ -133,7 +133,7 @@ function* getBatchFromSortedSet(options) {
 
 
 /**
- * Gets the registered namespace for the provided token.
+ * Gets the key with the appropriate namespace for the provided token.
  *
  * @private
  *
