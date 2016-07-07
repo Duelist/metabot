@@ -10,14 +10,6 @@ let redis        = new Redis()
 
 
 /**
- * Storage of unique tokens.
- * @type {Set<String>}
- */
-let namespaceRegistry = new Set()
-
-
-
-/**
  * Adds a member with a specified score to the sorted set.
  *
  * @param {Object} options
@@ -175,7 +167,7 @@ function* register() {
   // Ensure the token does not exist in the namespace registry
   do {
     token = testUtil.randomString()
-  } while (namespaceRegistry.has(token))
+  } while (yield redis.sismember(REDIS.NAMESPACE_KEY, token))
 
   // Add the new token to the namespace registry
   yield redis.sadd(REDIS.NAMESPACE_KEY, token)
