@@ -9,14 +9,13 @@ var ow = requireRoot('commands/ow')
  */
 var commands = {
   ping: {
-    name        : 'ping',
     description : 'Pongs your ping.',
     process     : ping
   },
   ow: {
     name        : 'ow',
     description : 'Retrieve OW stats.',
-    process     : ow
+    process     : ow,
   }
 }
 

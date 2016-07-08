@@ -1,0 +1,5 @@
+var config = require('./config.global')
+
+config.bot.token = 'MTg5ODU0NjAyNDYyNDk0NzIw.CjnR7A.Zod5EYZ0ZMNi2a7vrJ-CvTlcpM0'
+
+module.exports = config

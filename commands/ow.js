@@ -1,15 +1,17 @@
-var scrapper = requireRoot('utils/scrapper')
+var scraper = requireRoot('utils/scraper')
 
 /**
  * Returns profile stats for your battletag
  * @param {String} battletag
  * @return {String}
  */
-function ow(battletag) {
-  var jsonObj = scrapper.getPlayerInfoByBattleTag(battletag)
-  var retVal = jsonObj.playerInfo.playerName //battletag + '\'s Overwatch Stats: '
-  //retVal += 'Total Wins: ' + jsonObj.playerInfo.playerName
-  return retVal
+function ow(callback) {
+  scraper.getPlayerInfoByBattleTag('Zapyre-1177', function(data){
+      //console.log(data)
+      //var retVal =  //battletag + '\'s Overwatch Stats: '
+      //retVal += 'Total Wins: ' + jsonObj.playerInfo.playerName
+      return callback(data)
+  })
 }
 
 
