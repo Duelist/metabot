@@ -60,6 +60,28 @@ describe('#addToSortedSet', () => {
 
 
 
+describe('#getString', () => {
+
+  it('gets a string at the given key', function* () {
+
+    // Create an expected string
+    let expectedString = 'test'
+
+    // Set the key to a string
+    yield redis.setString({ key: 'test', value: expectedString })
+
+    // Retrieve the string at the key
+    let result = yield redis.getString({ key: 'test' })
+
+    // Ensure the string at the key is the one that was set
+    result.should.eql(expectedString)
+
+  })
+
+})
+
+
+
 describe('#exists', () => {
 
   it('returns the existence of a redis key', function* () {
@@ -212,6 +234,28 @@ describe('#register', () => {
     // Ensure the key exists in the first namespace and not the second
     keyExistsOne.should.eql(true)
     keyExistsTwo.should.eql(false)
+
+  })
+
+})
+
+
+
+describe('#setString', () => {
+
+  it('sets a string at the given key', function* () {
+
+    // Create an expected string
+    let expectedString = 'test'
+
+    // Set the key to a string
+    yield redis.setString({ key: 'one', value: expectedString })
+
+    // Retrieve the string at the key
+    let result = yield redis.getString({ key: 'one' })
+
+    // Ensure the string at the key is the one that was set
+    result.should.eql(expectedString)
 
   })
 

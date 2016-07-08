@@ -8,4 +8,6 @@ function ping() {
 
 
 
-module.exports = ping
+module.exports = {
+  message : ping
+}

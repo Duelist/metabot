@@ -124,6 +124,32 @@ function* getBatchFromSortedSet(namespace, options) {
 
 
 /**
+ * Gets a string value at the provided key.
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} options.key Redis key.
+ *
+ * @return {String}
+ */
+function* getString(namespace, options) {
+
+  validateUtil(options).has({
+    key : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  return yield redis.get(key)
+
+}
+
+
+
+/**
  * Gets the key with the appropriate namespace.
  *
  * @private
@@ -157,7 +183,9 @@ function* register() {
   return {
     addToSortedSet        : _.curry(addToSortedSet)(namespace),
     exists                : _.curry(exists)(namespace),
-    getBatchFromSortedSet : _.curry(getBatchFromSortedSet)(namespace)
+    getBatchFromSortedSet : _.curry(getBatchFromSortedSet)(namespace),
+    getString             : _.curry(getString)(namespace),
+    setString             : _.curry(setString)(namespace),
   }
 
 }
@@ -197,6 +225,34 @@ function* reset() {
   yield redis.flushall()
 }
 
+
+
+/**
+ * Sets a string value at the provided key.
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} options.key Redis key.
+ * @param {String} options.value Value to set at the key.
+ */
+function* setString(namespace, options) {
+
+  validateUtil(options).has({
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    value : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  yield redis.set(key, options.value)
+
+}
 
 
 

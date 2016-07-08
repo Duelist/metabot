@@ -23,10 +23,24 @@ fs
   })
   // Add commands from their directories to the commands object
   .forEach(function(file) {
+
     let filePath = __dirname + '/' + file
+
     if (fs.lstatSync(filePath).isDirectory()) {
-      commands[file] = co.wrap(require(filePath))
+
+      let command = require(filePath)
+      commands[file] = {}
+
+      if (command.startup) {
+        commands[file].startup = co.wrap(command.startup)
+      }
+
+      if (command.message) {
+        commands[file].message = co.wrap(command.message)
+      }
+
     }
+
   })
 
 
