@@ -1,7 +1,7 @@
-var Ajv = require('ajv')
-var _   = require('lodash')
+let Ajv = require('ajv')
+let _   = require('lodash')
 
-var ajv = new Ajv({ useDefaults: true })
+let ajv = new Ajv({ useDefaults: true })
 
 
 
@@ -34,14 +34,14 @@ function createHas(object) {
 
   return properties => {
 
-    var validationSchema = {
+    let validationSchema = {
       properties,
       type : 'object'
     }
 
     validationSchema = transformValidationSchema(validationSchema)
 
-    var validator = ajv.compile(validationSchema)
+    let validator = ajv.compile(validationSchema)
     return handleValidation(validator, object)
 
   }
@@ -58,7 +58,7 @@ function createHas(object) {
 function createIsA(value) {
 
   return type => {
-    var validator = ajv.compile({ type })
+    let validator = ajv.compile({ type })
     return handleValidation(validator, value)
   }
 
@@ -78,11 +78,11 @@ function createIsA(value) {
  */
 function handleValidation(validator, value) {
 
-  var isValid = validator(value)
+  let isValid = validator(value)
 
   if (!isValid) {
 
-    var errorMessages = _.map(
+    let errorMessages = _.map(
       validator.errors,
       error => `${error.keyword} ${error.message}`
     )
@@ -104,12 +104,13 @@ function handleValidation(validator, value) {
  */
 function transformValidationSchema(schema) {
 
-  var updatedSchema = schema
+  // Clone the schema
+  let updatedSchema = _.cloneDeep(schema)
 
   // Set required properties
-  var requiredProperties = _.map(updatedSchema.properties, (property, name) => {
+  let requiredProperties = _.map(updatedSchema.properties, (property, name) => {
 
-    var requiredProperty
+    let requiredProperty
     if (property.required && property.required === true) {
       requiredProperty = name
       delete property.required

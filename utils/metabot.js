@@ -1,37 +1,41 @@
-var _        = require('lodash')
+let co       = require('co')
+let _        = require('lodash')
 
-var commands = requireRoot('commands')
-var METABOT  = requireRoot('constants/metabot')
+let commands = requireRoot('commands')
+let METABOT  = requireRoot('constants/metabot')
 
 
 
-function handleMessageCreate(event) {
+function* handleMessageCreate(event) {
 
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    var tokens      = _.split(event.message.content.toLowerCase(), ' ')
-    var commandName = _.head(tokens).substring(1)
-    var args        = _.tail(tokens)
-    var command     = commands[commandName]
+    let tokens      = _.split(event.message.content.toLowerCase(), ' ')
+    let commandName = _.head(tokens).substring(1)
+    let args        = _.tail(tokens)
+    let command     = commands[commandName]
 
-    if (command) {
-      try {
-        function callbackEvent() {
-          command.process(function (data) {
-            event.message.channel.sendMessage(data)
-          })
-        }
-        callbackEvent()
-        //var result = command.process(args)
-        //event.message.channel.sendMessage(result)
-      }
-      catch (err) {
-        event.message.channel.sendMessage(
-          METABOT.COMMAND_ERROR_MESSAGE + ': ' + err + " | " + err2
-        )
-      }
+    if (!command) {
+      return
     }
+
+    try {
+
+      let result = yield command({
+        args,
+        message : event.message
+      })
+
+      event.message.channel.sendMessage(result)
+
+    }
+    catch (err) {
+      event.message.channel.sendMessage(
+        METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
+      )
+    }
+
   }
 
 }
@@ -39,5 +43,5 @@ function handleMessageCreate(event) {
 
 
 module.exports = {
-  handleMessageCreate
+  handleMessageCreate: co.wrap(handleMessageCreate)
 }

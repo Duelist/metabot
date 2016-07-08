@@ -1,11 +1,12 @@
-var METABOT = requireRoot('constants/metabot')
+let METABOT = requireRoot('constants/metabot')
 
 
 
-var env = process.env.NODE_ENV || METABOT.ENVIRONMENT.DEV
+let config
+let env = process.env.NODE_ENV || METABOT.ENVIRONMENT.DEV
 
 try {
-  var config = require('./config.' + env)
+  config = require('./config.' + env)
 }
 catch (e) {
   if (e.code === 'MODULE_NOT_FOUND') {

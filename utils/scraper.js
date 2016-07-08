@@ -48,9 +48,9 @@ function getCareerStatsByBattleTag(battleTag, callback) {
  * @param {String} battletag
  * @param 
  */
-function getPlayerInfoByBattleTag(battleTag, callback) {
+function getPlayerInfoByBattleTag(battleTag) {
   var url = SCRAPER.URL + battleTag
-  var obj = request(url, function(error, response, html){
+  var obj = yield request(url, function(error, response, html){
     if(!error){
       var $ = cheerio.load(html)
       var json =  { playerInfo : {

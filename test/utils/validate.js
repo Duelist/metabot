@@ -1,13 +1,13 @@
-var _            = require('lodash')
+let _            = require('lodash')
 
-var validateUtil = requireRoot('utils/validate')
+let validateUtil = requireRoot('utils/validate')
 
 
 
 describe('@default', () => {
 
   it('returns validation functions in an object', () => {
-    var functions = validateUtil({})
+    let functions = validateUtil({})
     _.each(functions, fn => {
       true.should.eql(typeof fn === 'function')
     })
@@ -16,7 +16,7 @@ describe('@default', () => {
 
   it('throws an error if no value was provided', () => {
 
-    var isCaught = false
+    let isCaught = false
 
     try {
       validateUtil()
@@ -41,7 +41,7 @@ describe('#has', () => {
   it('validates an object', () => {
 
     // Create a test object
-    var object = {
+    let object = {
       one : 1,
       two : 'two'
     }
@@ -73,9 +73,9 @@ describe('#has', () => {
   it('throws an error when an object is invalid', () => {
 
     // Create a test object
-    var object = { one: 1 }
+    let object = { one: 1 }
 
-    var isCaught = false
+    let isCaught = false
 
     try {
       // Validate the object with a schema
@@ -98,9 +98,9 @@ describe('#has', () => {
   it('throws an error if a required value is not provided', () => {
 
     // Create a test object
-    var object = {}
+    let object = {}
 
-    var isCaught = false
+    let isCaught = false
 
     try {
 
@@ -132,7 +132,7 @@ describe('#isA', () => {
 
   it('validates a value', () => {
     // Create a test value
-    var value = 'test'
+    let value = 'test'
     validateUtil(value).isA('string')
   })
 
@@ -140,9 +140,9 @@ describe('#isA', () => {
   it('throws an error if the value is invalid', () => {
 
     // Create a test value
-    var value = 'test'
+    let value = 'test'
 
-    var isCaught = false
+    let isCaught = false
 
     try {
       // Validate the value

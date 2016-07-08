@@ -1,8 +1,8 @@
-var Redis        = require('ioredis')
+let Redis        = require('ioredis')
 
-var validateUtil = requireRoot('utils/validate')
+let validateUtil = requireRoot('utils/validate')
 
-var redis        = new Redis()
+let redis        = new Redis()
 
 
 
@@ -72,7 +72,7 @@ function* getBatchFromSortedSet(options) {
     }
   })
 
-  var args = [options.key]
+  let args = [options.key]
 
   if (options.lastScore) {
     args.push('(' + options.lastScore)
@@ -81,11 +81,11 @@ function* getBatchFromSortedSet(options) {
     args.push('+inf')
   }
 
+  // Set the lower bound on score
   args.push('-inf')
 
-  if (options.limit) {
-    args.push('limit', 0, options.limit)
-  }
+  // Set the batch size
+  args.push('limit', 0, options.limit)
 
   return yield redis.zrevrangebyscore(args)
 
