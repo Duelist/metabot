@@ -1,5 +1,6 @@
 let assert       = require('assert')
 let Redis        = require('ioredis')
+let _            = require('lodash')
 
 let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
@@ -12,13 +13,13 @@ let redis        = new Redis()
 /**
  * Adds a member with a specified score to the sorted set.
  *
+ * @param {String} namespace Namespace to locate the key.
  * @param {Object} options
  * @param {String} options.key Redis key for sorted set.
  * @param {Number} options.score Score for the added member.
- * @param {String} options.token Token to authenticate command.
  * @param {String} options.member Member to be added to the sorted set.
  */
-function* addToSortedSet(options) {
+function* addToSortedSet(namespace, options) {
 
   validateUtil(options).has({
     key    : {
@@ -33,13 +34,9 @@ function* addToSortedSet(options) {
       required : true,
       type     : 'string'
     },
-    token : {
-      required : true,
-      type     : 'string'
-    }
   })
 
-  let key = yield getNamespacedKey(options.token, options.key)
+  let key = yield getNamespacedKey(namespace, options.key)
 
   yield redis.zadd(key, options.score, options.member)
 
@@ -50,28 +47,26 @@ function* addToSortedSet(options) {
 /**
  * Checks the existence of a redis key.
  *
+ * @param {String} namespace Namespace to locate the key.
  * @param {Object} options
  * @param {String} options.key Redis key.
- * @param {String} options.token Token to authenticate command.
  *
- * @return {Number}
+ * @return {Boolean}
  */
-function* exists(options) {
+function* exists(namespace, options) {
 
   validateUtil(options).has({
     key   : {
       required : true,
       type     : 'string'
     },
-    token : {
-      required : true,
-      type     : 'string'
-    }
   })
 
-  let key = yield getNamespacedKey(options.token, options.key)
+  let key = yield getNamespacedKey(namespace, options.key)
 
-  return yield redis.exists(key)
+  let exists = yield redis.exists(key)
+
+  return !!exists 
 
 }
 
@@ -80,15 +75,15 @@ function* exists(options) {
 /**
  * Gets a batch of members from the sorted set.
  *
+ * @param {String} namespace Namespace to locate the key.
  * @param {Object} options
  * @param {String} options.key Redis key.
  * @param {Number} [options.lastScore='+inf'] Upper bound on score.
  * @param {Number} [options.limit=10] Batch size.
- * @param {String} options.token Token to authenticate command.
  *
  * @return {Array}
  */
-function* getBatchFromSortedSet(options) {
+function* getBatchFromSortedSet(namespace, options) {
 
   validateUtil(options).has({
     key : {
@@ -102,13 +97,9 @@ function* getBatchFromSortedSet(options) {
       default : 10,
       type    : 'number'
     },
-    token : {
-      required : true,
-      type     : 'string'
-    }
   })
 
-  let key = yield getNamespacedKey(options.token, options.key)
+  let key = yield getNamespacedKey(namespace, options.key)
 
   let args = [key]
 
@@ -133,24 +124,24 @@ function* getBatchFromSortedSet(options) {
 
 
 /**
- * Gets the key with the appropriate namespace for the provided token.
+ * Gets the key with the appropriate namespace.
  *
  * @private
  *
- * @param {String} token Token assigned to command on registration.
+ * @param {String} namespace Namespace to locate the key.
  * @param {String} key Redis key.
  *
  * @return {String}
  */
-function* getNamespacedKey(token, key) {
+function* getNamespacedKey(namespace, key) {
 
-  // Get the token registration status
-  let tokenExists = yield redis.sismember(REDIS.NAMESPACE_KEY, token)
+  // Get the namespace registration status
+  let namespaceExists = yield redis.sismember(REDIS.NAMESPACE_KEY, namespace)
 
-  // Ensure the token is registered
-  assert(tokenExists)
+  // Ensure the namespace is registered
+  assert(namespaceExists)
 
-  return [token, key].join(REDIS.NAMESPACE_DELIMITER)
+  return [namespace, key].join(REDIS.NAMESPACE_DELIMITER)
 }
 
 
@@ -160,6 +151,27 @@ function* getNamespacedKey(token, key) {
  * @return {String}
  */
 function* register() {
+
+  let namespace = yield registerNamespace()
+
+  return {
+    addToSortedSet        : _.curry(addToSortedSet)(namespace),
+    exists                : _.curry(exists)(namespace),
+    getBatchFromSortedSet : _.curry(getBatchFromSortedSet)(namespace)
+  }
+
+}
+
+
+
+/**
+ * Registers a namespace in the registry.
+ *
+ * @private
+ *
+ * @return {String}
+ */
+function* registerNamespace() {
 
   // Generate a random token
   let token = testUtil.randomString()
@@ -189,9 +201,6 @@ function* reset() {
 
 
 module.exports = {
-  addToSortedSet,
-  exists,
-  getBatchFromSortedSet,
   register,
   reset
 }
