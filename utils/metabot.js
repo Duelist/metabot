@@ -34,7 +34,7 @@ function* handleMessageCreate(event) {
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    let tokens      = _.split(event.message.content.toLowerCase(), ' ')
+    let tokens      = _.split(event.message.content, ' ')
     let commandName = _.head(tokens).substring(1)
     let args        = _.tail(tokens)
     let command     = commands[commandName]
@@ -44,17 +44,10 @@ function* handleMessageCreate(event) {
     }
 
     try {
-
-      let result = yield command.message({
-        args,
-        message : event.message
-      })
-
-      event.message.channel.sendMessage(result)
-
+      yield command.message({ args, message: event.message })
     }
     catch (err) {
-      event.message.channel.sendMessage(
+      yield event.message.channel.sendMessage(
         METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
       )
     }
