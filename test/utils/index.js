@@ -10,6 +10,12 @@ describe('redis', () => {
 
 
 
+describe('test', () => {
+  require('./test')
+})
+
+
+
 describe('validate', () => {
   require('./validate')
 })

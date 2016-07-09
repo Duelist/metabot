@@ -6,6 +6,29 @@ let METABOT  = requireRoot('constants/metabot')
 
 
 
+/**
+ * Handles the Discord GATEWAY_READY event.
+ * @param {Event} event Gateway ready event.
+ */
+function* handleGatewayReady(event) {
+
+  yield _.chain(commands)
+    .map(command => {
+      if (command.startup) {
+        return command.startup()
+      }
+    })
+    .compact()
+    .value()
+
+}
+
+
+
+/**
+ * Handles the Discord MESSAGE_CREATE event.
+ * @param {Event} event Message creation event.
+ */
 function* handleMessageCreate(event) {
 
   if (event.message.content[0] === METABOT.PREFIX) {
@@ -22,7 +45,7 @@ function* handleMessageCreate(event) {
 
     try {
 
-      let result = yield command({
+      let result = yield command.message({
         args,
         message : event.message
       })
@@ -43,5 +66,6 @@ function* handleMessageCreate(event) {
 
 
 module.exports = {
-  handleMessageCreate: co.wrap(handleMessageCreate)
+  handleGatewayReady  : co.wrap(handleGatewayReady),
+  handleMessageCreate : co.wrap(handleMessageCreate)
 }

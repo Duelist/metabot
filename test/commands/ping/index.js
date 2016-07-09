@@ -10,7 +10,7 @@ describe('@default', () => {
     let expectedResult = 'pong'
 
     // Run the command
-    let result = yield commands.ping()
+    let result = yield commands.ping.message()
 
     // Ensure the result is the expected result
     result.should.eql(expectedResult)

@@ -5,6 +5,27 @@ let metabotUtil = requireRoot('utils/metabot')
 
 
 
+describe('#handleGatewayReady', () => {
+
+  it('runs startup functions for every command', function* () {
+
+    // Create a spy on the king command's startup function
+    let kingStartupSpy = sinon.spy(commands.king, 'startup')
+
+    yield metabotUtil.handleGatewayReady()
+
+    // Ensure the startup function was called
+    kingStartupSpy.calledOnce.should.eql(true)
+
+    // Clean up
+    kingStartupSpy.restore()
+
+  })
+
+})
+
+
+
 describe('#handleMessageCreate', () => {
 
   it('sends a message', function* () {
@@ -20,21 +41,21 @@ describe('#handleMessageCreate', () => {
     }
 
     // Create spies on the command and send message function
-    let pingSpy        = sinon.spy(commands, 'ping')
+    let pingSpy        = sinon.spy(commands.ping, 'message')
     let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
 
     // Handle the send message event
     yield metabotUtil.handleMessageCreate(event)
 
     // Ensure the ping command was called with the correct arguments
-    pingSpy.callCount.should.eql(1)
+    pingSpy.calledOnce.should.eql(true)
     pingSpy.lastCall.args[0].should.eql({
       args    : [],
       message : event.message
     })
 
     // Ensure the send message function was called
-    sendMessageSpy.callCount.should.eql(1)
+    sendMessageSpy.calledOnce.should.eql(true)
     sendMessageSpy.lastCall.args[0].should.eql('pong')
 
     // Restore the spies
@@ -101,8 +122,10 @@ describe('#handleMessageCreate', () => {
   it('notifies the user if the command failed', () => {
 
     // Add a command that will fail on purpose
-    commands.eping = (message) => {
-      throw new Error('fail ping')
+    commands.eping = {
+      message : message => {
+        throw new Error('fail ping')
+      }
     }
 
     // Create a test event
@@ -122,7 +145,7 @@ describe('#handleMessageCreate', () => {
     metabotUtil.handleMessageCreate(event)
 
     // Ensure the send message function was called
-    sendMessageSpy.callCount.should.eql(1)
+    sendMessageSpy.calledOnce.should.eql(true)
     sendMessageSpy.lastCall.args[0].should.eql(
       'Command failed: Error: fail ping'
     )
