@@ -1,6 +1,6 @@
 let assert       = require('assert')
 let Redis        = require('ioredis')
-let _            = require('lodash')
+let R            = require('ramda')
 
 let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
@@ -181,11 +181,11 @@ function* register() {
   let namespace = yield registerNamespace()
 
   return {
-    addToSortedSet        : _.curry(addToSortedSet)(namespace),
-    exists                : _.curry(exists)(namespace),
-    getBatchFromSortedSet : _.curry(getBatchFromSortedSet)(namespace),
-    getString             : _.curry(getString)(namespace),
-    setString             : _.curry(setString)(namespace),
+    addToSortedSet        : R.curry(addToSortedSet)(namespace),
+    exists                : R.curry(exists)(namespace),
+    getBatchFromSortedSet : R.curry(getBatchFromSortedSet)(namespace),
+    getString             : R.curry(getString)(namespace),
+    setString             : R.curry(setString)(namespace),
   }
 
 }

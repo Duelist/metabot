@@ -32,8 +32,8 @@
     "debug": "2.2.0",
     "discordie": "0.6.5",
     "ioredis": "2.1.0",
-    "lodash": "4.13.1",
     "node-uuid": "1.4.7",
+    "ramda": "0.21.0",
     "should": "9.0.1",
     "sinon": "1.17.4"
   },

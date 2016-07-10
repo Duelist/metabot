@@ -1,4 +1,4 @@
-let _            = require('lodash')
+let R            = require('ramda')
 
 let validateUtil = requireRoot('utils/validate')
 
@@ -7,10 +7,14 @@ let validateUtil = requireRoot('utils/validate')
 describe('@default', () => {
 
   it('returns validation functions in an object', () => {
-    let functions = validateUtil({})
-    _.each(functions, fn => {
+
+    let functions        = validateUtil({})
+    let validateFunction = fn => {
       true.should.eql(typeof fn === 'function')
-    })
+    }
+
+    R.forEach(validateFunction, functions)
+
   })
 
 

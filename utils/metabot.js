@@ -1,5 +1,5 @@
 let co       = require('co')
-let _        = require('lodash')
+let R        = require('ramda')
 
 let commands = requireRoot('commands')
 let METABOT  = requireRoot('constants/metabot')
@@ -12,14 +12,14 @@ let METABOT  = requireRoot('constants/metabot')
  */
 function* handleGatewayReady(event) {
 
-  yield _.chain(commands)
-    .map(command => {
-      if (command.startup) {
-        return command.startup()
-      }
-    })
-    .compact()
-    .value()
+  let getStartupPromises = R.compose(
+    R.map(command => command.startup()),
+    R.filter(command => typeof command.startup === 'function'),
+    R.filter(command => command.startup),
+    R.values
+  )
+
+  yield getStartupPromises(commands)
 
 }
 
@@ -34,9 +34,9 @@ function* handleMessageCreate(event) {
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    let tokens      = _.split(event.message.content, ' ')
-    let commandName = _.head(tokens).substring(1)
-    let args        = _.tail(tokens)
+    let tokens      = R.split(' ', event.message.content)
+    let commandName = R.head(tokens).substring(1)
+    let args        = R.tail(tokens)
     let command     = commands[commandName]
 
     if (!command) {

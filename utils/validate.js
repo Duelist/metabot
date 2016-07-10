@@ -1,5 +1,5 @@
 let Ajv = require('ajv')
-let _   = require('lodash')
+let R   = require('ramda')
 
 let ajv = new Ajv({ useDefaults: true })
 
@@ -82,9 +82,9 @@ function handleValidation(validator, value) {
 
   if (!isValid) {
 
-    let errorMessages = _.map(
-      validator.errors,
-      error => `${error.keyword} ${error.message}`
+    let errorMessages = R.map(
+      error => `${error.keyword} ${error.message}`,
+      validator.errors
     )
 
     throw new Error(errorMessages.join('/n'))
