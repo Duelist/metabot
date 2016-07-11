@@ -105,26 +105,21 @@ function handleValidation(validator, value) {
 function transformValidationSchema(schema) {
 
   // Clone the schema
-  let updatedSchema = _.cloneDeep(schema)
+  let updatedSchema = R.clone(schema)
 
   // Set required properties
-  let requiredProperties = _.map(updatedSchema.properties, (property, name) => {
+  let requiredProperties = R.compose(
+    Object.getOwnPropertyNames,
+    R.filter(value => value.required)
+  )(updatedSchema.properties)
 
-    let requiredProperty
-    if (property.required && property.required === true) {
-      requiredProperty = name
-      delete property.required
-    }
-
-    return requiredProperty
-
-  })
-
-  // Remove falsy values
-  requiredProperties = _.compact(requiredProperties)
+  updatedSchema.properties = R.map(value => {
+    delete value.required
+    return value
+  })(updatedSchema.properties)
 
   // Update the schema with the required properties
-  if (!_.isEmpty(requiredProperties)) {
+  if (!R.isEmpty(requiredProperties)) {
     updatedSchema.required = requiredProperties
   }
 
