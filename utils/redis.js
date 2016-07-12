@@ -56,7 +56,7 @@ function* addToSortedSet(namespace, options) {
 function* exists(namespace, options) {
 
   validateUtil(options).has({
-    key   : {
+    key : {
       required : true,
       type     : 'string'
     },
@@ -124,6 +124,37 @@ function* getBatchFromSortedSet(namespace, options) {
 
 
 /**
+ * Gets the score for a given member at the provided key.
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} options.key Redis key.
+ * @param {String} options.member Sorted set member to get the score for.
+ *
+ * @return {String}
+ */
+function* getScoreFromSortedSet(namespace, options) {
+
+  validateUtil(options).has({
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    member : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  return yield redis.zscore(key, options.member)
+
+}
+
+
+
+/**
  * Gets a string value at the provided key.
  *
  * @param {String} namespace Namespace to locate the key.
@@ -168,6 +199,45 @@ function* getNamespacedKey(namespace, key) {
   assert(namespaceExists)
 
   return [namespace, key].join(REDIS.NAMESPACE_DELIMITER)
+
+}
+
+
+
+/**
+ * Increments the score for a given member in.
+ *
+ * @private
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} [options.amount=1] Amount to increment by.
+ * @param {String} options.key Redis key.
+ * @param {String} options.member Sorted set member to get the score for.
+ *
+ * @return {String}
+ */
+function* incrementScoreInSortedSet(namespace, options) {
+
+  validateUtil(options).has({
+    amount : {
+      default : 1,
+      type    : 'number'
+    },
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    member : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  return yield redis.zincrby(key, options.amount, options.member)
+
 }
 
 
@@ -181,11 +251,13 @@ function* register() {
   let namespace = yield registerNamespace()
 
   return {
-    addToSortedSet        : R.curry(addToSortedSet)(namespace),
-    exists                : R.curry(exists)(namespace),
-    getBatchFromSortedSet : R.curry(getBatchFromSortedSet)(namespace),
-    getString             : R.curry(getString)(namespace),
-    setString             : R.curry(setString)(namespace),
+    addToSortedSet            : R.curry(addToSortedSet)(namespace),
+    exists                    : R.curry(exists)(namespace),
+    getBatchFromSortedSet     : R.curry(getBatchFromSortedSet)(namespace),
+    getScoreFromSortedSet     : R.curry(getScoreFromSortedSet)(namespace),
+    incrementScoreInSortedSet : R.curry(incrementScoreInSortedSet)(namespace),
+    getString                 : R.curry(getString)(namespace),
+    setString                 : R.curry(setString)(namespace),
   }
 
 }

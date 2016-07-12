@@ -18,11 +18,9 @@ let basename = path.basename(module.filename)
 fs
   .readdirSync(__dirname)
   // Get all files that are not this file
-  .filter(function(file) {
-    return (file.indexOf('.') !== 0) && (file !== basename)
-  })
+  .filter(file => (file.indexOf('.') !== 0) && (file !== basename))
   // Add commands from their directories to the commands object
-  .forEach(function(file) {
+  .forEach(file => {
 
     let filePath = __dirname + '/' + file
 

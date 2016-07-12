@@ -3,6 +3,7 @@ let R        = require('ramda')
 
 let commands = requireRoot('commands')
 let METABOT  = requireRoot('constants/metabot')
+let services = requireRoot('services')
 
 
 
@@ -12,14 +13,19 @@ let METABOT  = requireRoot('constants/metabot')
  */
 function* handleGatewayReady(event) {
 
-  let getStartupPromises = R.compose(
-    R.map(command => command.startup()),
-    R.filter(command => typeof command.startup === 'function'),
-    R.filter(command => command.startup),
+  // Initializes the bot's services
+  yield R.compose(
+    R.map(service => service.startup()),
+    R.filter(service => service.startup && typeof service.startup === 'function'),
     R.values
-  )
+  )(services)
 
-  yield getStartupPromises(commands)
+  // Initializes the bot's commands
+  yield R.compose(
+    R.map(command => command.startup()),
+    R.filter(command => command.startup && typeof command.startup === 'function'),
+    R.values
+  )(commands)
 
 }
 
