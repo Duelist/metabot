@@ -86,6 +86,10 @@ function* exists(namespace, options) {
 function* getBatchFromSortedSet(namespace, options) {
 
   validateUtil(options).has({
+    includeScores : {
+      default : false,
+      type    : 'boolean'
+    },
     key : {
       required : true,
       type     : 'string'
@@ -96,7 +100,7 @@ function* getBatchFromSortedSet(namespace, options) {
     limit : {
       default : 10,
       type    : 'number'
-    },
+    }
   })
 
   let key = yield getNamespacedKey(namespace, options.key)
@@ -113,6 +117,11 @@ function* getBatchFromSortedSet(namespace, options) {
 
   // Set the lower bound on score
   args.push('-inf')
+
+  // Ensure the scores are returned
+  if (options.includeScores) {
+    args.push('WITHSCORES')
+  }
 
   // Set the batch size
   args.push('limit', 0, options.limit)

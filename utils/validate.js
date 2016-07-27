@@ -113,10 +113,11 @@ function transformValidationSchema(schema) {
     R.filter(value => value.required)
   )(updatedSchema.properties)
 
-  updatedSchema.properties = R.map(value => {
-    delete value.required
-    return value
-  })(updatedSchema.properties)
+  // Remove required properties from values
+  updatedSchema.properties = R.map(
+    value => R.dissoc('required', value),
+    updatedSchema.properties
+  )
 
   // Update the schema with the required properties
   if (!R.isEmpty(requiredProperties)) {
