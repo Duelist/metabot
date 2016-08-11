@@ -30,6 +30,8 @@ function allowAward(token) {
  *
  * @param {String} token Token for the registered function.
  * @param {Object} options
+ *
+ * @return {Boolean}
  */
 function* award(token, options) {
 
@@ -75,10 +77,6 @@ function* award(token, options) {
  * @return {String}
  */
 function formatLeaderboard(leaderboard) {
-
-  if (typeof leaderboard === 'string') {
-    return leaderboard
-  }
 
   let table = new Table({
     head  : ['User', 'Metacoins'],

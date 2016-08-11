@@ -25,8 +25,11 @@ function* message(options) {
 
   // Admin commands
   if (isAdmin) {
-    if (options.args[0] === 'award') {
+    if (options.args[0] === METACOINS.COMMANDS.AWARD) {
       yield metacoins.award({ userId: options.message.author.id })
+      yield options.message.channel.sendMessage(
+        METACOINS.AWARDED_MESSAGE(options.message.author.username)
+      )
     }
     if (options.args[0] === METACOINS.COMMANDS.LEADERBOARD) {
       let leaderboard = yield metacoins.getLeaderboard()
