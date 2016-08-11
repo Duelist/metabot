@@ -17,14 +17,14 @@ const COMMANDS = {
 
 
 /**
- * Role name used to denote the admin.
+ * User ID used to denote the admin.
  * @type {String}
  */
-const ADMIN_ROLE_NAME = 'Dungeon Master'
+const ADMIN_USER_ID = '179139616274644992'
 
 
 
 module.exports = {
-  ADMIN_ROLE_NAME,
+  ADMIN_USER_ID,
   COMMANDS
 }

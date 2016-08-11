@@ -68,7 +68,7 @@ function* award(token, options) {
 
 
 /**
- * Formats the metacoin leaderboard to an easy-to-read string.
+ * Formats the metacoins leaderboard to an easy-to-read string.
  *
  * @param {Array} leaderboard Leaderboard to format.
  *
@@ -125,13 +125,21 @@ function* getLeaderboard() {
  * Gets a user's metacoins from cache.
  *
  * @param {Number} userId User's id.
+ *
  * @return {Array}
  */
 function* getMetacoinsForUser(userId) {
-  return yield redis.getScoreFromSortedSet({
+
+  let metacoins = yield redis.getScoreFromSortedSet({
     key    : METACOINS.REDIS.LEADERBOARD_KEY,
     member : userId
   })
+
+  if (!metacoins) {
+    return 0
+  }
+
+  return parseInt(metacoins, 10)
 }
 
 

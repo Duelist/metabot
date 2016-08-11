@@ -7,19 +7,21 @@ let metacoins
 
 
 
+/**
+ * Gets a user's metacoins or the metacoins leaderboard.
+ *
+ * @param {Object} options
+ */
 function* message(options) {
 
   if (R.isEmpty(options.args)) {
     let coins = yield metacoins.getMetacoinsForUser(
       options.message.author.id
     )
-    yield options.message.channel.sendMessage(coins)
+    yield options.message.channel.sendMessage(coins.toString())
   }
 
-  let isAdmin = R.map(
-    role => role.name === METACOINS.ADMIN_ROLE_NAME,
-    options.message.member.roles
-  )
+  let isAdmin = options.message.author.id === METACOINS.ADMIN_USER_ID
 
   // Admin commands
   if (isAdmin) {
@@ -27,11 +29,8 @@ function* message(options) {
       yield metacoins.award({ userId: options.message.author.id })
     }
     if (options.args[0] === METACOINS.COMMANDS.LEADERBOARD) {
-
       let leaderboard = yield metacoins.getLeaderboard()
-
       yield options.message.channel.sendMessage(leaderboard)
-
     }
   }
 

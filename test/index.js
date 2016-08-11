@@ -8,6 +8,12 @@ describe('commands', () => {
 
 
 
+describe('services', () => {
+  require('./services')
+})
+
+
+
 describe('utils', () => {
   require('./utils')
 })
