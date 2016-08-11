@@ -11,13 +11,26 @@ let redis
 
 
 
+/**
+ * Determines if a registered function should be allowed to award metacoins.
+ * TODO: Implement logic for disallowing awards here if needed.
+ *
+ * @param {String} token Token for the registered function.
+ *
+ * @return {Boolean}
+ */
 function allowAward(token) {
-  // TODO: Implement logic for disallowing awards here if needed.
   return true
 }
 
 
 
+/**
+ * Awards metacoins to a user.
+ *
+ * @param {String} token Token for the registered function.
+ * @param {Object} options
+ */
 function* award(token, options) {
 
   validateUtil(options).has({
@@ -54,6 +67,13 @@ function* award(token, options) {
 
 
 
+/**
+ * Formats the metacoin leaderboard to an easy-to-read string.
+ *
+ * @param {Array} leaderboard Leaderboard to format.
+ *
+ * @return {String}
+ */
 function formatLeaderboard(leaderboard) {
 
   if (typeof leaderboard === 'string') {
@@ -76,6 +96,11 @@ function formatLeaderboard(leaderboard) {
 
 
 
+/**
+ * Gets the leaderboard from cache.
+ *
+ * @return {String}
+ */
 function* getLeaderboard() {
 
   let leaderboardExists = yield redis.exists({
@@ -96,6 +121,12 @@ function* getLeaderboard() {
 
 
 
+/**
+ * Gets a user's metacoins from cache.
+ *
+ * @param {Number} userId User's id.
+ * @return {Array}
+ */
 function* getMetacoinsForUser(userId) {
   return yield redis.getScoreFromSortedSet({
     key    : METACOINS.REDIS.LEADERBOARD_KEY,
@@ -105,6 +136,11 @@ function* getMetacoinsForUser(userId) {
 
 
 
+/**
+ * Registers a function with the service.
+ *
+ * @return {Object}
+ */
 function* register() {
 
   let token = testUtil.randomString()
@@ -119,6 +155,9 @@ function* register() {
 
 
 
+/**
+ * Initializes the service.
+ */
 function* startup() {
   redis = yield redisUtil.register()
 }
