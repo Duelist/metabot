@@ -1,6 +1,3 @@
-let sinon    = require('sinon')
-let rewire   = require('rewire')
-
 let testUtil = requireRoot('utils/test')
 
 
