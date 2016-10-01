@@ -6,11 +6,11 @@ let config
 let env = process.env.NODE_ENV || METABOT.ENVIRONMENT.DEV
 
 try {
-  config = require('./config.' + env)
+  config = requireRoot('configs/config.' + env)
 }
 catch (e) {
   if (e.code === 'MODULE_NOT_FOUND') {
-    config = require('./config.global')
+    config = requireRoot('configs/config.global')
   }
 }
 

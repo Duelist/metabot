@@ -2,11 +2,12 @@ let assert       = require('assert')
 let Redis        = require('ioredis')
 let _            = require('lodash')
 
+let redisConfig  = requireRoot('configs/redis')
 let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
 let validateUtil = requireRoot('utils/validate')
 
-let redis        = new Redis()
+let redis        = new Redis({ host: redisConfig.HOST })
 
 
 

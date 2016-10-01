@@ -1,4 +1,4 @@
-let config = require('./config.global')
+let config = requireRoot('configs/config.global')
 
 config.bot.token = '<Insert Token Here>'
 

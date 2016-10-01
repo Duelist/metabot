@@ -1,0 +1,8 @@
+bot:
+  build: .
+  links:
+    - redis
+  expose:
+    - "6379"
+redis:
+  image: redis
