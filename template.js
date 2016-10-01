@@ -1,3 +1,11 @@
+/**
+ * Creates a tagged template literal function.
+ *
+ * @param {String[]} strings Strings in template literal.
+ * @param {String} keys Keys of values to replace in literal.
+ *
+ * @return {Function}
+ */
 function template(strings, ...keys) {
   return (...values) => {
     let dict = values[values.length - 1] || {}

@@ -14,6 +14,12 @@ describe('services', () => {
 
 
 
+describe('template', () => {
+  require('./template')
+})
+
+
+
 describe('utils', () => {
   require('./utils')
 })
