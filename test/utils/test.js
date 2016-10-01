@@ -1,3 +1,6 @@
+let sinon    = require('sinon')
+let rewire   = require('rewire')
+
 let testUtil = requireRoot('utils/test')
 
 
@@ -26,6 +29,17 @@ describe('#randomString', () => {
     // Ensure the returned string length is correct
     randomString.length.should.eql(2)
 
+  })
+
+})
+
+
+
+describe('#rewireRoot', () => {
+
+  it('rewires a module at a given path from root', () => {
+    let result = testUtil.rewireRoot('utils/test')
+    true.should.eql(typeof result === 'object')
   })
 
 })

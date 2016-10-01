@@ -14,7 +14,7 @@ let metacoins
  */
 function* message(options) {
 
-  if (R.isEmpty(options.args)) {
+  if (!options.args || R.isEmpty(options.args)) {
     let coins = yield metacoins.getMetacoinsForUser(
       options.message.author.id
     )
@@ -25,12 +25,6 @@ function* message(options) {
 
   // Admin commands
   if (isAdmin) {
-    if (options.args[0] === METACOINS.COMMANDS.AWARD) {
-      yield metacoins.award({ userId: options.message.author.id })
-      yield options.message.channel.sendMessage(
-        METACOINS.AWARDED_MESSAGE(options.message.author.username)
-      )
-    }
     if (options.args[0] === METACOINS.COMMANDS.LEADERBOARD) {
       let leaderboard = yield metacoins.getLeaderboard()
       yield options.message.channel.sendMessage(leaderboard)
