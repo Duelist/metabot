@@ -1,6 +1,7 @@
 let R         = require('ramda')
 
 let METACOINS = requireRoot('commands/metacoins/constants')
+let config    = requireRoot('config')
 let services  = requireRoot('services')
 
 let metacoins
@@ -9,25 +10,29 @@ let metacoins
 
 /**
  * Gets a user's metacoins or the metacoins leaderboard.
- *
  * @param {Object} options
  */
 function* message(options) {
 
+  let author  = options.message.author
+  let channel = options.message.channel
+
   if (!options.args || R.isEmpty(options.args)) {
-    let coins = yield metacoins.getMetacoinsForUser(
-      options.message.author.id
+    let coins = yield metacoins.getMetacoinsForUser(author.id)
+    yield channel.sendMessage(
+      METACOINS.MESSAGE.METACOIN_COUNT(author.mention, coins.toString())
     )
-    yield options.message.channel.sendMessage(coins.toString())
+    return
   }
 
-  let isAdmin = options.message.author.id === METACOINS.ADMIN_USER_ID
+  let isAdmin = R.contains(author.id, config.bot.adminIds)
 
   // Admin commands
   if (isAdmin) {
-    if (options.args[0] === METACOINS.COMMANDS.LEADERBOARD) {
+    if (options.args[0] === METACOINS.COMMAND.LEADERBOARD) {
       let leaderboard = yield metacoins.getLeaderboard()
-      yield options.message.channel.sendMessage(leaderboard)
+      yield channel.sendMessage(leaderboard)
+      return
     }
   }
 

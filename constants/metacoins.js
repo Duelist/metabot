@@ -27,17 +27,17 @@ const MESSAGE = {
  * Redis key for last award times for registered functions.
  * @type {String}
  */
-const LAST_AWARDED_REDIS_KEY = 'lastAwarded'
+const REDIS_LAST_AWARDED_KEY = 'lastAwarded'
 
 /**
  * Redis key for metacoin leaderboard.
  * @type {String}
  */
-const LEADERBOARD_REDIS_KEY = 'leaderboard'
+const REDIS_LEADERBOARD_KEY = 'leaderboard'
 
 const REDIS = {
-  LAST_AWARDED_KEY : LAST_AWARDED_REDIS_KEY,
-  LEADERBOARD_KEY  : LEADERBOARD_REDIS_KEY
+  LAST_AWARDED_KEY : REDIS_LAST_AWARDED_KEY,
+  LEADERBOARD_KEY  : REDIS_LEADERBOARD_KEY
 }
 
 

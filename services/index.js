@@ -19,7 +19,7 @@ fs
   .readdirSync(__dirname)
   // Get all files that are not this file
   .filter(file => (file.indexOf('.') !== 0) && (file !== basename))
-  // Add services to the services object
+  // Add services from their directories to the services object
   .forEach(file => {
 
     let filePath = __dirname + '/' + file

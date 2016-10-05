@@ -14,19 +14,10 @@ let services = requireRoot('services')
 function* handleGatewayReady(event) {
 
   // Initializes the bot's services
-  yield R.compose(
-    R.map(service => service.startup()),
-    R.filter(service => service.startup && typeof service.startup === 'function'),
-    R.values
-  )(services)
+  yield initializeBotFunctions(services)
 
   // Initializes the bot's commands
-  yield R.compose(
-    R.map(command => command.startup()),
-    R.filter(command => command.startup && typeof command.startup === 'function'),
-    R.values
-  )(commands)
-
+  yield initializeBotFunctions(commands)
 }
 
 
@@ -60,6 +51,20 @@ function* handleMessageCreate(event) {
 
   }
 
+}
+
+
+
+/**
+ * Initialize command and service functions used to operate the bot.
+ * @param {Object[]} functions Objects containing function descriptions.
+ */
+function* initializeBotFunctions(functions) {
+  yield R.compose(
+    R.map(fn => fn.startup()),
+    R.filter(fn => fn.startup && typeof fn.startup === 'function'),
+    R.values
+  )(functions)
 }
 
 

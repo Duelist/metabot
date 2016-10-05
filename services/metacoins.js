@@ -13,13 +13,13 @@ let redis
 
 /**
  * Determines if a registered function should be allowed to award metacoins.
- * TODO: Implement logic for disallowing awards here if needed.
  *
  * @param {String} token Token for the registered function.
  *
  * @return {Boolean}
  */
 function allowAward(token) {
+  // Implement logic for disallowing awards here if needed.
   return true
 }
 

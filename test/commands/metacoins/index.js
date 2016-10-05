@@ -1,7 +1,8 @@
 let sinon     = require('sinon')
 
-let testUtil  = requireRoot('utils/test')
+let config    = requireRoot('config')
 let METACOINS = requireRoot('commands/metacoins/constants')
+let testUtil  = requireRoot('utils/test')
 
 let metacoins = testUtil.rewireRoot('commands/metacoins')
 
@@ -21,7 +22,10 @@ describe('@default', () => {
     // Create test message options
     let options = {
       message : {
-        author  : { id: 1 },
+        author  : {
+          id      : 1,
+          mention : '@User'
+        },
         channel : {
           sendMessage : function* (message) {
             return message
@@ -36,7 +40,9 @@ describe('@default', () => {
     yield metacoins.message(options)
 
     sendMessageSpy.callCount.should.eql(1)
-    sendMessageSpy.lastCall.args[0].should.eql('3')
+    sendMessageSpy.lastCall.args[0].should.eql(
+      METACOINS.MESSAGE.METACOIN_COUNT('@User', '3')
+    )
 
     // Restore stub
     metacoins.__set__('metacoins', metacoinsService)
@@ -53,11 +59,15 @@ describe('@default', () => {
     }
     metacoins.__set__('metacoins', metacoinsServiceStub)
 
+    // Change the config to include an admin user id
+    let botConfig = config.bot
+    config.bot.adminIds = [1]
+
     // Create test message options
     let options = {
-      args    : [METACOINS.COMMANDS.LEADERBOARD],
+      args    : [METACOINS.COMMAND.LEADERBOARD],
       message : {
-        author  : { id: METACOINS.ADMIN_USER_ID },
+        author  : { id: 1 },
         channel : {
           sendMessage : function* (message) {
             return message
@@ -74,8 +84,9 @@ describe('@default', () => {
     sendMessageSpy.callCount.should.eql(1)
     sendMessageSpy.lastCall.args[0].should.eql('leaderboard')
 
-    // Restore stub
+    // Restore stub and config
     metacoins.__set__('metacoins', metacoinsService)
+    config.bot = botConfig
 
   })
 

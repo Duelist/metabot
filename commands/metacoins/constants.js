@@ -11,42 +11,40 @@ let template = requireRoot('template')
 
 
 /**
- * Command for awarding metacoins.
- * @type {String}
- */
-const AWARD = 'award'
-
-/**
  * Command for getting the metacoins leaderboard.
  * @type {String}
  */
 const LEADERBOARD = 'leaderboard'
 
-const COMMANDS = {
-  AWARD,
+const COMMAND = {
   LEADERBOARD
 }
 
 
 
-/**
- * Message for an awarded metacoin.
- * @type {String}
- */
-const AWARDED_MESSAGE = template`A metacoin has been awarded to ${0}.`
+
+
+//////////////
+// MESSAGES //
+//////////////
 
 
 
 /**
- * User ID used to denote the admin.
+ * Message for getting a user's metacoins.
  * @type {String}
  */
-const ADMIN_USER_ID = '179139616274644992'
+const METACOIN_COUNT_MESSAGE = template`${0}: You currently have ${1} metacoins.`
+
+const MESSAGE = {
+  METACOIN_COUNT : METACOIN_COUNT_MESSAGE
+}
+
+
 
 
 
 module.exports = {
-  ADMIN_USER_ID,
-  AWARDED_MESSAGE,
-  COMMANDS
+  COMMAND,
+  MESSAGE
 }
