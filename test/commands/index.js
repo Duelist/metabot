@@ -4,6 +4,12 @@ describe('king', () => {
 
 
 
+describe('metacoins', () => {
+  require('./metacoins')
+})
+
+
+
 describe('ping', () => {
   require('./ping')
 })

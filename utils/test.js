@@ -1,10 +1,13 @@
-let uuid = require('node-uuid')
+let uuid   = require('node-uuid')
+let rewire = require('rewire')
 
 
 
 /**
  * Generate a random string with the provided length.
+ *
  * @param {Number} [length=10] Length of the generated string.
+ *
  * @return {String}
  */
 function randomString(length) {
@@ -20,6 +23,21 @@ function randomString(length) {
 
 
 
+/**
+ * Rewires a module with a path from root.
+ *
+ * @param {String} name Path from root.
+ *
+ * @return {Module}
+ */
+function rewireRoot(name) {
+  let path = process.cwd() + '/' + name
+  return rewire(path)
+}
+
+
+
 module.exports = {
-  randomString
+  randomString,
+  rewireRoot
 }

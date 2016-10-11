@@ -1,6 +1,6 @@
 let assert       = require('assert')
 let Redis        = require('ioredis')
-let _            = require('lodash')
+let R            = require('ramda')
 
 let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
@@ -56,7 +56,7 @@ function* addToSortedSet(namespace, options) {
 function* exists(namespace, options) {
 
   validateUtil(options).has({
-    key   : {
+    key : {
       required : true,
       type     : 'string'
     },
@@ -86,6 +86,10 @@ function* exists(namespace, options) {
 function* getBatchFromSortedSet(namespace, options) {
 
   validateUtil(options).has({
+    includeScores : {
+      default : false,
+      type    : 'boolean'
+    },
     key : {
       required : true,
       type     : 'string'
@@ -96,7 +100,7 @@ function* getBatchFromSortedSet(namespace, options) {
     limit : {
       default : 10,
       type    : 'number'
-    },
+    }
   })
 
   let key = yield getNamespacedKey(namespace, options.key)
@@ -114,10 +118,46 @@ function* getBatchFromSortedSet(namespace, options) {
   // Set the lower bound on score
   args.push('-inf')
 
+  // Ensure the scores are returned
+  if (options.includeScores) {
+    args.push('WITHSCORES')
+  }
+
   // Set the batch size
   args.push('limit', 0, options.limit)
 
   return yield redis.zrevrangebyscore(args)
+
+}
+
+
+
+/**
+ * Gets the score for a given member at the provided key.
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} options.key Redis key.
+ * @param {String} options.member Sorted set member to get the score for.
+ *
+ * @return {String}
+ */
+function* getScoreFromSortedSet(namespace, options) {
+
+  validateUtil(options).has({
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    member : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  return yield redis.zscore(key, options.member)
 
 }
 
@@ -168,6 +208,45 @@ function* getNamespacedKey(namespace, key) {
   assert(namespaceExists)
 
   return [namespace, key].join(REDIS.NAMESPACE_DELIMITER)
+
+}
+
+
+
+/**
+ * Increments the score for a given member in.
+ *
+ * @private
+ *
+ * @param {String} namespace Namespace to locate the key.
+ * @param {Object} options
+ * @param {String} [options.amount=1] Amount to increment by.
+ * @param {String} options.key Redis key.
+ * @param {String} options.member Sorted set member to get the score for.
+ *
+ * @return {String}
+ */
+function* incrementScoreInSortedSet(namespace, options) {
+
+  validateUtil(options).has({
+    amount : {
+      default : 1,
+      type    : 'number'
+    },
+    key : {
+      required : true,
+      type     : 'string'
+    },
+    member : {
+      required : true,
+      type     : 'string'
+    }
+  })
+
+  let key = yield getNamespacedKey(namespace, options.key)
+
+  return yield redis.zincrby(key, options.amount, options.member)
+
 }
 
 
@@ -181,11 +260,13 @@ function* register() {
   let namespace = yield registerNamespace()
 
   return {
-    addToSortedSet        : _.curry(addToSortedSet)(namespace),
-    exists                : _.curry(exists)(namespace),
-    getBatchFromSortedSet : _.curry(getBatchFromSortedSet)(namespace),
-    getString             : _.curry(getString)(namespace),
-    setString             : _.curry(setString)(namespace),
+    addToSortedSet            : R.curry(addToSortedSet)(namespace),
+    exists                    : R.curry(exists)(namespace),
+    getBatchFromSortedSet     : R.curry(getBatchFromSortedSet)(namespace),
+    getScoreFromSortedSet     : R.curry(getScoreFromSortedSet)(namespace),
+    incrementScoreInSortedSet : R.curry(incrementScoreInSortedSet)(namespace),
+    getString                 : R.curry(getString)(namespace),
+    setString                 : R.curry(setString)(namespace),
   }
 
 }
