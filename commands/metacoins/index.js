@@ -1,7 +1,7 @@
 let R         = require('ramda')
 
 let METACOINS = requireRoot('commands/metacoins/constants')
-let config    = requireRoot('config')
+let config    = requireRoot('configs')
 let services  = requireRoot('services')
 
 let metacoins

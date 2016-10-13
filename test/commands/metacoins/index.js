@@ -1,6 +1,6 @@
 let sinon     = require('sinon')
 
-let config    = requireRoot('config')
+let config    = requireRoot('configs')
 let METACOINS = requireRoot('commands/metacoins/constants')
 let testUtil  = requireRoot('utils/test')
 
