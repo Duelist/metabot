@@ -2,10 +2,25 @@
 
 ## Installation
 
+### Local
+
 1. `brew install redis`
 * `npm install`
+
+
+## Running
+
+### Local
+
+* `npm run start-local`
+
+### Docker
+
+* `docker-compose up --build`
+
 
 ## Testing
 
 * Run tests: `npm test`
+* Run linting: `npm run lint`
 * Run specific test: `npm run test-grep <test>`

@@ -3,8 +3,7 @@
  * @type {Object}
  */
 const metabotConfig = {
-  adminIds : [],
-  token    : ''
+  token : ''
 }
 
 
