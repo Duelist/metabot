@@ -59,7 +59,6 @@
     "node"  : true
   },
   "globals": {
-    "ADMIN_IDS"   : true,
     "PRODUCTION"  : true,
     "requireRoot" : true
   },

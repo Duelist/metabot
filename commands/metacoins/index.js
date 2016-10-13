@@ -1,7 +1,8 @@
-let R         = require('ramda')
+let R             = require('ramda')
 
-let METACOINS = requireRoot('commands/metacoins/constants')
-let services  = requireRoot('services')
+let METACOINS     = requireRoot('commands/metacoins/constants')
+let metabotConfig = requireRoot('configs/metabot')
+let services      = requireRoot('services')
 
 let metacoins
 
@@ -24,7 +25,7 @@ function* message(options) {
     return
   }
 
-  let isAdmin = R.contains(author.id, global.ADMIN_IDS)
+  let isAdmin = R.contains(author.id, metabotConfig.adminIds)
 
   // Admin commands
   if (isAdmin) {

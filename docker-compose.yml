@@ -1,8 +1,6 @@
 bot:
   build: .
   dockerfile: Dockerfile
-  env_file:
-    - metabot.env
   links:
     - redis
 redis:
