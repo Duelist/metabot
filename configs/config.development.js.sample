@@ -1,5 +1,6 @@
 let config = requireRoot('configs/config.global')
 
-config.bot.token = '<Insert Token Here>'
+config.bot.adminIds = ['<Admin Id1>', '<Admin Id2>', '...']
+config.bot.token    = '<Token>'
 
 module.exports = config

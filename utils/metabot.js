@@ -1,8 +1,9 @@
 let co       = require('co')
-let _        = require('lodash')
+let R        = require('ramda')
 
 let commands = requireRoot('commands')
 let METABOT  = requireRoot('constants/metabot')
+let services = requireRoot('services')
 
 
 
@@ -12,15 +13,11 @@ let METABOT  = requireRoot('constants/metabot')
  */
 function* handleGatewayReady(event) {
 
-  yield _.chain(commands)
-    .map(command => {
-      if (command.startup) {
-        return command.startup()
-      }
-    })
-    .compact()
-    .value()
+  // Initializes the bot's services
+  yield initializeBotFunctions(services)
 
+  // Initializes the bot's commands
+  yield initializeBotFunctions(commands)
 }
 
 
@@ -34,9 +31,9 @@ function* handleMessageCreate(event) {
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    let tokens      = _.split(event.message.content, ' ')
-    let commandName = _.head(tokens).substring(1)
-    let args        = _.tail(tokens)
+    let tokens      = R.split(' ', event.message.content)
+    let commandName = R.head(tokens).substring(1)
+    let args        = R.tail(tokens)
     let command     = commands[commandName]
 
     if (!command) {
@@ -54,6 +51,20 @@ function* handleMessageCreate(event) {
 
   }
 
+}
+
+
+
+/**
+ * Initialize command and service functions used to operate the bot.
+ * @param {Object[]} functions Objects containing function descriptions.
+ */
+function* initializeBotFunctions(functions) {
+  yield R.compose(
+    R.map(fn => fn.startup()),
+    R.filter(fn => fn.startup && typeof fn.startup === 'function'),
+    R.values
+  )(functions)
 }
 
 

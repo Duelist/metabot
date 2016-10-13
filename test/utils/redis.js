@@ -197,6 +197,32 @@ describe('#getBatchFromSortedSet', () => {
   })
 
 
+  it('returns a batch of members with scores', function* () {
+
+    // Add two members to the sorted set
+    yield redis.addToSortedSet({
+      key    : 'test',
+      member : 'test',
+      score  : 1
+    })
+    yield redis.addToSortedSet({
+      key    : 'test',
+      member : 'another test',
+      score  : 2
+    })
+
+    // Get a batch from the sorted set with a limit
+    let result = yield redis.getBatchFromSortedSet({
+      includeScores : true,
+      key           : 'test'
+    })
+
+    // Ensure the returned result is correct
+    result.should.eql(['another test', '2', 'test', '1'])
+
+  })
+
+
   it('throws an error if no key is provided', function* () {
 
     let isCaught = false

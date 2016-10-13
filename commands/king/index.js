@@ -6,15 +6,6 @@ let redis
 
 
 /**
- * Sets up required utilities when the bot is initialized.
- */
-function* startup() {
-  redis = yield redisUtil.register()
-}
-
-
-
-/**
  * Makes the author of the command the king.
  * @param {Object} options Message parameters.
  */
@@ -43,6 +34,15 @@ function* king(options) {
   // Send the response to the channel it was sent from
   yield options.message.channel.sendMessage(response)
 
+}
+
+
+
+/**
+ * Initializes redis for use with this command.
+ */
+function* startup() {
+  redis = yield redisUtil.register()
 }
 
 
