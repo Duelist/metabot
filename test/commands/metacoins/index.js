@@ -1,6 +1,5 @@
 let sinon     = require('sinon')
 
-let config    = requireRoot('configs')
 let METACOINS = requireRoot('commands/metacoins/constants')
 let testUtil  = requireRoot('utils/test')
 
@@ -59,9 +58,9 @@ describe('@default', () => {
     }
     metacoins.__set__('metacoins', metacoinsServiceStub)
 
-    // Change the config to include an admin user id
-    let botConfig = config.bot
-    config.bot.adminIds = [1]
+    // Change the global admin ids to include a new admin user id
+    let adminIds = ADMIN_IDS
+    global.ADMIN_IDS = [1]
 
     // Create test message options
     let options = {
@@ -84,9 +83,9 @@ describe('@default', () => {
     sendMessageSpy.callCount.should.eql(1)
     sendMessageSpy.lastCall.args[0].should.eql('leaderboard')
 
-    // Restore stub and config
+    // Restore stub and global variable
     metacoins.__set__('metacoins', metacoinsService)
-    config.bot = botConfig
+    global.ADMIN_IDS = adminIds
 
   })
 

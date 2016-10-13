@@ -1,6 +1,0 @@
-let config = requireRoot('configs/config.global')
-
-config.bot.adminIds = ['<Admin Id1>', '<Admin Id2>', '...']
-config.bot.token    = '<Token>'
-
-module.exports = config
