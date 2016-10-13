@@ -1,11 +1,11 @@
 /**
- * Redis host name.
+ * Configuration for Redis client.
  * @type {String}
  */
-const HOST = 'redis'
-
-
-
-module.exports = {
-  HOST
+const redisConfig = {
+  host : (PRODUCTION ? 'redis' : 'localhost')
 }
+
+
+
+module.exports = redisConfig

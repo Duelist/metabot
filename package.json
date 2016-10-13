@@ -20,7 +20,7 @@
     "lint": "eslint \"**/*.js\"",
     "pretest": "npm run lint",
     "pretest-cover": "npm run lint",
-    "start": "node index.js",
+    "start": "DEBUG=* node index.js",
     "test": "mocha",
     "test-cover": "istanbul cover _mocha",
     "test-grep": "DEBUG=* mocha --bail --grep",

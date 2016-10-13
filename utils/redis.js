@@ -7,7 +7,7 @@ let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
 let validateUtil = requireRoot('utils/validate')
 
-let redis        = new Redis({ host: redisConfig.HOST })
+let redis        = new Redis(redisConfig)
 
 
 

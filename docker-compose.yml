@@ -1,8 +1,9 @@
 bot:
   build: .
+  dockerfile: Dockerfile
+  environment:
+    - NODE_ENV=production
   links:
     - redis
-  expose:
-    - "6379"
 redis:
   image: redis
