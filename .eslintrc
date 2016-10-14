@@ -59,6 +59,7 @@
     "node"  : true
   },
   "globals": {
+    "PRODUCTION"  : true,
     "requireRoot" : true
   },
 }

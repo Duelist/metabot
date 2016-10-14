@@ -1,10 +1,9 @@
-let sinon     = require('sinon')
+let sinon         = require('sinon')
 
-let config    = requireRoot('config')
-let METACOINS = requireRoot('commands/metacoins/constants')
-let testUtil  = requireRoot('utils/test')
+let METACOINS     = requireRoot('commands/metacoins/constants')
+let testUtil      = requireRoot('utils/test')
 
-let metacoins = testUtil.rewireRoot('commands/metacoins')
+let metacoins     = testUtil.rewireRoot('commands/metacoins')
 
 
 
@@ -59,9 +58,9 @@ describe('@default', () => {
     }
     metacoins.__set__('metacoins', metacoinsServiceStub)
 
-    // Change the config to include an admin user id
-    let botConfig = config.bot
-    config.bot.adminIds = [1]
+    // Change the config admin ids to include a new admin user id
+    let config = metacoins.__get__('metabotConfig')
+    metacoins.__set__('metabotConfig', { adminIds: [1] })
 
     // Create test message options
     let options = {
@@ -86,7 +85,7 @@ describe('@default', () => {
 
     // Restore stub and config
     metacoins.__set__('metacoins', metacoinsService)
-    config.bot = botConfig
+    metacoins.__set__('metabotConfig', config)
 
   })
 

@@ -134,7 +134,7 @@ describe('#handleMessageCreate', () => {
     let event = {
       message : {
         channel : {
-          sendMessage : message => { return }
+          sendMessage : function* (message) { return }
         },
         content : '!eping'
       }

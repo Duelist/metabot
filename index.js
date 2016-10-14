@@ -1,9 +1,8 @@
 require('./globals')
 
-let config  = requireRoot('config')
-let metabot = requireRoot('metabot')
-
+let metabotConfig = requireRoot('configs/metabot')
+let metabot       = requireRoot('metabot')
 
 
 // Log into Discord with bot token
-metabot.connect({ token: config.bot.token })
+metabot.connect({ token: metabotConfig.token })
