@@ -17,11 +17,11 @@
     "url": "https://github.com/Duelist/metabot/issues"
   },
   "scripts": {
+    "bot": "env NODE_ENV=production node bot/index.js",
+    "bot-local": "env DEBUG=* node bot/index.js",
     "lint": "eslint \"**/*.js\"",
     "pretest": "npm run lint",
     "pretest-cover": "npm run lint",
-    "start": "env NODE_ENV=production node index.js",
-    "start-local": "env DEBUG=* node index.js",
     "test": "mocha",
     "test-cover": "istanbul cover _mocha",
     "test-grep": "DEBUG=* mocha --bail --grep",

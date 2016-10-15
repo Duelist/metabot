@@ -1,4 +1,4 @@
-require('./globals')
+require('../globals')
 
 let metabotConfig = requireRoot('bot/configs/metabot')
 let metabot       = requireRoot('bot/metabot')
