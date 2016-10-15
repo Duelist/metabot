@@ -1,6 +1,6 @@
 let sinon    = require('sinon')
 
-let commands = requireRoot('commands')
+let commands = requireRoot('bot/commands')
 
 
 

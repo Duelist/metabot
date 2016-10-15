@@ -1,5 +1,5 @@
+let metacoinsService = requireRoot('bot/services/metacoins')
 let METACOINS        = requireRoot('constants/metacoins')
-let metacoinsService = requireRoot('services/metacoins')
 let redisUtil        = requireRoot('utils/redis')
 
 

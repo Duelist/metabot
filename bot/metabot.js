@@ -1,6 +1,6 @@
 let Discordie   = require('discordie')
 
-let metabotUtil = requireRoot('utils/metabot')
+let metabotUtil = requireRoot('bot/utils/metabot')
 
 
 

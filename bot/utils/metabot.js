@@ -1,9 +1,9 @@
 let co       = require('co')
 let R        = require('ramda')
 
-let commands = requireRoot('commands')
+let commands = requireRoot('bot/commands')
+let services = requireRoot('bot/services')
 let METABOT  = requireRoot('constants/metabot')
-let services = requireRoot('services')
 
 
 

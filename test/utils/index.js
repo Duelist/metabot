@@ -1,9 +1,3 @@
-describe('metabot', () => {
-  require('./metabot')
-})
-
-
-
 describe('redis', () => {
   require('./redis')
 })

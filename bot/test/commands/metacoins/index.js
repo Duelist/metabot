@@ -1,9 +1,9 @@
 let sinon         = require('sinon')
 
-let METACOINS     = requireRoot('commands/metacoins/constants')
+let METACOINS     = requireRoot('bot/commands/metacoins/constants')
 let testUtil      = requireRoot('utils/test')
 
-let metacoins     = testUtil.rewireRoot('commands/metacoins')
+let metacoins     = testUtil.rewireRoot('bot/commands/metacoins')
 
 
 

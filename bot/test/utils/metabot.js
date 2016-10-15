@@ -1,7 +1,7 @@
 let sinon       = require('sinon')
 
-let commands    = requireRoot('commands')
-let metabotUtil = requireRoot('utils/metabot')
+let commands    = requireRoot('bot/commands')
+let metabotUtil = requireRoot('bot/utils/metabot')
 
 
 
