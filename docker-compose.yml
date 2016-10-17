@@ -1,6 +1,6 @@
 bot:
   build: .
-  dockerfile: Dockerfile
+  dockerfile: Dockerfile.bot
   links:
     - redis
 redis:

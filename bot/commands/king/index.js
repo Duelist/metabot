@@ -1,5 +1,5 @@
+let KING      = requireRoot('bot/commands/king/constants')
 let redisUtil = requireRoot('utils/redis')
-let KING      = requireRoot('commands/king/constants')
 
 let redis
 
