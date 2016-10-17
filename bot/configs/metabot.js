@@ -4,7 +4,7 @@
  */
 const metabotConfig = {
   adminIds : [],
-  token    : ''
+  token    : process.env.BOT_TOKEN
 }
 
 
