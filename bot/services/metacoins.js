@@ -142,10 +142,9 @@ function* getMetacoinsForUser(userId) {
 
 /**
  * Registers a function with the service.
- *
  * @return {Object}
  */
-function* register() {
+function register() {
 
   let token = testUtil.randomString()
 

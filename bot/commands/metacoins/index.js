@@ -4,7 +4,7 @@ let METACOINS     = requireRoot('bot/commands/metacoins/constants')
 let metabotConfig = requireRoot('bot/configs/metabot')
 let services      = requireRoot('bot/services')
 
-let metacoins
+let metacoins     = services.metacoins.register()
 
 
 
@@ -40,16 +40,6 @@ function* message(options) {
 
 
 
-/**
- * Initializes the metacoins service for use with this command.
- */
-function* startup() {
-  metacoins = yield services.metacoins.register()
-}
-
-
-
 module.exports = {
-  message,
-  startup
+  message
 }
