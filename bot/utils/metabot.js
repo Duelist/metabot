@@ -2,23 +2,7 @@ let co       = require('co')
 let R        = require('ramda')
 
 let commands = requireRoot('bot/commands')
-let services = requireRoot('bot/services')
 let METABOT  = requireRoot('constants/metabot')
-
-
-
-/**
- * Handles the Discord GATEWAY_READY event.
- * @param {Event} event Gateway ready event.
- */
-function* handleGatewayReady(event) {
-
-  // Initializes the bot's services
-  yield initializeBotFunctions(services)
-
-  // Initializes the bot's commands
-  yield initializeBotFunctions(commands)
-}
 
 
 
@@ -55,21 +39,6 @@ function* handleMessageCreate(event) {
 
 
 
-/**
- * Initialize command and service functions used to operate the bot.
- * @param {Object[]} functions Objects containing function descriptions.
- */
-function* initializeBotFunctions(functions) {
-  yield R.compose(
-    R.map(fn => fn.startup()),
-    R.filter(fn => fn.startup && typeof fn.startup === 'function'),
-    R.values
-  )(functions)
-}
-
-
-
 module.exports = {
-  handleGatewayReady  : co.wrap(handleGatewayReady),
   handleMessageCreate : co.wrap(handleMessageCreate)
 }

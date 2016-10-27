@@ -29,10 +29,6 @@ fs
       let command = require(filePath)
       commands[file] = {}
 
-      if (command.startup) {
-        commands[file].startup = co.wrap(command.startup)
-      }
-
       if (command.message) {
         commands[file].message = co.wrap(command.message)
       }

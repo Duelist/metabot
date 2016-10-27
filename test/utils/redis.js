@@ -6,11 +6,11 @@ let redis
 
 beforeEach(function* () {
 
-  // Reset the cache
-  yield redisUtil.reset()
-
   // Register redis commands with a namespace
-  redis = yield redisUtil.register()
+  redis = redisUtil.initialize()
+
+  // Reset the cache
+  yield redis.reset()
 
 })
 
@@ -243,13 +243,13 @@ describe('#getBatchFromSortedSet', () => {
 
 
 
-describe('#register', () => {
+describe('#initialize', () => {
 
-  it('registers a unique namespace', function* () {
+  it('initializes a Redis client with a unique namespace', function* () {
 
     // Register two different namespaces
-    let redisOne = yield redisUtil.register()
-    let redisTwo = yield redisUtil.register()
+    let redisOne = redisUtil.initialize()
+    let redisTwo = redisUtil.initialize()
 
     // Create a sorted set using a key in the first namespace
     yield redisOne.addToSortedSet({ key: 'test', member: 'test', score: 0 })

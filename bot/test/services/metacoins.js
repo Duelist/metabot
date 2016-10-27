@@ -1,6 +1,6 @@
 let metacoinsService = requireRoot('bot/services/metacoins')
 let METACOINS        = requireRoot('constants/metacoins')
-let redisUtil        = requireRoot('utils/redis')
+let redis            = requireRoot('utils/redis').initialize()
 
 
 
@@ -9,10 +9,7 @@ let metacoins
 beforeEach(function* () {
 
   // Reset the cache
-  yield redisUtil.reset()
-
-  // Start the metacoins service
-  yield metacoinsService.startup()
+  yield redis.reset()
 
   // Register the metacoins service
   metacoins = yield metacoinsService.register()

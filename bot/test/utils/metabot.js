@@ -5,27 +5,6 @@ let metabotUtil = requireRoot('bot/utils/metabot')
 
 
 
-describe('#handleGatewayReady', () => {
-
-  it('runs startup functions for every command', function* () {
-
-    // Create a spy on the king command's startup function
-    let kingStartupSpy = sinon.spy(commands.king, 'startup')
-
-    yield metabotUtil.handleGatewayReady()
-
-    // Ensure the startup function was called
-    kingStartupSpy.calledOnce.should.eql(true)
-
-    // Clean up
-    kingStartupSpy.restore()
-
-  })
-
-})
-
-
-
 describe('#handleMessageCreate', () => {
 
   it('sends a message', function* () {

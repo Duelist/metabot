@@ -6,12 +6,6 @@ let commands = requireRoot('bot/commands')
 
 describe('@default', () => {
 
-  before(function* () {
-    // Run the startup function
-    yield commands.king.startup()
-  })
-
-
   it('claims the throne if there is no old king', function* () {
 
     // Create test message options

@@ -3,11 +3,9 @@ let Table        = require('cli-table')
 let R            = require('ramda')
 
 let METACOINS    = requireRoot('constants/metacoins')
-let redisUtil    = requireRoot('utils/redis')
+let redis        = requireRoot('utils/redis').initialize()
 let testUtil     = requireRoot('utils/test')
 let validateUtil = requireRoot('utils/validate')
-
-let redis
 
 
 
@@ -161,16 +159,6 @@ function* register() {
 
 
 
-/**
- * Initializes the service.
- */
-function* startup() {
-  redis = yield redisUtil.register()
-}
-
-
-
 module.exports = {
-  register,
-  startup
+  register
 }
