@@ -1,18 +1,10 @@
 # metabot [![Build Status](https://travis-ci.org/Duelist/metabot.svg?branch=master)](https://travis-ci.org/Duelist/metabot) [![Coverage Status](https://coveralls.io/repos/github/Duelist/metabot/badge.svg?branch=master)](https://coveralls.io/github/Duelist/metabot?branch=master)
 
-## Installation
+## Running the bot
 
 ### Local
 
-1. `brew install redis`
-* `npm install`
-
-
-## Running
-
-### Local
-
-* `npm run start-local`
+* `npm run bot-local`
 
 ### Docker
 

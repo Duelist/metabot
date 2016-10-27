@@ -1,7 +1,5 @@
-let KING      = requireRoot('bot/commands/king/constants')
-let redisUtil = requireRoot('utils/redis')
-
-let redis
+let KING  = requireRoot('bot/commands/king/constants')
+let redis = requireRoot('utils/redis').initialize()
 
 
 
@@ -38,16 +36,6 @@ function* king(options) {
 
 
 
-/**
- * Initializes redis for use with this command.
- */
-function* startup() {
-  redis = yield redisUtil.register()
-}
-
-
-
 module.exports = {
-  message : king,
-  startup
+  message : king
 }

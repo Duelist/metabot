@@ -3,11 +3,9 @@ let Table        = require('cli-table')
 let R            = require('ramda')
 
 let METACOINS    = requireRoot('constants/metacoins')
-let redisUtil    = requireRoot('utils/redis')
+let redis        = requireRoot('utils/redis').initialize()
 let testUtil     = requireRoot('utils/test')
 let validateUtil = requireRoot('utils/validate')
-
-let redis
 
 
 
@@ -144,10 +142,9 @@ function* getMetacoinsForUser(userId) {
 
 /**
  * Registers a function with the service.
- *
  * @return {Object}
  */
-function* register() {
+function register() {
 
   let token = testUtil.randomString()
 
@@ -161,16 +158,6 @@ function* register() {
 
 
 
-/**
- * Initializes the service.
- */
-function* startup() {
-  redis = yield redisUtil.register()
-}
-
-
-
 module.exports = {
-  register,
-  startup
+  register
 }

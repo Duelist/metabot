@@ -35,6 +35,10 @@ const REDIS_LAST_AWARDED_KEY = 'lastAwarded'
  */
 const REDIS_LEADERBOARD_KEY = 'leaderboard'
 
+/**
+ * Redis keys.
+ * @type {Object}
+ */
 const REDIS = {
   LAST_AWARDED_KEY : REDIS_LAST_AWARDED_KEY,
   LEADERBOARD_KEY  : REDIS_LEADERBOARD_KEY

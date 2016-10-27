@@ -1,4 +1,3 @@
-let assert       = require('assert')
 let Redis        = require('ioredis')
 let R            = require('ramda')
 
@@ -7,20 +6,18 @@ let REDIS        = requireRoot('constants/redis')
 let testUtil     = requireRoot('utils/test')
 let validateUtil = requireRoot('utils/validate')
 
-let redis        = new Redis(redisConfig)
-
 
 
 /**
  * Adds a member with a specified score to the sorted set.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key for sorted set.
  * @param {Number} options.score Score for the added member.
  * @param {String} options.member Member to be added to the sorted set.
  */
-function* addToSortedSet(namespace, options) {
+function* addToSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     key    : {
@@ -37,24 +34,22 @@ function* addToSortedSet(namespace, options) {
     },
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  yield redis.zadd(key, options.score, options.member)
+  yield redisClient.zadd(options.key, options.score, options.member)
 
 }
 
 
 
 /**
- * Checks the existence of a redis key.
+ * Checks the existence of a Redis key.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key.
  *
  * @return {Boolean}
  */
-function* exists(namespace, options) {
+function* exists(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -63,9 +58,7 @@ function* exists(namespace, options) {
     },
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  let exists = yield redis.exists(key)
+  let exists = yield redisClient.exists(options.key)
 
   return !!exists 
 
@@ -76,7 +69,7 @@ function* exists(namespace, options) {
 /**
  * Gets a batch of members from the sorted set.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key.
  * @param {Number} [options.lastScore='+inf'] Upper bound on score.
@@ -84,7 +77,7 @@ function* exists(namespace, options) {
  *
  * @return {Array}
  */
-function* getBatchFromSortedSet(namespace, options) {
+function* getBatchFromSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     includeScores : {
@@ -104,9 +97,7 @@ function* getBatchFromSortedSet(namespace, options) {
     }
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  let args = [key]
+  let args = [options.key]
 
   // Set the upper bound excluding the last score
   if (options.lastScore) {
@@ -127,7 +118,7 @@ function* getBatchFromSortedSet(namespace, options) {
   // Set the batch size
   args.push('limit', 0, options.limit)
 
-  return yield redis.zrevrangebyscore(args)
+  return yield redisClient.zrevrangebyscore(args)
 
 }
 
@@ -136,14 +127,14 @@ function* getBatchFromSortedSet(namespace, options) {
 /**
  * Gets the score for a given member at the provided key.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key.
  * @param {String} options.member Sorted set member to get the score for.
  *
  * @return {String}
  */
-function* getScoreFromSortedSet(namespace, options) {
+function* getScoreFromSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -156,9 +147,7 @@ function* getScoreFromSortedSet(namespace, options) {
     }
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  return yield redis.zscore(key, options.member)
+  return yield redisClient.zscore(options.key, options.member)
 
 }
 
@@ -167,13 +156,13 @@ function* getScoreFromSortedSet(namespace, options) {
 /**
  * Gets a string value at the provided key.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key.
  *
  * @return {String}
  */
-function* getString(namespace, options) {
+function* getString(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -182,33 +171,7 @@ function* getString(namespace, options) {
     }
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  return yield redis.get(key)
-
-}
-
-
-
-/**
- * Gets the key with the appropriate namespace.
- *
- * @private
- *
- * @param {String} namespace Namespace to locate the key.
- * @param {String} key Redis key.
- *
- * @return {String}
- */
-function* getNamespacedKey(namespace, key) {
-
-  // Get the namespace registration status
-  let namespaceExists = yield redis.sismember(REDIS.NAMESPACE_KEY, namespace)
-
-  // Ensure the namespace is registered
-  assert(namespaceExists)
-
-  return [namespace, key].join(REDIS.NAMESPACE_DELIMITER)
+  return yield redisClient.get(options.key)
 
 }
 
@@ -219,7 +182,7 @@ function* getNamespacedKey(namespace, key) {
  *
  * @private
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} [options.amount=1] Amount to increment by.
  * @param {String} options.key Redis key.
@@ -227,7 +190,7 @@ function* getNamespacedKey(namespace, key) {
  *
  * @return {String}
  */
-function* incrementScoreInSortedSet(namespace, options) {
+function* incrementScoreInSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     amount : {
@@ -244,30 +207,33 @@ function* incrementScoreInSortedSet(namespace, options) {
     }
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  return yield redis.zincrby(key, options.amount, options.member)
+  return yield redisClient.zincrby(options.key, options.amount, options.member)
 
 }
 
 
 
 /**
- * Registers a namespace for future redis calls.
+ * Creates a Redis connection and returns utility functions.
  * @return {String}
  */
-function* register() {
+function initialize() {
 
-  let namespace = yield registerNamespace()
+  let config = R.merge({
+    keyPrefix : testUtil.randomString() + REDIS.NAMESPACE_DELIMITER
+  }, redisConfig)
+
+  let redisClient = new Redis(config)
 
   return {
-    addToSortedSet            : R.curry(addToSortedSet)(namespace),
-    exists                    : R.curry(exists)(namespace),
-    getBatchFromSortedSet     : R.curry(getBatchFromSortedSet)(namespace),
-    getScoreFromSortedSet     : R.curry(getScoreFromSortedSet)(namespace),
-    incrementScoreInSortedSet : R.curry(incrementScoreInSortedSet)(namespace),
-    getString                 : R.curry(getString)(namespace),
-    setString                 : R.curry(setString)(namespace),
+    addToSortedSet            : R.partial(addToSortedSet, [redisClient]),
+    exists                    : R.partial(exists, [redisClient]),
+    getBatchFromSortedSet     : R.partial(getBatchFromSortedSet, [redisClient]),
+    getScoreFromSortedSet     : R.partial(getScoreFromSortedSet, [redisClient]),
+    incrementScoreInSortedSet : R.partial(incrementScoreInSortedSet, [redisClient]),
+    getString                 : R.partial(getString, [redisClient]),
+    reset                     : R.partial(reset, [redisClient]),
+    setString                 : R.partial(setString, [redisClient]),
   }
 
 }
@@ -275,36 +241,11 @@ function* register() {
 
 
 /**
- * Registers a namespace in the registry.
- *
- * @private
- *
- * @return {String}
+ * Resets the Redis cache.
+ * @param {String} redisClient Redis client used to run the query.
  */
-function* registerNamespace() {
-
-  // Generate a random token
-  let token = testUtil.randomString()
-
-  // Ensure the token does not exist in the namespace registry
-  do {
-    token = testUtil.randomString()
-  } while (yield redis.sismember(REDIS.NAMESPACE_KEY, token))
-
-  // Add the new token to the namespace registry
-  yield redis.sadd(REDIS.NAMESPACE_KEY, token)
-
-  return token
-
-}
-
-
-
-/**
- * Resets the redis cache.
- */
-function* reset() {
-  yield redis.flushall()
+function* reset(redisClient) {
+  yield redisClient.flushall()
 }
 
 
@@ -312,12 +253,12 @@ function* reset() {
 /**
  * Sets a string value at the provided key.
  *
- * @param {String} namespace Namespace to locate the key.
+ * @param {String} redisClient Redis client used to run the query.
  * @param {Object} options
  * @param {String} options.key Redis key.
  * @param {String} options.value Value to set at the key.
  */
-function* setString(namespace, options) {
+function* setString(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -330,15 +271,12 @@ function* setString(namespace, options) {
     }
   })
 
-  let key = yield getNamespacedKey(namespace, options.key)
-
-  yield redis.set(key, options.value)
+  yield redisClient.set(options.key, options.value)
 
 }
 
 
 
 module.exports = {
-  register,
-  reset
+  initialize
 }
