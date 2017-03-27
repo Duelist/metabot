@@ -1,7 +1,7 @@
-let sinon       = require('sinon')
+const sinon = require('sinon')
 
-let commands    = requireRoot('bot/commands')
-let metabotUtil = requireRoot('bot/utils/metabot')
+const commands    = requireRoot('bot/commands')
+const metabotUtil = requireRoot('bot/utils/metabot')
 
 
 
@@ -9,93 +9,85 @@ describe('#handleMessageCreate', () => {
 
   it('sends a message', function* () {
 
-    // Create a test event
-    let event = {
-      message : {
-        channel : {
-          sendMessage : function* (message) {
-            return message
-          }
-        },
-        content : '!ping'
-      }
+    // Create a test message
+    let message = {
+      channel: {
+        createMessage: function* (message) { return message }
+      },
+      content: '!ping'
     }
 
-    // Create spies on the command and send message function
+    // Create spies on the command and create message function
     let pingSpy        = sinon.spy(commands.ping, 'message')
-    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
-    // Handle the send message event
-    yield metabotUtil.handleMessageCreate(event)
+    // Handle the create message event
+    yield metabotUtil.handleMessageCreate(message)
 
     // Ensure the ping command was called with the correct arguments
     pingSpy.calledOnce.should.eql(true)
     pingSpy.lastCall.args[0].should.eql({
-      args    : [],
-      message : event.message
+      args: [],
+      message,
     })
 
-    // Ensure the send message function was called
-    sendMessageSpy.calledOnce.should.eql(true)
-    sendMessageSpy.lastCall.args[0].should.eql('pong')
+    // Ensure the create message function was called
+    createMessageSpy.calledOnce.should.eql(true)
+    createMessageSpy.lastCall.args[0].should.eql('pong')
 
     // Restore the spies
     pingSpy.restore()
-    sendMessageSpy.restore()
+    createMessageSpy.restore()
 
   })
 
 
   it('does nothing if the command does not contain the message prefix', () => {
 
-    // Create a test event
-    let event = {
-      message : {
-        channel : {
-          sendMessage : message => { return }
-        },
-        content : 'ping'
-      }
+    // Create a test message
+    let message = {
+      channel: {
+        createMessage: message => { return }
+      },
+      content: 'ping'
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
-    // Handle the send message event
-    metabotUtil.handleMessageCreate(event)
+    // Handle the create message event
+    metabotUtil.handleMessageCreate(message)
 
-    // Ensure the send message function was not called
-    sendMessageSpy.callCount.should.eql(0)
+    // Ensure the create message function was not called
+    createMessageSpy.callCount.should.eql(0)
 
     // Restore the spy
-    sendMessageSpy.restore()
+    createMessageSpy.restore()
 
   })
 
 
   it('does nothing if the command does not exist', () => {
 
-    // Create a test event
-    let event = {
-      message : {
-        channel : {
-          sendMessage : message => { return }
-        },
-        content : '!pong'
-      }
+    // Create a test message
+    let message = {
+      channel: {
+        createMessage: message => { return }
+      },
+      content: '!pong'
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
-    // Handle the send message event
-    metabotUtil.handleMessageCreate(event)
+    // Handle the create message event
+    metabotUtil.handleMessageCreate(message)
 
-    // Ensure the send message function was not called
-    sendMessageSpy.callCount.should.eql(0)
+    // Ensure the create message function was not called
+    createMessageSpy.callCount.should.eql(0)
 
     // Restore the spy
-    sendMessageSpy.restore()
+    createMessageSpy.restore()
 
   })
 
@@ -104,35 +96,31 @@ describe('#handleMessageCreate', () => {
 
     // Add a command that will fail on purpose
     commands.eping = {
-      message : message => {
-        throw new Error('fail ping')
-      }
+      message: message => { throw new Error('fail ping') }
     }
 
-    // Create a test event
-    let event = {
-      message : {
-        channel : {
-          sendMessage : function* (message) { return }
-        },
-        content : '!eping'
-      }
+    // Create a test message
+    let message = {
+      channel: {
+        createMessage: function* (message) { return }
+      },
+      content: '!eping'
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(event.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
-    // Handle the send message event
-    metabotUtil.handleMessageCreate(event)
+    // Handle the create message event
+    metabotUtil.handleMessageCreate(message)
 
-    // Ensure the send message function was called
-    sendMessageSpy.calledOnce.should.eql(true)
-    sendMessageSpy.lastCall.args[0].should.eql(
+    // Ensure the create message function was called
+    createMessageSpy.calledOnce.should.eql(true)
+    createMessageSpy.lastCall.args[0].should.eql(
       'Command failed: Error: fail ping'
     )
 
     // Restore the spy
-    sendMessageSpy.restore()
+    createMessageSpy.restore()
 
   })
 

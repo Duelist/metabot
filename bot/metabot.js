@@ -1,10 +1,10 @@
-let Discordie = require('discordie')
+const Eris = require('eris')
 
-let metabotUtil = requireRoot('bot/utils/metabot')
+const metabotConfig = requireRoot('bot/configs/metabot')
+const metabotUtil   = requireRoot('bot/utils/metabot')
 
-let Events = Discordie.Events
-let client = new Discordie()
+const bot = new Eris(metabotConfig.token)
 
-client.Dispatcher.on(Events.MESSAGE_CREATE, metabotUtil.handleMessageCreate)
+bot.on('messageCreate', metabotUtil.handleMessageCreate)
 
-module.exports = client
+module.exports = bot

@@ -1,34 +1,34 @@
-let co = require('co')
-let _  = require('lodash')
+const co = require('co')
+const _  = require('lodash')
 
-let commands = requireRoot('bot/commands')
-let METABOT  = requireRoot('constants/metabot')
+const commands = requireRoot('bot/commands')
+const METABOT  = requireRoot('constants/metabot')
 
 
 
 /**
  * Handles the Discord MESSAGE_CREATE event.
- * @param {Event} event Message creation event.
+ * @param {Message} message Created message.
  */
-function* handleMessageCreate(event) {
+function* handleMessageCreate(message) {
 
-  if (event.message.content[0] === METABOT.PREFIX) {
+  if (message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    let tokens      = _.split(event.message.content, ' ')
-    let commandName = _.head(tokens).substring(1)
-    let args        = _.tail(tokens)
-    let command     = commands[commandName]
+    const tokens      = _.split(message.content, ' ')
+    const commandName = _.head(tokens).substring(1)
+    const args        = _.tail(tokens)
+    const command     = commands[commandName]
 
     if (!command) {
       return
     }
 
     try {
-      yield command.message({ args, message: event.message })
+      yield command.message({ args, message })
     }
     catch (err) {
-      yield event.message.channel.sendMessage(
+      yield message.channel.createMessage(
         METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
       )
     }
@@ -40,5 +40,5 @@ function* handleMessageCreate(event) {
 
 
 module.exports = {
-  handleMessageCreate : co.wrap(handleMessageCreate)
+  handleMessageCreate: co.wrap(handleMessageCreate)
 }

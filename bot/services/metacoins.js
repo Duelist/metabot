@@ -1,11 +1,11 @@
-let assert = require('assert')
-let Table  = require('cli-table')
-let _      = require('lodash')
+const assert = require('assert')
+const chance = require('chance').Chance()
+const Table  = require('cli-table')
+const _      = require('lodash')
 
-let METACOINS    = requireRoot('constants/metacoins')
-let redis        = requireRoot('utils/redis').initialize()
-let testUtil     = requireRoot('utils/test')
-let validateUtil = requireRoot('utils/validate')
+const METACOINS    = requireRoot('constants/metacoins')
+const redis        = requireRoot('utils/redis').initialize()
+const validateUtil = requireRoot('utils/validate')
 
 
 
@@ -138,7 +138,7 @@ function* getMetacoinsForUser(userId) {
  */
 function register() {
 
-  let token = testUtil.randomString()
+  let token = chance.string()
 
   return {
     award : _.curry(award)(token),

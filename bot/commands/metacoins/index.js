@@ -19,7 +19,7 @@ function* message(options) {
 
   if (!options.args || _.isEmpty(options.args)) {
     let coins = yield metacoins.getMetacoinsForUser(author.id)
-    yield channel.sendMessage(
+    yield channel.createMessage(
       METACOINS.MESSAGE.METACOIN_COUNT(author.mention, coins.toString())
     )
     return
@@ -31,7 +31,7 @@ function* message(options) {
   if (isAdmin) {
     if (options.args[0] === METACOINS.COMMAND.LEADERBOARD) {
       let leaderboard = yield metacoins.getLeaderboard()
-      yield channel.sendMessage(leaderboard)
+      yield channel.createMessage(leaderboard)
       return
     }
   }

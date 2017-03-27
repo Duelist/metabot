@@ -1,10 +1,10 @@
-let Redis = require('ioredis')
-let _     = require('lodash')
+const chance = require('chance').Chance()
+const Redis  = require('ioredis')
+const _      = require('lodash')
 
-let redisConfig  = requireRoot('configs/redis')
-let REDIS        = requireRoot('constants/redis')
-let testUtil     = requireRoot('utils/test')
-let validateUtil = requireRoot('utils/validate')
+const redisConfig  = requireRoot('configs/redis')
+const REDIS        = requireRoot('constants/redis')
+const validateUtil = requireRoot('utils/validate')
 
 
 
@@ -219,8 +219,9 @@ function* incrementScoreInSortedSet(redisClient, options) {
  */
 function initialize() {
 
-  let config = Object.assign(
-    { keyPrefix: testUtil.randomString() + REDIS.NAMESPACE_DELIMITER },
+  const prefix = chance.word() + REDIS.NAMESPACE_DELIMITER
+  let config   = Object.assign(
+    { keyPrefix: prefix },
     redisConfig
   )
 

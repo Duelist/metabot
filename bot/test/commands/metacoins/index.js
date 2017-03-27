@@ -26,20 +26,20 @@ describe('@default', () => {
           mention : '@User'
         },
         channel : {
-          sendMessage : function* (message) {
+          createMessage : function* (message) {
             return message
           }
         }
       }
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(options.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(options.message.channel, 'createMessage')
 
     yield metacoins.message(options)
 
-    sendMessageSpy.callCount.should.eql(1)
-    sendMessageSpy.lastCall.args[0].should.eql(
+    createMessageSpy.callCount.should.eql(1)
+    createMessageSpy.lastCall.args[0].should.eql(
       METACOINS.MESSAGE.METACOIN_COUNT('@User', '3')
     )
 
@@ -68,20 +68,20 @@ describe('@default', () => {
       message : {
         author  : { id: 1 },
         channel : {
-          sendMessage : function* (message) {
+          createMessage : function* (message) {
             return message
           }
         }
       }
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(options.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(options.message.channel, 'createMessage')
 
     yield metacoins.message(options)
 
-    sendMessageSpy.callCount.should.eql(1)
-    sendMessageSpy.lastCall.args[0].should.eql('leaderboard')
+    createMessageSpy.callCount.should.eql(1)
+    createMessageSpy.lastCall.args[0].should.eql('leaderboard')
 
     // Restore stub and config
     metacoins.__set__('metacoins', metacoinsService)

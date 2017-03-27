@@ -30,7 +30,7 @@ function* king(options) {
   yield redis.setString({ key: KING.REDIS_KEY, value: author.username })
 
   // Send the response to the channel it was sent from
-  yield options.message.channel.sendMessage(response)
+  yield options.message.channel.createMessage(response)
 
 }
 

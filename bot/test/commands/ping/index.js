@@ -12,7 +12,7 @@ describe('@default', () => {
     let options = {
       message : {
         channel : {
-          sendMessage : function* (message) {
+          createMessage : function* (message) {
             return message
           }
         },
@@ -20,8 +20,8 @@ describe('@default', () => {
       }
     }
 
-    // Create a spy on the send message function
-    let sendMessageSpy = sinon.spy(options.message.channel, 'sendMessage')
+    // Create a spy on the create message function
+    let createMessageSpy = sinon.spy(options.message.channel, 'createMessage')
 
     // Create an expected result
     let expectedResult = 'pong'
@@ -29,12 +29,12 @@ describe('@default', () => {
     // Run the command
     yield commands.ping.message(options)
 
-    // Ensure the send message function was called with the right message
-    sendMessageSpy.calledOnce.should.eql(true)
-    sendMessageSpy.lastCall.args[0].should.eql(expectedResult)
+    // Ensure the create message function was called with the right message
+    createMessageSpy.calledOnce.should.eql(true)
+    createMessageSpy.lastCall.args[0].should.eql(expectedResult)
 
     // Clean up
-    sendMessageSpy.restore()
+    createMessageSpy.restore()
 
   })
 

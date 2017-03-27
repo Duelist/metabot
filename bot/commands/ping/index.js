@@ -4,7 +4,7 @@
  */
 function* ping(options) {
   // Send the response to the channel it was sent from
-  yield options.message.channel.sendMessage('pong')
+  yield options.message.channel.createMessage('pong')
 }
 
 
