@@ -1,6 +1,6 @@
-let assert       = require('assert')
-let Table        = require('cli-table')
-let R            = require('ramda')
+let assert = require('assert')
+let Table  = require('cli-table')
+let _      = require('lodash')
 
 let METACOINS    = requireRoot('constants/metacoins')
 let redis        = requireRoot('utils/redis').initialize()
@@ -11,9 +11,7 @@ let validateUtil = requireRoot('utils/validate')
 
 /**
  * Determines if a registered function should be allowed to award metacoins.
- *
  * @param {String} token Token for the registered function.
- *
  * @return {Boolean}
  */
 function allowAward(token) {
@@ -69,9 +67,7 @@ function* award(token, options) {
 
 /**
  * Formats the metacoins leaderboard to an easy-to-read string.
- *
  * @param {Array} leaderboard Leaderboard to format.
- *
  * @return {String}
  */
 function formatLeaderboard(leaderboard) {
@@ -81,10 +77,9 @@ function formatLeaderboard(leaderboard) {
     style : { border: [], head: [] }
   })
 
-  R.compose(
-    R.forEach(row => table.push(row)),
-    R.splitEvery(2)
-  )(leaderboard)
+  _(leaderboard)
+    .chunk(2)
+    .each(row => table.push(row))
 
   return '```' + table.toString() + '```'
 
@@ -94,7 +89,6 @@ function formatLeaderboard(leaderboard) {
 
 /**
  * Gets the leaderboard from cache.
- *
  * @return {String}
  */
 function* getLeaderboard() {
@@ -119,9 +113,7 @@ function* getLeaderboard() {
 
 /**
  * Gets a user's metacoins from cache.
- *
  * @param {Number} userId User's id.
- *
  * @return {Array}
  */
 function* getMetacoinsForUser(userId) {
@@ -149,7 +141,7 @@ function register() {
   let token = testUtil.randomString()
 
   return {
-    award : R.curry(award)(token),
+    award : _.curry(award)(token),
     getLeaderboard,
     getMetacoinsForUser
   }

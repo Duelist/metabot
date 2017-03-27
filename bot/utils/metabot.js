@@ -1,5 +1,5 @@
-let co       = require('co')
-let R        = require('ramda')
+let co = require('co')
+let _  = require('lodash')
 
 let commands = requireRoot('bot/commands')
 let METABOT  = requireRoot('constants/metabot')
@@ -15,9 +15,9 @@ function* handleMessageCreate(event) {
   if (event.message.content[0] === METABOT.PREFIX) {
 
     // Get the command name and arguments from the message
-    let tokens      = R.split(' ', event.message.content)
-    let commandName = R.head(tokens).substring(1)
-    let args        = R.tail(tokens)
+    let tokens      = _.split(event.message.content, ' ')
+    let commandName = _.head(tokens).substring(1)
+    let args        = _.tail(tokens)
     let command     = commands[commandName]
 
     if (!command) {

@@ -1,5 +1,5 @@
 let Ajv = require('ajv')
-let R   = require('ramda')
+let _   = require('lodash')
 
 let ajv = new Ajv({ useDefaults: true })
 
@@ -82,9 +82,8 @@ function handleValidation(validator, value) {
 
   if (!isValid) {
 
-    let errorMessages = R.map(
-      error => `${error.keyword} ${error.message}`,
-      validator.errors
+    let errorMessages = validator.errors.map(
+      error => `${error.keyword} ${error.message}`
     )
 
     throw new Error(errorMessages.join('/n'))
@@ -104,27 +103,23 @@ function handleValidation(validator, value) {
  */
 function transformValidationSchema(schema) {
 
-  // Clone the schema
-  let updatedSchema = R.clone(schema)
+  // Get the required properties
+  let requiredProperties = _(schema.properties)
+    .pickBy(property => property.required)
+    .keys()
+    .value()
 
-  // Set required properties
-  let requiredProperties = R.compose(
-    Object.getOwnPropertyNames,
-    R.filter(value => value.required)
-  )(updatedSchema.properties)
-
-  // Remove required properties from values
-  updatedSchema.properties = R.map(
-    value => R.dissoc('required', value),
-    updatedSchema.properties
-  )
+  // Remove "required" property from each value
+  schema.properties = _.forEach(schema.properties, (property) => {
+    _.unset(property, 'required')
+  })
 
   // Update the schema with the required properties
-  if (!R.isEmpty(requiredProperties)) {
-    updatedSchema.required = requiredProperties
+  if (!_.isEmpty(requiredProperties)) {
+    schema.required = requiredProperties
   }
 
-  return updatedSchema
+  return schema
 
 }
 

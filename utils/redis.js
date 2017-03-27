@@ -1,5 +1,5 @@
-let Redis        = require('ioredis')
-let R            = require('ramda')
+let Redis = require('ioredis')
+let _     = require('lodash')
 
 let redisConfig  = requireRoot('configs/redis')
 let REDIS        = requireRoot('constants/redis')
@@ -20,15 +20,15 @@ let validateUtil = requireRoot('utils/validate')
 function* addToSortedSet(redisClient, options) {
 
   validateUtil(options).has({
-    key    : {
+    key: {
       required : true,
       type     : 'string'
     },
-    score  : {
+    score: {
       required : true,
       type     : 'number'
     },
-    member : {
+    member: {
       required : true,
       type     : 'string'
     },
@@ -219,21 +219,22 @@ function* incrementScoreInSortedSet(redisClient, options) {
  */
 function initialize() {
 
-  let config = R.merge({
-    keyPrefix : testUtil.randomString() + REDIS.NAMESPACE_DELIMITER
-  }, redisConfig)
+  let config = Object.assign(
+    { keyPrefix: testUtil.randomString() + REDIS.NAMESPACE_DELIMITER },
+    redisConfig
+  )
 
   let redisClient = new Redis(config)
 
   return {
-    addToSortedSet            : R.partial(addToSortedSet, [redisClient]),
-    exists                    : R.partial(exists, [redisClient]),
-    getBatchFromSortedSet     : R.partial(getBatchFromSortedSet, [redisClient]),
-    getScoreFromSortedSet     : R.partial(getScoreFromSortedSet, [redisClient]),
-    incrementScoreInSortedSet : R.partial(incrementScoreInSortedSet, [redisClient]),
-    getString                 : R.partial(getString, [redisClient]),
-    reset                     : R.partial(reset, [redisClient]),
-    setString                 : R.partial(setString, [redisClient]),
+    addToSortedSet            : _.partial(addToSortedSet, redisClient),
+    exists                    : _.partial(exists, redisClient),
+    getBatchFromSortedSet     : _.partial(getBatchFromSortedSet, redisClient),
+    getScoreFromSortedSet     : _.partial(getScoreFromSortedSet, redisClient),
+    incrementScoreInSortedSet : _.partial(incrementScoreInSortedSet, redisClient),
+    getString                 : _.partial(getString, redisClient),
+    reset                     : _.partial(reset, redisClient),
+    setString                 : _.partial(setString, redisClient),
   }
 
 }

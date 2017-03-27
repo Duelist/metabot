@@ -28,23 +28,23 @@
     "test-travis": "npm run test-cover && istanbul-coveralls"
   },
   "dependencies": {
-    "ajv": "4.1.3",
-    "cli-table": "0.3.1",
-    "co": "4.6.0",
-    "debug": "2.2.0",
-    "discordie": "0.8.1",
-    "ioredis": "2.1.0",
-    "node-uuid": "1.4.7",
-    "ramda": "0.21.0",
-    "rewire": "2.5.2",
-    "should": "9.0.1",
-    "sinon": "1.17.4"
+    "ajv": "^4.1.3",
+    "cli-table": "^0.3.1",
+    "co": "^4.6.0",
+    "debug": "^2.2.0",
+    "discordie": "^0.8.1",
+    "ioredis": "^2.1.0",
+    "lodash": "^4.17.4",
+    "rewire": "^2.5.2",
+    "should": "^9.0.1",
+    "sinon": "^1.17.4",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
-    "co-mocha": "1.1.2",
-    "eslint": "2.11.1",
-    "istanbul": "0.4.3",
-    "istanbul-coveralls": "1.0.3",
-    "mocha": "2.5.3"
+    "co-mocha": "^1.1.2",
+    "eslint": "^2.11.1",
+    "istanbul": "^0.4.3",
+    "istanbul-coveralls": "^1.0.3",
+    "mocha": "^2.5.3"
   }
 }

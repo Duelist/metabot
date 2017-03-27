@@ -1,10 +1,10 @@
-let R             = require('ramda')
+let _ = require('lodash')
 
 let METACOINS     = requireRoot('bot/commands/metacoins/constants')
 let metabotConfig = requireRoot('bot/configs/metabot')
 let services      = requireRoot('bot/services')
 
-let metacoins     = services.metacoins.register()
+let metacoins = services.metacoins.register()
 
 
 
@@ -17,7 +17,7 @@ function* message(options) {
   let author  = options.message.author
   let channel = options.message.channel
 
-  if (!options.args || R.isEmpty(options.args)) {
+  if (!options.args || _.isEmpty(options.args)) {
     let coins = yield metacoins.getMetacoinsForUser(author.id)
     yield channel.sendMessage(
       METACOINS.MESSAGE.METACOIN_COUNT(author.mention, coins.toString())
@@ -25,7 +25,7 @@ function* message(options) {
     return
   }
 
-  let isAdmin = R.contains(author.id, metabotConfig.adminIds)
+  let isAdmin = _.includes(metabotConfig.adminIds, author.id)
 
   // Admin commands
   if (isAdmin) {
