@@ -22,8 +22,8 @@
     "lint": "eslint \"**/*.js\"",
     "pretest": "npm run lint",
     "pretest-cover": "npm run lint",
-    "test": "jest",
-    "test-travis": "jest && codecov"
+    "test": "jest --forceExit",
+    "test-travis": "jest --forceExit && codecov"
   },
   "dependencies": {
     "ajv": "^4.1.3",
