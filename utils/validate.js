@@ -56,12 +56,10 @@ function createHas(object) {
  * @return {Function}
  */
 function createIsA(value) {
-
   return type => {
     let validator = ajv.compile({ type })
     return handleValidation(validator, value)
   }
-
 }
 
 

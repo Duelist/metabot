@@ -17,7 +17,7 @@ const validateUtil = requireRoot('utils/validate')
  * @param {Number} options.score Score for the added member.
  * @param {String} options.member Member to be added to the sorted set.
  */
-function* addToSortedSet(redisClient, options) {
+async function addToSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     key: {
@@ -34,7 +34,7 @@ function* addToSortedSet(redisClient, options) {
     },
   })
 
-  yield redisClient.zadd(options.key, options.score, options.member)
+  await redisClient.zadd(options.key, options.score, options.member)
 
 }
 
@@ -49,7 +49,7 @@ function* addToSortedSet(redisClient, options) {
  *
  * @return {Boolean}
  */
-function* exists(redisClient, options) {
+async function exists(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -58,7 +58,7 @@ function* exists(redisClient, options) {
     },
   })
 
-  let exists = yield redisClient.exists(options.key)
+  let exists = await redisClient.exists(options.key)
 
   return !!exists 
 
@@ -77,7 +77,7 @@ function* exists(redisClient, options) {
  *
  * @return {Array}
  */
-function* getBatchFromSortedSet(redisClient, options) {
+async function getBatchFromSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     includeScores : {
@@ -118,7 +118,7 @@ function* getBatchFromSortedSet(redisClient, options) {
   // Set the batch size
   args.push('limit', 0, options.limit)
 
-  return yield redisClient.zrevrangebyscore(args)
+  return await redisClient.zrevrangebyscore(args)
 
 }
 
@@ -134,7 +134,7 @@ function* getBatchFromSortedSet(redisClient, options) {
  *
  * @return {String}
  */
-function* getScoreFromSortedSet(redisClient, options) {
+async function getScoreFromSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -147,7 +147,7 @@ function* getScoreFromSortedSet(redisClient, options) {
     }
   })
 
-  return yield redisClient.zscore(options.key, options.member)
+  return await redisClient.zscore(options.key, options.member)
 
 }
 
@@ -162,7 +162,7 @@ function* getScoreFromSortedSet(redisClient, options) {
  *
  * @return {String}
  */
-function* getString(redisClient, options) {
+async function getString(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -171,7 +171,7 @@ function* getString(redisClient, options) {
     }
   })
 
-  return yield redisClient.get(options.key)
+  return await redisClient.get(options.key)
 
 }
 
@@ -190,7 +190,7 @@ function* getString(redisClient, options) {
  *
  * @return {String}
  */
-function* incrementScoreInSortedSet(redisClient, options) {
+async function incrementScoreInSortedSet(redisClient, options) {
 
   validateUtil(options).has({
     amount : {
@@ -207,7 +207,7 @@ function* incrementScoreInSortedSet(redisClient, options) {
     }
   })
 
-  return yield redisClient.zincrby(options.key, options.amount, options.member)
+  return await redisClient.zincrby(options.key, options.amount, options.member)
 
 }
 
@@ -246,8 +246,8 @@ function initialize() {
  * Resets the Redis cache.
  * @param {String} redisClient Redis client used to run the query.
  */
-function* reset(redisClient) {
-  yield redisClient.flushall()
+async function reset(redisClient) {
+  await redisClient.flushall()
 }
 
 
@@ -260,7 +260,7 @@ function* reset(redisClient) {
  * @param {String} options.key Redis key.
  * @param {String} options.value Value to set at the key.
  */
-function* setString(redisClient, options) {
+async function setString(redisClient, options) {
 
   validateUtil(options).has({
     key : {
@@ -273,7 +273,7 @@ function* setString(redisClient, options) {
     }
   })
 
-  yield redisClient.set(options.key, options.value)
+  await redisClient.set(options.key, options.value)
 
 }
 

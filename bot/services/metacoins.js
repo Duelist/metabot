@@ -29,7 +29,7 @@ function allowAward(token) {
  *
  * @return {Boolean}
  */
-function* award(token, options) {
+async function award(token, options) {
 
   validateUtil(options).has({
     amount : {
@@ -46,14 +46,14 @@ function* award(token, options) {
   assert(allowAward(token))
 
   // Award the coins
-  let awarded = yield redis.incrementScoreInSortedSet({
+  let awarded = await redis.incrementScoreInSortedSet({
     amount : options.amount,
     key    : METACOINS.REDIS.LEADERBOARD_KEY,
     member : options.userId
   })
 
   // Update the last time the registered function awarded coins.
-  yield redis.addToSortedSet({
+  await redis.addToSortedSet({
     key    : METACOINS.REDIS.LAST_AWARDED_KEY,
     member : token,
     score  : (new Date()).getTime()
@@ -91,14 +91,14 @@ function formatLeaderboard(leaderboard) {
  * Gets the leaderboard from cache.
  * @return {String}
  */
-function* getLeaderboard() {
+async function getLeaderboard() {
 
-  let leaderboardExists = yield redis.exists({
+  let leaderboardExists = await redis.exists({
     key: METACOINS.REDIS.LEADERBOARD_KEY
   })
 
   if (leaderboardExists) {
-    let leaderboard = yield redis.getBatchFromSortedSet({
+    let leaderboard = await redis.getBatchFromSortedSet({
       includeScores : true,
       key           : METACOINS.REDIS.LEADERBOARD_KEY
     })
@@ -116,9 +116,9 @@ function* getLeaderboard() {
  * @param {Number} userId User's id.
  * @return {Array}
  */
-function* getMetacoinsForUser(userId) {
+async function getMetacoinsForUser(userId) {
 
-  let metacoins = yield redis.getScoreFromSortedSet({
+  let metacoins = await redis.getScoreFromSortedSet({
     key    : METACOINS.REDIS.LEADERBOARD_KEY,
     member : userId
   })

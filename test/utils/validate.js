@@ -1,4 +1,4 @@
-let _ = require('lodash')
+let _  = require('lodash')
 
 let validateUtil = requireRoot('utils/validate')
 
@@ -6,11 +6,11 @@ let validateUtil = requireRoot('utils/validate')
 
 describe('@default', () => {
 
-  it('returns validation functions in an object', () => {
+  test('returns validation functions in an object', () => {
 
     let functions        = validateUtil({})
     let validateFunction = fn => {
-      true.should.eql(typeof fn === 'function')
+      expect(typeof fn).toBe('function')
     }
 
     _.each(functions, validateFunction)
@@ -18,7 +18,7 @@ describe('@default', () => {
   })
 
 
-  it('throws an error if no value was provided', () => {
+  test('throws an error if no value was provided', () => {
 
     let isCaught = false
 
@@ -27,12 +27,12 @@ describe('@default', () => {
     }
     catch (err) {
       // Ensure the correct error message was given
-      err.message.should.eql('Value must exist.')
+      expect(err.message).toBe('Value must exist.')
       isCaught = true
     }
 
     // Ensure an error was thrown
-    isCaught.should.eql(true)
+    expect(isCaught).toBe(true)
 
   })
 
@@ -42,7 +42,7 @@ describe('@default', () => {
 
 describe('#has', () => {
 
-  it('validates an object', () => {
+  test('validates an object', () => {
 
     // Create a test object
     let object = {
@@ -65,7 +65,7 @@ describe('#has', () => {
     })
 
     // Ensure the modified object is correct
-    object.should.eql({
+    expect(object).toEqual({
       one   : 1,
       two   : 'two',
       three : 3
@@ -74,7 +74,7 @@ describe('#has', () => {
   })
 
 
-  it('throws an error when an object is invalid', () => {
+  test('throws an error when an object is invalid', () => {
 
     // Create a test object
     let object = { one: 1 }
@@ -89,17 +89,17 @@ describe('#has', () => {
     }
     catch (err) {
       // Ensure error message is correct
-      err.message.should.eql('type should be string')
+      expect(err.message).toBe('type should be string')
       isCaught = true
     }
 
     // Ensure an error was thrown
-    isCaught.should.eql(true)
+    expect(isCaught).toBe(true)
 
   })
 
 
-  it('throws an error if a required value is not provided', () => {
+  test('throws an error if a required value is not provided', () => {
 
     // Create a test object
     let object = {}
@@ -119,12 +119,12 @@ describe('#has', () => {
     }
     catch (err) {
       // Ensure error message is correct
-      err.message.should.eql('required should have required property \'test\'')
+      expect(err.message).toBe('required should have required property \'test\'')
       isCaught = true
     }
 
     // Ensure an error was thrown
-    isCaught.should.eql(true)
+    expect(isCaught).toBe(true)
 
   })
 
@@ -134,14 +134,14 @@ describe('#has', () => {
 
 describe('#isA', () => {
 
-  it('validates a value', () => {
+  test('validates a value', () => {
     // Create a test value
     let value = 'test'
     validateUtil(value).isA('string')
   })
 
 
-  it('throws an error if the value is invalid', () => {
+  test('throws an error if the value is invalid', () => {
 
     // Create a test value
     let value = 'test'
@@ -154,12 +154,12 @@ describe('#isA', () => {
     }
     catch (err) {
       // Ensure the error message is correct
-      err.message.should.eql('type should be number')
+      expect(err.message).toBe('type should be number')
       isCaught = true
     }
 
     // Ensure an error was thrown
-    isCaught.should.eql(true)
+    expect(isCaught).toBe(true)
 
   })
 

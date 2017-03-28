@@ -1,14 +1,16 @@
 /**
  * Returns a pong for your ping.
  * @param {Object} options Message options.
+ *        {Object} [options.args] Received arguments.
+ *        {Message} options.message Received message.
  */
-function* ping(options) {
+async function ping(options) {
   // Send the response to the channel it was sent from
-  yield options.message.channel.createMessage('pong')
+  await options.message.channel.createMessage('pong')
 }
 
 
 
 module.exports = {
-  message : ping
+  message: ping
 }

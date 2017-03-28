@@ -6,10 +6,10 @@ let metacoins
 
 
 
-beforeEach(function* () {
+beforeEach(async () => {
 
   // Reset the cache
-  yield redis.reset()
+  await redis.reset()
 
   // Register the metacoins service
   metacoins = metacoinsService.register()
@@ -20,17 +20,17 @@ beforeEach(function* () {
 
 describe('#award', () => {
 
-  it('awards metacoins to a user', function* () {
-    let awarded = yield metacoins.award({ userId: '1' })
-    awarded.should.eql(true)
+  test('awards metacoins to a user', async () => {
+    let awarded = await metacoins.award({ userId: '1' })
+    expect(awarded).toBe(true)
   })
 
 
-  it('awards a custom amount of metacoins to a user', function* () {
-    let awarded = yield metacoins.award({ amount: 3, userId: '2' })
-    let coins   = yield metacoins.getMetacoinsForUser('2')
-    awarded.should.eql(true)
-    coins.should.eql(3)
+  test('awards a custom amount of metacoins to a user', async () => {
+    let awarded = await metacoins.award({ amount: 3, userId: '2' })
+    let coins   = await metacoins.getMetacoinsForUser('2')
+    expect(awarded).toBe(true)
+    expect(coins).toBe(3)
   })
 
 })
@@ -39,16 +39,16 @@ describe('#award', () => {
 
 describe('#getLeaderboard', () => {
 
-  it('gets the metacoins leaderboard', function* () {
-    yield metacoins.award({ userId: '3' })
-    let leaderboardMessage = yield metacoins.getLeaderboard()
-    leaderboardMessage.should.be.of.type('string')
+  test('gets the metacoins leaderboard', async () => {
+    await metacoins.award({ userId: '3' })
+    let leaderboardMessage = await metacoins.getLeaderboard()
+    expect(typeof leaderboardMessage).toBe('string')
   })
 
 
-  it('gets a message when the metacoins leaderboard doesn’t exist', function* () {
-    let leaderboardMessage = yield metacoins.getLeaderboard()
-    leaderboardMessage.should.eql(METACOINS.MESSAGE.LEADERBOARD_NOT_FOUND)
+  test('gets a message when the metacoins leaderboard doesn’t exist', async () => {
+    let leaderboardMessage = await metacoins.getLeaderboard()
+    expect(leaderboardMessage).toBe(METACOINS.MESSAGE.LEADERBOARD_NOT_FOUND)
   })
 
 })
@@ -57,16 +57,16 @@ describe('#getLeaderboard', () => {
 
 describe('#getMetacoinsForUser', () => {
 
-  it('gets the metacoins count for a user', function* () {
-    yield metacoins.award({ userId: '4' })
-    let coins = yield metacoins.getMetacoinsForUser('4')
-    coins.should.eql(1)
+  test('gets the metacoins count for a user', async () => {
+    await metacoins.award({ userId: '4' })
+    let coins = await metacoins.getMetacoinsForUser('4')
+    expect(coins).toBe(1)
   })
 
 
-  it('does not error when the leaderboard doesn’t exist', function* () {
-    let coins = yield metacoins.getMetacoinsForUser('5')
-    coins.should.eql(0)
+  test('does not error when the leaderboard doesn’t exist', async () => {
+    let coins = await metacoins.getMetacoinsForUser('5')
+    expect(coins).toBe(0)
   })
 
 })

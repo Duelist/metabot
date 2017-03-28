@@ -1,5 +1,8 @@
 {
   "extends": "eslint:recommended",
+  "parserOptions": {
+    "ecmaVersion": 8
+  },
   "rules": {
     "comma-dangle"            : [0, "always-multiline"],
     "complexity"              : [1, 7],
@@ -59,6 +62,8 @@
     "node"  : true
   },
   "globals": {
+    "expect": true,
+    "jest": true,
     "PRODUCTION"  : true,
     "requireRoot" : true
   },

@@ -7,12 +7,12 @@ let redis = requireRoot('utils/redis').initialize()
  * Makes the author of the command the king.
  * @param {Object} options Message parameters.
  */
-function* king(options) {
+async function king(options) {
 
   let response
 
   // Get the previous king
-  let oldKing = yield redis.getString({ key: KING.REDIS_KEY })
+  let oldKing = await redis.getString({ key: KING.REDIS_KEY })
 
   let author = options.message.author
 
@@ -27,15 +27,15 @@ function* king(options) {
   }
 
   // Set the new king to the message author
-  yield redis.setString({ key: KING.REDIS_KEY, value: author.username })
+  await redis.setString({ key: KING.REDIS_KEY, value: author.username })
 
   // Send the response to the channel it was sent from
-  yield options.message.channel.createMessage(response)
+  await options.message.channel.createMessage(response)
 
 }
 
 
 
 module.exports = {
-  message : king
+  message: king
 }

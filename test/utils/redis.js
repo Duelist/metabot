@@ -4,13 +4,13 @@ let redisUtil = requireRoot('utils/redis')
 
 let redis
 
-beforeEach(function* () {
+beforeEach(async () => {
 
   // Register redis commands with a namespace
   redis = redisUtil.initialize()
 
   // Reset the cache
-  yield redis.reset()
+  await redis.reset()
 
 })
 
@@ -18,10 +18,10 @@ beforeEach(function* () {
 
 describe('#addToSortedSet', () => {
 
-  beforeEach(function* () {
+  beforeEach(async () => {
 
     // Create a test key with a member
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'hi',
       score  : 0
@@ -30,29 +30,29 @@ describe('#addToSortedSet', () => {
   })
 
 
-  it('creates a sorted set with a key if it doesn’t exist yet', function* () {
+  test('creates a sorted set with a key if it doesn’t exist yet', async () => {
 
-    let result = yield redis.getBatchFromSortedSet({ key: 'test' })
+    let result = await redis.getBatchFromSortedSet({ key: 'test' })
 
     // Ensure the sorted set was created with the member
-    result.should.eql(['hi'])
+    expect(result).toEqual(['hi'])
 
   })
 
 
-  it('adds to a sorted set with a key if it exists', function* () {
+  test('adds to a sorted set with a key if it exists', async () => {
 
     // Add to the sorted set with another member
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'hey',
       score  : 1
     })
 
-    let result = yield redis.getBatchFromSortedSet({ key: 'test' })
+    let result = await redis.getBatchFromSortedSet({ key: 'test' })
 
     // Ensure the member was added to the sorted set
-    result.should.eql(['hey', 'hi'])
+    expect(result).toEqual(['hey', 'hi'])
 
   })
 
@@ -62,19 +62,19 @@ describe('#addToSortedSet', () => {
 
 describe('#getString', () => {
 
-  it('gets a string at the given key', function* () {
+  test('gets a string at the given key', async () => {
 
     // Create an expected string
     let expectedString = 'test'
 
     // Set the key to a string
-    yield redis.setString({ key: 'test', value: expectedString })
+    await redis.setString({ key: 'test', value: expectedString })
 
     // Retrieve the string at the key
-    let result = yield redis.getString({ key: 'test' })
+    let result = await redis.getString({ key: 'test' })
 
     // Ensure the string at the key is the one that was set
-    result.should.eql(expectedString)
+    expect(result).toBe(expectedString)
 
   })
 
@@ -84,26 +84,26 @@ describe('#getString', () => {
 
 describe('#exists', () => {
 
-  it('returns the existence of a redis key', function* () {
+  test('returns the existence of a redis key', async () => {
 
     // Add a test key with a member
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'hi',
       score  : 0
     })
 
     // Get the existence of the existing redis key
-    let result = yield redis.exists({ key: 'test' })
+    let result = await redis.exists({ key: 'test' })
 
     // Ensure the redis key exists
-    result.should.eql(true)
+    expect(result).toBe(true)
 
     // Get the existence of a redis key that doesn't exist
-    result = yield redis.exists({ key: 'test2' })
+    result = await redis.exists({ key: 'test2' })
 
     // Ensure the redis key doesn't exist
-    result.should.eql(false)
+    expect(result).toBe(false)
 
   })
 
@@ -113,129 +113,129 @@ describe('#exists', () => {
 
 describe('#getBatchFromSortedSet', () => {
 
-  it('returns a batch of members from the sorted set', function* () {
+  test('returns a batch of members from the sorted set', async () => {
 
     // Create an expected result
     let expectedResult = ['another test', 'test']
 
     // Add values from the expected result to the sorted set
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : expectedResult[1],
       score  : 0
     })
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : expectedResult[0],
       score  : 1
     })
 
     // Get a batch from the sorted set
-    let result = yield redis.getBatchFromSortedSet({ key: 'test' })
+    let result = await redis.getBatchFromSortedSet({ key: 'test' })
 
     // Ensure the returned result matches the expected result
-    result.should.eql(expectedResult)
+    expect(result).toEqual(expectedResult)
 
   })
 
 
-  it('returns an empty array if the sorted set is empty or doesn’t exist', function* () {
-    let result = yield redis.getBatchFromSortedSet({ key: 'test' })
-    result.should.eql([])
+  test('returns an empty array if the sorted set is empty or doesn’t exist', async () => {
+    let result = await redis.getBatchFromSortedSet({ key: 'test' })
+    expect(result).toEqual([])
   })
 
 
-  it('returns a batch of members upper bounded by score', function* () {
+  test('returns a batch of members upper bounded by score', async () => {
 
     // Add two members to the sorted set
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'test',
       score  : 1
     })
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'another test',
       score  : 3
     })
 
     // Get a batch from the sorted set with batch score
-    let result = yield redis.getBatchFromSortedSet({
+    let result = await redis.getBatchFromSortedSet({
       key       : 'test',
       lastScore : 2
     })
 
     // Ensure the returned result is correct
-    result.should.eql(['test'])
+    expect(result).toEqual(['test'])
 
   })
 
 
-  it('returns a limited batch of members', function* () {
+  test('returns a limited batch of members', async () => {
 
     // Add two members to the sorted set
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'test',
       score  : 1
     })
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'another test',
       score  : 2
     })
 
     // Get a batch from the sorted set with a limit
-    let result = yield redis.getBatchFromSortedSet({
+    let result = await redis.getBatchFromSortedSet({
       key   : 'test',
       limit : 1
     })
 
     // Ensure the returned result is correct
-    result.should.eql(['another test'])
+    expect(result).toEqual(['another test'])
 
   })
 
 
-  it('returns a batch of members with scores', function* () {
+  test('returns a batch of members with scores', async () => {
 
     // Add two members to the sorted set
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'test',
       score  : 1
     })
-    yield redis.addToSortedSet({
+    await redis.addToSortedSet({
       key    : 'test',
       member : 'another test',
       score  : 2
     })
 
     // Get a batch from the sorted set with a limit
-    let result = yield redis.getBatchFromSortedSet({
+    let result = await redis.getBatchFromSortedSet({
       includeScores : true,
       key           : 'test'
     })
 
     // Ensure the returned result is correct
-    result.should.eql(['another test', '2', 'test', '1'])
+    expect(result).toEqual(['another test', '2', 'test', '1'])
 
   })
 
 
-  it('throws an error if no key is provided', function* () {
+  test('throws an error if no key is provided', async () => {
 
     let isCaught = false
 
     try {
-      yield redis.getBatchFromSortedSet({})
+      await redis.getBatchFromSortedSet({})
     }
     catch (err) {
       isCaught = true
     }
 
     // Ensure an error was thrown
-    isCaught.should.eql(true)
+    expect(isCaught).toBe(true)
 
   })
 
@@ -245,21 +245,21 @@ describe('#getBatchFromSortedSet', () => {
 
 describe('#initialize', () => {
 
-  it('initializes a Redis client with a unique namespace', function* () {
+  test('initializes a Redis client with a unique namespace', async () => {
 
     // Register two different namespaces
     let redisOne = redisUtil.initialize()
     let redisTwo = redisUtil.initialize()
 
     // Create a sorted set using a key in the first namespace
-    yield redisOne.addToSortedSet({ key: 'test', member: 'test', score: 0 })
+    await redisOne.addToSortedSet({ key: 'test', member: 'test', score: 0 })
 
-    let keyExistsOne = yield redisOne.exists({ key: 'test' })
-    let keyExistsTwo = yield redisTwo.exists({ key: 'test' })
+    let keyExistsOne = await redisOne.exists({ key: 'test' })
+    let keyExistsTwo = await redisTwo.exists({ key: 'test' })
 
     // Ensure the key exists in the first namespace and not the second
-    keyExistsOne.should.eql(true)
-    keyExistsTwo.should.eql(false)
+    expect(keyExistsOne).toBe(true)
+    expect(keyExistsTwo).toBe(false)
 
   })
 
@@ -269,19 +269,19 @@ describe('#initialize', () => {
 
 describe('#setString', () => {
 
-  it('sets a string at the given key', function* () {
+  test('sets a string at the given key', async () => {
 
     // Create an expected string
     let expectedString = 'test'
 
     // Set the key to a string
-    yield redis.setString({ key: 'one', value: expectedString })
+    await redis.setString({ key: 'one', value: expectedString })
 
     // Retrieve the string at the key
-    let result = yield redis.getString({ key: 'one' })
+    let result = await redis.getString({ key: 'one' })
 
     // Ensure the string at the key is the one that was set
-    result.should.eql(expectedString)
+    expect(result).toBe(expectedString)
 
   })
 

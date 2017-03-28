@@ -1,4 +1,3 @@
-const co = require('co')
 const _  = require('lodash')
 
 const commands = requireRoot('bot/commands')
@@ -10,7 +9,7 @@ const METABOT  = requireRoot('constants/metabot')
  * Handles the Discord MESSAGE_CREATE event.
  * @param {Message} message Created message.
  */
-function* handleMessageCreate(message) {
+async function handleMessageCreate(message) {
 
   if (message.content[0] === METABOT.PREFIX) {
 
@@ -25,10 +24,10 @@ function* handleMessageCreate(message) {
     }
 
     try {
-      yield command.message({ args, message })
+      await command.message({ args, message })
     }
     catch (err) {
-      yield message.channel.createMessage(
+      await message.channel.createMessage(
         METABOT.COMMAND_ERROR_MESSAGE + ': ' + err
       )
     }
@@ -40,5 +39,5 @@ function* handleMessageCreate(message) {
 
 
 module.exports = {
-  handleMessageCreate: co.wrap(handleMessageCreate)
+  handleMessageCreate
 }

@@ -7,92 +7,70 @@ const metabotUtil = requireRoot('bot/utils/metabot')
 
 describe('#handleMessageCreate', () => {
 
-  it('sends a message', function* () {
+  test('sends a message', async () => {
 
     // Create a test message
     let message = {
-      channel: {
-        createMessage: function* (message) { return message }
-      },
-      content: '!ping'
+      channel : { createMessage: jest.fn() },
+      content : '!ping'
     }
 
     // Create spies on the command and create message function
-    let pingSpy        = sinon.spy(commands.ping, 'message')
-    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
+    let pingSpy = sinon.spy(commands.ping, 'message')
 
     // Handle the create message event
-    yield metabotUtil.handleMessageCreate(message)
+    await metabotUtil.handleMessageCreate(message)
 
     // Ensure the ping command was called with the correct arguments
-    pingSpy.calledOnce.should.eql(true)
-    pingSpy.lastCall.args[0].should.eql({
-      args: [],
-      message,
-    })
+    expect(pingSpy.callCount).toBe(1)
+    expect(pingSpy.lastCall.args[0]).toHaveProperty('args', [])
+    expect(pingSpy.lastCall.args[0]).toHaveProperty('message', message)
 
     // Ensure the create message function was called
-    createMessageSpy.calledOnce.should.eql(true)
-    createMessageSpy.lastCall.args[0].should.eql('pong')
+    expect(message.channel.createMessage).toHaveBeenCalled()
+    expect(message.channel.createMessage.mock.calls[0][0]).toBe('pong')
 
-    // Restore the spies
+    // Restore the spy
     pingSpy.restore()
-    createMessageSpy.restore()
 
   })
 
 
-  it('does nothing if the command does not contain the message prefix', () => {
+  test('does nothing if the command does not contain the message prefix', () => {
 
     // Create a test message
     let message = {
-      channel: {
-        createMessage: message => { return }
-      },
-      content: 'ping'
+      channel : { createMessage: jest.fn() },
+      content : 'ping'
     }
-
-    // Create a spy on the create message function
-    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)
 
     // Ensure the create message function was not called
-    createMessageSpy.callCount.should.eql(0)
-
-    // Restore the spy
-    createMessageSpy.restore()
+    expect(message.channel.createMessage).not.toHaveBeenCalled()
 
   })
 
 
-  it('does nothing if the command does not exist', () => {
+  test('does nothing if the command does not exist', () => {
 
     // Create a test message
     let message = {
-      channel: {
-        createMessage: message => { return }
-      },
-      content: '!pong'
+      channel : { createMessage: jest.fn() },
+      content : '!pong'
     }
-
-    // Create a spy on the create message function
-    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)
 
     // Ensure the create message function was not called
-    createMessageSpy.callCount.should.eql(0)
-
-    // Restore the spy
-    createMessageSpy.restore()
+    expect(message.channel.createMessage).not.toHaveBeenCalled()
 
   })
 
 
-  it('notifies the user if the command failed', () => {
+  test('notifies the user if the command failed', () => {
 
     // Add a command that will fail on purpose
     commands.eping = {
@@ -101,26 +79,18 @@ describe('#handleMessageCreate', () => {
 
     // Create a test message
     let message = {
-      channel: {
-        createMessage: function* (message) { return }
-      },
-      content: '!eping'
+      channel : { createMessage: jest.fn() },
+      content : '!eping'
     }
-
-    // Create a spy on the create message function
-    let createMessageSpy = sinon.spy(message.channel, 'createMessage')
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)
 
     // Ensure the create message function was called
-    createMessageSpy.calledOnce.should.eql(true)
-    createMessageSpy.lastCall.args[0].should.eql(
+    expect(message.channel.createMessage).toHaveBeenCalled()
+    expect(message.channel.createMessage.mock.calls[0][0]).toBe(
       'Command failed: Error: fail ping'
     )
-
-    // Restore the spy
-    createMessageSpy.restore()
 
   })
 
