@@ -7,13 +7,18 @@ const metabotUtil = requireRoot('bot/utils/metabot')
 
 describe('#handleMessageCreate', () => {
 
+  let message
+  beforeEach(() => {
+    // Create a test message
+    message = { channel: { createMessage: jest.fn() } }
+  })
+
+
+
   test('sends a message', async () => {
 
-    // Create a test message
-    let message = {
-      channel : { createMessage: jest.fn() },
-      content : '!ping'
-    }
+    // Set the message content
+    message.content = '!ping'
 
     // Create spies on the command and create message function
     let pingSpy = sinon.spy(commands.ping, 'message')
@@ -38,11 +43,8 @@ describe('#handleMessageCreate', () => {
 
   test('does nothing if the command does not contain the message prefix', () => {
 
-    // Create a test message
-    let message = {
-      channel : { createMessage: jest.fn() },
-      content : 'ping'
-    }
+    // Set the message content
+    message.content = 'ping'
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)
@@ -55,11 +57,8 @@ describe('#handleMessageCreate', () => {
 
   test('does nothing if the command does not exist', () => {
 
-    // Create a test message
-    let message = {
-      channel : { createMessage: jest.fn() },
-      content : '!pong'
-    }
+    // Set the message content
+    message.content = '!pong'
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)
@@ -73,15 +72,10 @@ describe('#handleMessageCreate', () => {
   test('notifies the user if the command failed', () => {
 
     // Add a command that will fail on purpose
-    commands.eping = {
-      message: message => { throw new Error('fail ping') }
-    }
+    commands.eping = { message: message => { throw new Error('fail ping') } }
 
-    // Create a test message
-    let message = {
-      channel : { createMessage: jest.fn() },
-      content : '!eping'
-    }
+    // Set the message content
+    message.content = '!eping'
 
     // Handle the create message event
     metabotUtil.handleMessageCreate(message)

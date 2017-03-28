@@ -4,16 +4,22 @@ let commands = requireRoot('bot/commands')
 
 describe('@default', () => {
 
-  test('claims the throne if there is no old king', async () => {
+  let options
+  beforeEach(() => {
 
     // Create test message options
-    let options = {
+    options = {
       message: {
         author  : { username: 'Duelist' },
         channel : { createMessage: jest.fn() },
         content : '!king'
       }
     }
+
+  })
+
+
+  test('claims the throne if there is no old king', async () => {
 
     // Run the command
     await commands.king.message(options)
@@ -28,15 +34,6 @@ describe('@default', () => {
 
   test('retains the throne', async () => {
 
-    // Create test message options
-    let options = {
-      message: {
-        author  : { username: 'Duelist' },
-        channel : { createMessage: jest.fn() },
-        content : '!king'
-      }
-    }
-
     // Run the command
     await commands.king.message(options)
 
@@ -50,14 +47,8 @@ describe('@default', () => {
 
   test('usurps the throne from another player', async () => {
   
-    // Create test message options
-    let options = {
-      message: {
-        author  : { username: 'Momentum' },
-        channel : { createMessage: jest.fn() },
-        content : '!king'
-      }
-    }
+    // Set the player to another player 
+    options.message.author = { username: 'Momentum' }
 
     // Run the command
     await commands.king.message(options)
