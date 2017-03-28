@@ -10,10 +10,8 @@ describe('@default', () => {
     let options = {
       message: {
         author  : { username: 'Duelist' },
-        channel : {
-          createMessage: jest.fn() 
-        },
-        content: '!king'
+        channel : { createMessage: jest.fn() },
+        content : '!king'
       }
     }
 
@@ -34,10 +32,8 @@ describe('@default', () => {
     let options = {
       message: {
         author  : { username: 'Duelist' },
-        channel : {
-          createMessage: jest.fn()
-        },
-        content: '!king'
+        channel : { createMessage: jest.fn() },
+        content : '!king'
       }
     }
 
@@ -58,10 +54,8 @@ describe('@default', () => {
     let options = {
       message: {
         author  : { username: 'Momentum' },
-        channel : {
-          createMessage: jest.fn() 
-        },
-        content: '!king'
+        channel : { createMessage: jest.fn() },
+        content : '!king'
       }
     }
 
