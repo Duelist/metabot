@@ -1,9 +1,10 @@
 engines:
   duplication:
-    enabled: false
+    enabled: true
     config:
       languages:
-        - javascript
+        javascript:
+          mass_threshold: 120
   eslint:
     enabled: true
   fixme:
@@ -12,6 +13,3 @@ ratings:
   paths:
     - "**.js"
     - "**.jsx"
-exclude_paths:
-  - test/
-  - bot/test/
