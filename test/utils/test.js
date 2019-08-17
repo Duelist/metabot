@@ -1,9 +1,9 @@
-let testUtil = global.requireRoot('utils/test')
+// let testUtil = global.requireRoot('utils/test')
 
-describe('#rewireRoot', () => {
-  test('rewires a module at a given path from root', () => {
-    let result = testUtil.rewireRoot('utils/test')
-    // HACK: Checking type only is not the best way to test this
-    expect(typeof result).toBe('object')
-  })
-})
+// describe('#rewireRoot', () => {
+//   test('rewires a module at a given path from root', () => {
+//     let result = testUtil.rewireRoot('utils/test')
+//     // HACK: Checking type only is not the best way to test this
+//     expect(typeof result).toBe('object')
+//   })
+// })

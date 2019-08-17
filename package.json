@@ -25,8 +25,8 @@
     "eris": "^0.10.1",
     "ioredis": "^2.1.0",
     "lodash": "^4.17.4",
+    "module-alias": "^2.2.1",
     "prettier": "^1.18.2",
-    "rewire": "^2.5.2",
     "should": "^9.0.1",
     "sinon": "^1.17.4"
   },
