@@ -38,17 +38,17 @@
     "trailingComma": "all"
   },
   "scripts": {
-    "bot": "env NODE_ENV=production node bot/index.js",
-    "bot-local": "env DEBUG=* node bot/index.js",
+    "bot": "env NODE_ENV=production node src/bot/index.js",
+    "bot-local": "env DEBUG=* node src/bot/index.js",
     "lint": "eslint \"**/*.js\"",
     "pretest": "yarn run lint",
     "pretest-cover": "yarn run lint"
   },
   "_moduleAliases": {
-    "@bot": "bot",
-    "@configs": "configs",
-    "@constants": "constants",
-    "@template": "template.js",
-    "@utils": "utils"
+    "@bot": "src/bot",
+    "@configs": "src/configs",
+    "@constants": "src/constants",
+    "@template": "src/template.js",
+    "@utils": "src/utils"
   }
 }
