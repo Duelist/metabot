@@ -4,8 +4,6 @@
  */
 const NAMESPACE_DELIMITER = ':'
 
-
-
 module.exports = {
-  NAMESPACE_DELIMITER
+  NAMESPACE_DELIMITER,
 }

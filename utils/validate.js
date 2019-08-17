@@ -1,9 +1,7 @@
 let Ajv = require('ajv')
-let _   = require('lodash')
+let _ = require('lodash')
 
 let ajv = new Ajv({ useDefaults: true })
-
-
 
 /**
  * Returns a set of functions used to validate a value.
@@ -11,19 +9,15 @@ let ajv = new Ajv({ useDefaults: true })
  * @return {Object}
  */
 function validate(value) {
-
   if (!value) {
     throw new Error('Value must exist.')
   }
 
   return {
-    has : createHas(value),
-    isA : createIsA(value)
+    has: createHas(value),
+    isA: createIsA(value),
   }
-
 }
-
-
 
 /**
  * Creates a function that verifies an object's properties.
@@ -31,24 +25,18 @@ function validate(value) {
  * @return {Function}
  */
 function createHas(object) {
-
   return properties => {
-
     let validationSchema = {
       properties,
-      type : 'object'
+      type: 'object',
     }
 
     validationSchema = transformValidationSchema(validationSchema)
 
     let validator = ajv.compile(validationSchema)
     return handleValidation(validator, object)
-
   }
-
 }
-
-
 
 /**
  * Creates a function that verifies a value's properties.
@@ -62,8 +50,6 @@ function createIsA(value) {
   }
 }
 
-
-
 /**
  * Handle the validation of the value.
  *
@@ -75,24 +61,18 @@ function createIsA(value) {
  * @throws {Error} If the object is invalid.
  */
 function handleValidation(validator, value) {
-
   let isValid = validator(value)
 
   if (!isValid) {
-
     let errorMessages = validator.errors.map(
-      error => `${error.keyword} ${error.message}`
+      error => `${error.keyword} ${error.message}`,
     )
 
     throw new Error(errorMessages.join('/n'))
-
   }
 
   return value
-
 }
-
-
 
 /**
  * Transforms validation schema for compilation.
@@ -100,7 +80,6 @@ function handleValidation(validator, value) {
  * @return {Object}
  */
 function transformValidationSchema(schema) {
-
   // Get the required properties
   let requiredProperties = _(schema.properties)
     .pickBy(property => property.required)
@@ -108,7 +87,7 @@ function transformValidationSchema(schema) {
     .value()
 
   // Remove "required" property from each value
-  schema.properties = _.forEach(schema.properties, (property) => {
+  schema.properties = _.forEach(schema.properties, property => {
     _.unset(property, 'required')
   })
 
@@ -118,9 +97,6 @@ function transformValidationSchema(schema) {
   }
 
   return schema
-
 }
-
-
 
 module.exports = validate
