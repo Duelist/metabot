@@ -9,8 +9,6 @@ async function ping(options) {
   await options.message.channel.createMessage('pong')
 }
 
-
-
 module.exports = {
-  message: ping
+  message: ping,
 }

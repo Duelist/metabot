@@ -1,19 +1,15 @@
-let kingCommand      = requireRoot('bot/commands/king')
+let kingCommand = requireRoot('bot/commands/king')
 let metacoinsCommand = requireRoot('bot/commands/metacoins')
-let pingCommand      = requireRoot('bot/commands/ping')
-
-
+let pingCommand = requireRoot('bot/commands/ping')
 
 /**
  * Directory of commands for the bot.
  * @return {Object}
  */
 let commands = {
-  king      : kingCommand,
-  metacoins : metacoinsCommand,
-  ping      : pingCommand
+  king: kingCommand,
+  metacoins: metacoinsCommand,
+  ping: pingCommand,
 }
-
-
 
 module.exports = commands

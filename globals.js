@@ -5,7 +5,6 @@
  */
 global.requireRoot = name => require(__dirname + '/' + name)
 
-
 /**
  * Determines if the app is running in the production environment.
  * @type {Boolean}

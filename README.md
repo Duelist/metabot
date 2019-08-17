@@ -4,15 +4,14 @@
 
 ### Local
 
-* `npm run bot-local`
+- `npm run bot-local`
 
 ### Docker
 
-* `docker-compose up --build`
-
+- `docker-compose up --build`
 
 ## Testing
 
-* Run tests: `npm test`
-* Run linting: `npm run lint`
-* Run specific test: `npm run test-grep <test>`
+- Run tests: `npm test`
+- Run linting: `npm run lint`
+- Run specific test: `npm run test-grep <test>`

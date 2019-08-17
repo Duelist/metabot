@@ -1,22 +1,16 @@
 const sinon = require('sinon')
 
-const commands    = requireRoot('bot/commands')
+const commands = requireRoot('bot/commands')
 const metabotUtil = requireRoot('bot/utils/metabot')
 
-
-
 describe('#handleMessageCreate', () => {
-
   let message
   beforeEach(() => {
     // Create a test message
     message = { channel: { createMessage: jest.fn() } }
   })
 
-
-
   test('sends a message', async () => {
-
     // Set the message content
     message.content = '!ping'
 
@@ -37,12 +31,9 @@ describe('#handleMessageCreate', () => {
 
     // Restore the spy
     pingSpy.restore()
-
   })
 
-
   test('does nothing if the command does not contain the message prefix', () => {
-
     // Set the message content
     message.content = 'ping'
 
@@ -51,12 +42,9 @@ describe('#handleMessageCreate', () => {
 
     // Ensure the create message function was not called
     expect(message.channel.createMessage).not.toHaveBeenCalled()
-
   })
 
-
   test('does nothing if the command does not exist', () => {
-
     // Set the message content
     message.content = '!pong'
 
@@ -65,14 +53,15 @@ describe('#handleMessageCreate', () => {
 
     // Ensure the create message function was not called
     expect(message.channel.createMessage).not.toHaveBeenCalled()
-
   })
 
-
   test('notifies the user if the command failed', () => {
-
     // Add a command that will fail on purpose
-    commands.eping = { message: message => { throw new Error('fail ping') } }
+    commands.eping = {
+      message: message => {
+        throw new Error('fail ping')
+      },
+    }
 
     // Set the message content
     message.content = '!eping'
@@ -83,9 +72,7 @@ describe('#handleMessageCreate', () => {
     // Ensure the create message function was called
     expect(message.channel.createMessage).toHaveBeenCalled()
     expect(message.channel.createMessage.mock.calls[0][0]).toBe(
-      'Command failed: Error: fail ping'
+      'Command failed: Error: fail ping',
     )
-
   })
-
 })

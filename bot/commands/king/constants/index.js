@@ -4,8 +4,6 @@
  */
 const REDIS_KEY = 'king'
 
-
-
 module.exports = {
-  REDIS_KEY
+  REDIS_KEY,
 }

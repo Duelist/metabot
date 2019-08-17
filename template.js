@@ -18,6 +18,4 @@ function template(strings, ...keys) {
   }
 }
 
-
-
 module.exports = template

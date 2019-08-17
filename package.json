@@ -31,7 +31,6 @@
     "sinon": "^1.17.4"
   },
   "devDependencies": {
-    "codecov": "^2.1.0",
     "eslint": "^4.18.2",
     "jest": "^19.0.2"
   },
@@ -56,6 +55,6 @@
     "pretest": "npm run lint",
     "pretest-cover": "npm run lint",
     "test": "jest --forceExit",
-    "test-travis": "jest --forceExit && codecov"
+    "test-travis": "jest --forceExit"
   }
 }

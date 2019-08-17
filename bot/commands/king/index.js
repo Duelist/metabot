@@ -1,14 +1,11 @@
-let KING  = requireRoot('bot/commands/king/constants')
+let KING = requireRoot('bot/commands/king/constants')
 let redis = requireRoot('utils/redis').initialize()
-
-
 
 /**
  * Makes the author of the command the king.
  * @param {Object} options Message parameters.
  */
 async function king(options) {
-
   let response
 
   // Get the previous king
@@ -18,11 +15,9 @@ async function king(options) {
 
   if (!oldKing) {
     response = `${author.username} has claimed the throne.`
-  }
-  else if (author.username === oldKing) {
+  } else if (author.username === oldKing) {
     response = `${author.username} has retained the throne.`
-  }
-  else {
+  } else {
     response = `${author.username} has usurped the throne from ${oldKing}.`
   }
 
@@ -31,11 +26,8 @@ async function king(options) {
 
   // Send the response to the channel it was sent from
   await options.message.channel.createMessage(response)
-
 }
 
-
-
 module.exports = {
-  message: king
+  message: king,
 }
