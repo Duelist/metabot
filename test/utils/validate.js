@@ -1,6 +1,6 @@
 let _ = require('lodash')
 
-let validateUtil = requireRoot('utils/validate')
+let validateUtil = require('@utils/validate')
 
 describe('@default', () => {
   test('returns validation functions in an object', () => {

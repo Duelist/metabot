@@ -1,4 +1,4 @@
-let metacoinsService = requireRoot('bot/services/metacoins')
+let metacoinsService = require('@bot/services/metacoins')
 
 /**
  * Directory of services for the bot.

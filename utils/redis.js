@@ -2,9 +2,9 @@ const chance = require('chance').Chance()
 const Redis = require('ioredis')
 const _ = require('lodash')
 
-const redisConfig = requireRoot('configs/redis')
-const REDIS = requireRoot('constants/redis')
-const validateUtil = requireRoot('utils/validate')
+const redisConfig = require('@configs/redis')
+const REDIS = require('@constants/redis')
+const validateUtil = require('@utils/validate')
 
 /**
  * Adds a member with a specified score to the sorted set.

@@ -1,4 +1,4 @@
-let redisUtil = requireRoot('utils/redis')
+let redisUtil = require('@utils/redis')
 
 let redis
 

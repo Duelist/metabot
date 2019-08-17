@@ -1,6 +1,6 @@
-let kingCommand = requireRoot('bot/commands/king')
-let metacoinsCommand = requireRoot('bot/commands/metacoins')
-let pingCommand = requireRoot('bot/commands/ping')
+let kingCommand = require('@bot/commands/king')
+let metacoinsCommand = require('@bot/commands/metacoins')
+let pingCommand = require('@bot/commands/ping')
 
 /**
  * Directory of commands for the bot.

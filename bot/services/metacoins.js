@@ -3,9 +3,9 @@ const chance = require('chance').Chance()
 const Table = require('cli-table')
 const _ = require('lodash')
 
-const METACOINS = requireRoot('constants/metacoins')
-const redis = requireRoot('utils/redis').initialize()
-const validateUtil = requireRoot('utils/validate')
+const METACOINS = require('@constants/metacoins')
+const redis = require('@utils/redis').initialize()
+const validateUtil = require('@utils/validate')
 
 /**
  * Determines if a registered function should be allowed to award metacoins.

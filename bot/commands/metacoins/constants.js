@@ -1,4 +1,4 @@
-let template = requireRoot('template')
+let template = require('@template')
 
 //////////////
 // COMMANDS //

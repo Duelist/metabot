@@ -1,7 +1,7 @@
 const _ = require('lodash')
 
-const commands = requireRoot('bot/commands')
-const METABOT = requireRoot('constants/metabot')
+const commands = require('@bot/commands')
+const METABOT = require('@constants/metabot')
 
 /**
  * Handles the Discord MESSAGE_CREATE event.

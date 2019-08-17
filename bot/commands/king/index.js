@@ -1,5 +1,5 @@
-let KING = requireRoot('bot/commands/king/constants')
-let redis = requireRoot('utils/redis').initialize()
+let KING = require('@bot/commands/king/constants')
+let redis = require('@utils/redis').initialize()
 
 /**
  * Makes the author of the command the king.

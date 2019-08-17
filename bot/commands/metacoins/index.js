@@ -1,7 +1,7 @@
 let _ = require('lodash')
 
-let METACOINS = requireRoot('bot/commands/metacoins/constants')
-let services = requireRoot('bot/services')
+let METACOINS = require('@bot/commands/metacoins/constants')
+let services = require('@bot/services')
 
 let metacoins = services.metacoins.register()
 

@@ -9,5 +9,5 @@ describe('utils', () => {
 })
 
 describe('bot', () => {
-  requireRoot('bot/test')
+  require('@bot/test')
 })

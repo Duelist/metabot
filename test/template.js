@@ -1,4 +1,4 @@
-let template = requireRoot('template')
+let template = require('@template')
 
 describe('@default', () => {
   test('returns a function that creates a tagged template literal', () => {

@@ -1,4 +1,4 @@
-// let commands = requireRoot('bot/commands')
+// let commands = require('@bot/commands')
 
 // describe('@default', () => {
 //   let options

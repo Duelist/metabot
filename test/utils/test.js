@@ -1,4 +1,4 @@
-// let testUtil = global.requireRoot('utils/test')
+// let testUtil = global.require('@utils/test')
 
 // describe('#rewireRoot', () => {
 //   test('rewires a module at a given path from root', () => {
