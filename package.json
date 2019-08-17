@@ -52,8 +52,8 @@
     "bot": "env NODE_ENV=production node bot/index.js",
     "bot-local": "env DEBUG=* node bot/index.js",
     "lint": "eslint \"**/*.js\"",
-    "pretest": "npm run lint",
-    "pretest-cover": "npm run lint",
+    "pretest": "yarn run lint",
+    "pretest-cover": "yarn run lint",
     "test": "jest --forceExit",
     "test-travis": "jest --forceExit"
   }
