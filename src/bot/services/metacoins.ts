@@ -32,7 +32,7 @@ async function award(
   assert(allowAward(token))
 
   // Award the coins
-  let awarded = await redis.incrementScoreInSortedSet({
+  const awarded = await redis.incrementScoreInSortedSet({
     amount: amount,
     key: REDIS_LEADERBOARD_KEY,
     member: userId,
@@ -52,7 +52,7 @@ async function award(
  * Formats the metacoins leaderboard to an easy-to-read string.
  */
 function formatLeaderboard(leaderboard: string[]): string {
-  let table = new Table({
+  const table = new Table({
     head: ['User', 'Metacoins'],
     style: { border: [], head: [] },
   })
@@ -68,12 +68,12 @@ function formatLeaderboard(leaderboard: string[]): string {
  * Gets the leaderboard from cache.
  */
 async function getLeaderboard(): Promise<string> {
-  let leaderboardExists = await redis.exists({
+  const leaderboardExists = await redis.exists({
     key: REDIS_LEADERBOARD_KEY,
   })
 
   if (leaderboardExists) {
-    let leaderboard = await redis.getBatchFromSortedSet({
+    const leaderboard = await redis.getBatchFromSortedSet({
       includeScores: true,
       key: REDIS_LEADERBOARD_KEY,
     })
@@ -87,7 +87,7 @@ async function getLeaderboard(): Promise<string> {
  * Gets a user's metacoins from cache.
  */
 async function getMetacoinsForUser(userId: number): Promise<number> {
-  let metacoins = await redis.getScoreFromSortedSet({
+  const metacoins = await redis.getScoreFromSortedSet({
     key: REDIS_LEADERBOARD_KEY,
     member: userId,
   })
@@ -108,7 +108,7 @@ export function register(): {
   getLeaderboard: Function,
   getMetacoinsForUser: Function,
 } {
-  let token = chance.string()
+  const token = chance.string()
 
   return {
     award: _.curry(award)(token),

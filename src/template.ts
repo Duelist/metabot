@@ -6,10 +6,10 @@ function template(
   ...keys: (string | number)[]
 ): Function {
   return (...values) => {
-    let dict = values[values.length - 1] || {}
-    let result = [strings[0]]
+    const dict = values[values.length - 1] || {}
+    const result = [strings[0]]
     keys.forEach(function(key, i) {
-      let value = typeof key === 'number' ? values[key] : dict[key]
+      const value = typeof key === 'number' ? values[key] : dict[key]
       result.push(value, strings[i + 1])
     })
     return result.join('')

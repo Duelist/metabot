@@ -14,9 +14,8 @@ const commands = {
 
 /**
  * Handles the Discord MESSAGE_CREATE event.
- * @param {Message} message Created message.
  */
-async function handleMessageCreate(message) {
+async function handleMessageCreate(message: any) {
   if (message.content[0] === PREFIX) {
     // Get the command name and arguments from the message
     const tokens = _.split(message.content, ' ')
