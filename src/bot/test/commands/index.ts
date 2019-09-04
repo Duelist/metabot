@@ -1,11 +1,11 @@
-describe('king', () => {
-  require('./king')
-})
+// describe('king', () => {
+//   require('./king')
+// })
 
-describe('metacoins', () => {
-  require('./metacoins')
-})
+// describe('metacoins', () => {
+//   require('./metacoins')
+// })
 
-describe('ping', () => {
-  require('./ping')
-})
+// describe('ping', () => {
+//   require('./ping')
+// })

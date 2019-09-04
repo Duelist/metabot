@@ -1,8 +1,6 @@
 {
   "extends": "eslint:recommended",
-  "parserOptions": {
-    "ecmaVersion": 8
-  },
+  "parser": "@typescript-eslint/parser",
   "rules": {
     "comma-dangle"            : [0, "always-multiline"],
     "complexity"              : [1, 7],

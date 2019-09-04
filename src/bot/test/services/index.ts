@@ -1,3 +1,3 @@
-describe('metacoins', () => {
-  require('./metacoins')
-})
+// describe('metacoins', () => {
+//   require('./metacoins')
+// })

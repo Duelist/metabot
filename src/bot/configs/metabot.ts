@@ -1,10 +1,4 @@
 /**
- * Configuration for the bot.
- * @type {Object}
+ * Discord token for the bot.
  */
-const metabotConfig = {
-  adminIds: [],
-  token: process.env.BOT_TOKEN,
-}
-
-module.exports = metabotConfig
+export const token = process.env.BOT_TOKEN

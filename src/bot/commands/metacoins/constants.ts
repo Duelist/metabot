@@ -1,4 +1,4 @@
-let template = require('@template')
+import template from '@template'
 
 //////////////
 // COMMANDS //
@@ -10,7 +10,7 @@ let template = require('@template')
  */
 const LEADERBOARD = 'leaderboard'
 
-const COMMAND = {
+export const COMMAND = {
   LEADERBOARD,
 }
 
@@ -24,11 +24,6 @@ const COMMAND = {
  */
 const METACOIN_COUNT_MESSAGE = template`${0}: You currently have ${1} metacoins.`
 
-const MESSAGE = {
+export const MESSAGE = {
   METACOIN_COUNT: METACOIN_COUNT_MESSAGE,
-}
-
-module.exports = {
-  COMMAND,
-  MESSAGE,
 }

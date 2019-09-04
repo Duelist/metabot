@@ -1,11 +1,11 @@
-describe('commands', () => {
-  require('./commands')
-})
+// describe('commands', () => {
+//   require('./commands')
+// })
 
-describe('services', () => {
-  require('./services')
-})
+// describe('services', () => {
+//   require('./services')
+// })
 
-describe('utils', () => {
-  require('./utils')
-})
+// describe('utils', () => {
+//   require('./utils')
+// })

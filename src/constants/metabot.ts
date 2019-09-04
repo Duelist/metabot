@@ -2,13 +2,13 @@
  * Error message for when a command fails.
  * @type {String}
  */
-const COMMAND_ERROR_MESSAGE = 'Command failed'
+export const COMMAND_ERROR_MESSAGE = 'Command failed'
 
 /**
  * Environment variable strings.
  * @type {String}
  */
-const ENVIRONMENT = {
+export const ENVIRONMENT = {
   DEV: 'development',
 }
 
@@ -16,10 +16,4 @@ const ENVIRONMENT = {
  * Prefix for messages directed at the bot.
  * @type {String}
  */
-const PREFIX = '!'
-
-module.exports = {
-  COMMAND_ERROR_MESSAGE,
-  ENVIRONMENT,
-  PREFIX,
-}
+export const PREFIX = '!'

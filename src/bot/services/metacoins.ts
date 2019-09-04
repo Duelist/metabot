@@ -1,55 +1,46 @@
-const assert = require('assert')
-const chance = require('chance').Chance()
-const Table = require('cli-table')
-const _ = require('lodash')
+import assert from 'assert'
+import Chance from 'chance'
+import Table from 'cli-table'
+import _ from 'lodash'
 
-const METACOINS = require('@constants/metacoins')
-const redis = require('@utils/redis').initialize()
-const validateUtil = require('@utils/validate')
+import {
+  LEADERBOARD_NOT_FOUND_MESSAGE,
+  REDIS_LAST_AWARDED_KEY,
+  REDIS_LEADERBOARD_KEY,
+} from '@constants/metacoins'
+import { initialize } from '@utils/redis'
+
+const chance = Chance.Chance()
+const redis = initialize()
 
 /**
  * Determines if a registered function should be allowed to award metacoins.
- * @param {String} token Token for the registered function.
- * @return {Boolean}
  */
-function allowAward(token) {
+function allowAward(token: string): boolean {
   // Implement logic for disallowing awards here if needed.
   return true
 }
 
 /**
  * Awards metacoins to a user.
- *
- * @param {String} token Token for the registered function.
- * @param {Object} options
- *
- * @return {Boolean}
  */
-async function award(token, options) {
-  validateUtil(options).has({
-    amount: {
-      default: 1,
-      type: 'number',
-    },
-    userId: {
-      required: true,
-      type: 'string',
-    },
-  })
-
+async function award(
+  token,
+  { amount = 1, userId }: { amount: number; userId: string },
+): Promise<boolean> {
   // Ensure the registered function can award coins right now.
   assert(allowAward(token))
 
   // Award the coins
   let awarded = await redis.incrementScoreInSortedSet({
-    amount: options.amount,
-    key: METACOINS.REDIS.LEADERBOARD_KEY,
-    member: options.userId,
+    amount: amount,
+    key: REDIS_LEADERBOARD_KEY,
+    member: userId,
   })
 
   // Update the last time the registered function awarded coins.
   await redis.addToSortedSet({
-    key: METACOINS.REDIS.LAST_AWARDED_KEY,
+    key: REDIS_LAST_AWARDED_KEY,
     member: token,
     score: new Date().getTime(),
   })
@@ -59,10 +50,8 @@ async function award(token, options) {
 
 /**
  * Formats the metacoins leaderboard to an easy-to-read string.
- * @param {Array} leaderboard Leaderboard to format.
- * @return {String}
  */
-function formatLeaderboard(leaderboard) {
+function formatLeaderboard(leaderboard: string[]): string {
   let table = new Table({
     head: ['User', 'Metacoins'],
     style: { border: [], head: [] },
@@ -77,32 +66,29 @@ function formatLeaderboard(leaderboard) {
 
 /**
  * Gets the leaderboard from cache.
- * @return {String}
  */
-async function getLeaderboard() {
+async function getLeaderboard(): Promise<string> {
   let leaderboardExists = await redis.exists({
-    key: METACOINS.REDIS.LEADERBOARD_KEY,
+    key: REDIS_LEADERBOARD_KEY,
   })
 
   if (leaderboardExists) {
     let leaderboard = await redis.getBatchFromSortedSet({
       includeScores: true,
-      key: METACOINS.REDIS.LEADERBOARD_KEY,
+      key: REDIS_LEADERBOARD_KEY,
     })
     return formatLeaderboard(leaderboard)
   }
 
-  return METACOINS.MESSAGE.LEADERBOARD_NOT_FOUND
+  return LEADERBOARD_NOT_FOUND_MESSAGE
 }
 
 /**
  * Gets a user's metacoins from cache.
- * @param {Number} userId User's id.
- * @return {Array}
  */
-async function getMetacoinsForUser(userId) {
+async function getMetacoinsForUser(userId: number): Promise<number> {
   let metacoins = await redis.getScoreFromSortedSet({
-    key: METACOINS.REDIS.LEADERBOARD_KEY,
+    key: REDIS_LEADERBOARD_KEY,
     member: userId,
   })
 
@@ -117,7 +103,11 @@ async function getMetacoinsForUser(userId) {
  * Registers a function with the service.
  * @return {Object}
  */
-function register() {
+export function register(): {
+  award: Function,
+  getLeaderboard: Function,
+  getMetacoinsForUser: Function,
+} {
   let token = chance.string()
 
   return {
@@ -125,8 +115,4 @@ function register() {
     getLeaderboard,
     getMetacoinsForUser,
   }
-}
-
-module.exports = {
-  register,
 }

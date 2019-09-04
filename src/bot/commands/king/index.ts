@@ -1,17 +1,24 @@
-let KING = require('@bot/commands/king/constants')
-let redis = require('@utils/redis').initialize()
+import { REDIS_KEY } from '@bot/commands/king/constants'
+import { initialize } from '@utils/redis'
+
+const redis = initialize()
 
 /**
  * Makes the author of the command the king.
- * @param {Object} options Message parameters.
  */
-async function king(options) {
+export default async function king({
+  args,
+  message,
+}: {
+  args?: string[]
+  message: { author: { username: string }; channel: any }
+}) {
   let response
 
   // Get the previous king
-  let oldKing = await redis.getString({ key: KING.REDIS_KEY })
+  const oldKing = await redis.getString({ key: REDIS_KEY })
 
-  let author = options.message.author
+  const author = message.author
 
   if (!oldKing) {
     response = `${author.username} has claimed the throne.`
@@ -22,12 +29,8 @@ async function king(options) {
   }
 
   // Set the new king to the message author
-  await redis.setString({ key: KING.REDIS_KEY, value: author.username })
+  await redis.setString({ key: REDIS_KEY, value: author.username })
 
   // Send the response to the channel it was sent from
-  await options.message.channel.createMessage(response)
-}
-
-module.exports = {
-  message: king,
+  await message.channel.createMessage(response)
 }

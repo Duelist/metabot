@@ -1,14 +1,23 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
-const commands = require('@bot/commands')
-const METABOT = require('@constants/metabot')
+import kingCommand from '@bot/commands/king'
+import metacoinsCommand from '@bot/commands/metacoins'
+import pingCommand from '@bot/commands/ping'
+import { COMMAND_ERROR_MESSAGE, PREFIX } from '@constants/metabot'
+
+// TODO: Read commands from commands folder using command name as folder name
+const commands = {
+  king: kingCommand,
+  metacoins: metacoinsCommand,
+  ping: pingCommand,
+}
 
 /**
  * Handles the Discord MESSAGE_CREATE event.
  * @param {Message} message Created message.
  */
 async function handleMessageCreate(message) {
-  if (message.content[0] === METABOT.PREFIX) {
+  if (message.content[0] === PREFIX) {
     // Get the command name and arguments from the message
     const tokens = _.split(message.content, ' ')
     const commandName = _.head(tokens).substring(1)
@@ -23,12 +32,12 @@ async function handleMessageCreate(message) {
       await command.message({ args, message })
     } catch (err) {
       await message.channel.createMessage(
-        METABOT.COMMAND_ERROR_MESSAGE + ': ' + err,
+        COMMAND_ERROR_MESSAGE + ': ' + err,
       )
     }
   }
 }
 
-module.exports = {
+export {
   handleMessageCreate,
 }

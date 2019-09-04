@@ -1,10 +1,10 @@
 const Eris = require('eris')
 
-const metabotConfig = require('@bot/configs/metabot')
-const metabotUtil = require('@bot/utils/metabot')
+import { token } from '@bot/configs/metabot'
+import { handleMessageCreate } from '@bot/utils/metabot'
 
-const bot = new Eris(metabotConfig.token)
+const bot = new Eris(token)
 
-bot.on('messageCreate', metabotUtil.handleMessageCreate)
+bot.on('messageCreate', handleMessageCreate)
 
-module.exports = bot
+export default bot

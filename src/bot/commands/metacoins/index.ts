@@ -1,27 +1,31 @@
-let _ = require('lodash')
+import _ from 'lodash'
 
-let METACOINS = require('@bot/commands/metacoins/constants')
-let services = require('@bot/services')
+import { MESSAGE } from '@bot/commands/metacoins/constants'
+import { register as metacoinsServiceRegister } from '@bot/services/metacoins'
 
-let metacoins = services.metacoins.register()
+const metacoins = metacoinsServiceRegister()
 
 /**
  * Gets a user's metacoins or the metacoins leaderboard.
- * @param {Object} options
  */
-async function message(options) {
-  let author = options.message.author
-  let channel = options.message.channel
+export default async function message({
+  args,
+  message,
+}: {
+  args?: string[]
+  message: {
+    author: { id: string; mention: string; username: string }
+    channel: any
+  }
+}) {
+  const author = message.author
+  const channel = message.channel
 
-  if (!options.args || _.isEmpty(options.args)) {
-    let coins = await metacoins.getMetacoinsForUser(author.id)
+  if (!args || _.isEmpty(args)) {
+    const coins = await metacoins.getMetacoinsForUser(author.id)
     await channel.createMessage(
-      METACOINS.MESSAGE.METACOIN_COUNT(author.mention, coins.toString()),
+      MESSAGE.METACOIN_COUNT(author.mention, coins.toString()),
     )
     return
   }
-}
-
-module.exports = {
-  message,
 }
