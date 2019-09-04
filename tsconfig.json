@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "outDir": "dist",
+    "paths": {
+      "@bot/*": ["bot/*"],
+      "@configs/*": ["configs/*"],
+      "@constants/*": ["constants/*"],
+      "@template": ["template.js"],
+      "@utils/*": ["utils/*"]
+    },
+    "sourceMap": true,
+    "target": "es2020",
+    "types": ["node"]
+  }
+}
