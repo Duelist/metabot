@@ -28,7 +28,7 @@ async function handleMessageCreate(message: any) {
     }
 
     try {
-      await command.message({ args, message })
+      await command({ args, message })
     } catch (err) {
       await message.channel.createMessage(
         COMMAND_ERROR_MESSAGE + ': ' + err,

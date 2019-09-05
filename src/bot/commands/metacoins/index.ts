@@ -28,4 +28,10 @@ export default async function message({
     )
     return
   }
+
+  if (args[0] === 'leaderboard') {
+    const leaderboard = await metacoins.getLeaderboard()
+    await channel.createMessage(leaderboard.toString())
+    return
+  }
 }
