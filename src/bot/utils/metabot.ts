@@ -19,8 +19,8 @@ async function handleMessageCreate(message: any) {
   if (message.content[0] === PREFIX) {
     // Get the command name and arguments from the message
     const tokens = _.split(message.content, ' ')
-    const commandName = _.head(tokens).substring(1)
-    const args = _.tail(tokens)
+    const commandName = _.head(tokens).substring(PREFIX.length)
+    const args = _.filter(_.tail(tokens), token => !!token)
     const command = commands[commandName]
 
     if (!command) {
@@ -30,13 +30,9 @@ async function handleMessageCreate(message: any) {
     try {
       await command({ args, message })
     } catch (err) {
-      await message.channel.createMessage(
-        COMMAND_ERROR_MESSAGE + ': ' + err,
-      )
+      await message.channel.send(COMMAND_ERROR_MESSAGE + ': ' + err)
     }
   }
 }
 
-export {
-  handleMessageCreate,
-}
+export { handleMessageCreate }

@@ -1,10 +1,9 @@
-const Eris = require('eris')
+import Discord from 'discord.js'
 
-import { token } from '@bot/configs/metabot'
 import { handleMessageCreate } from '@bot/utils/metabot'
 
-const bot = new Eris(token)
+const bot = new Discord.Client()
 
-bot.on('messageCreate', handleMessageCreate)
+bot.on('message', handleMessageCreate)
 
 export default bot

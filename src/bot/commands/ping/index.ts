@@ -9,5 +9,5 @@ export default async function ping({
   message: { author: { username: string }; channel: any }
 }) {
   // Send the response to the channel it was sent from
-  await message.channel.createMessage('pong')
+  await message.channel.send('pong')
 }

@@ -21,7 +21,7 @@
     "chance": "^1.0.6",
     "cli-table": "^0.3.1",
     "debug": "^2.2.0",
-    "eris": "^0.10.1",
+    "discord.js": "^11.5.1",
     "ioredis": "^2.1.0",
     "lodash": "^4.17.4",
     "module-alias": "^2.2.1",

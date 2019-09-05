@@ -32,5 +32,5 @@ export default async function king({
   await redis.setString({ key: REDIS_KEY, value: author.username })
 
   // Send the response to the channel it was sent from
-  await message.channel.createMessage(response)
+  await message.channel.send(response)
 }

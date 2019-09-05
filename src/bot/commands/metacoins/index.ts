@@ -23,15 +23,13 @@ export default async function message({
 
   if (!args || _.isEmpty(args)) {
     const coins = await metacoins.getMetacoinsForUser(author.id)
-    await channel.createMessage(
-      MESSAGE.METACOIN_COUNT(author.mention, coins.toString()),
-    )
+    await channel.send(MESSAGE.METACOIN_COUNT(author.mention, coins.toString()))
     return
   }
 
   if (args[0] === 'leaderboard') {
     const leaderboard = await metacoins.getLeaderboard()
-    await channel.createMessage(leaderboard.toString())
+    await channel.send(leaderboard.toString())
     return
   }
 }
