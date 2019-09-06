@@ -101,7 +101,6 @@ async function getMetacoinsForUser(userId: number): Promise<number> {
 
 /**
  * Registers a function with the service.
- * @return {Object}
  */
 export function register(): {
   award: Function,

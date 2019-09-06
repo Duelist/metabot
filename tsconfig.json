@@ -11,6 +11,7 @@
       "@template": ["template.js"],
       "@utils/*": ["utils/*"]
     },
+    "rootDir": "src",
     "sourceMap": true,
     "target": "es2020",
     "types": ["node"]

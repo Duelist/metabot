@@ -27,7 +27,8 @@
     "module-alias": "^2.2.1",
     "node-opus": "^0.3.2",
     "should": "^9.0.1",
-    "sinon": "^1.17.4"
+    "sinon": "^1.17.4",
+    "ytdl-core-discord": "amishshah/ytdl-core-discord"
   },
   "devDependencies": {
     "@types/node": "^12.7.3",

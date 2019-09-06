@@ -81,6 +81,33 @@ async function getBatchFromSortedSet(
 }
 
 /**
+ * Gets an element from a list by its index.
+ */
+async function getFromList(
+  redisClient,
+  { key, index }: { key: string; index: number },
+) {
+  return await redisClient.lindex(key, index)
+}
+
+/**
+ * Gets an element from a list by its index.
+ */
+async function getLengthOfList(redisClient, key: string) {
+  return await redisClient.llen(key)
+}
+
+/**
+ * Gets a range of elements from a list.
+ */
+async function getRangeFromList(
+  redisClient,
+  { key, start = 0, stop = -1 }: { key: string; start: number; stop: number },
+) {
+  return await redisClient.lrange(key, start, stop)
+}
+
+/**
  * Gets the score for a given member at the provided key.
  */
 async function getScoreFromSortedSet(
@@ -111,17 +138,30 @@ async function incrementScoreInSortedSet(
 }
 
 /**
+ * Returns whether a list is empty or not.
+ */
+async function isListEmpty(redisClient, key): Promise<boolean> {
+  const length = await getLengthOfList(redisClient, key)
+  return length === 0
+}
+
+/**
  * Creates a Redis connection and returns utility functions.
  */
 function initialize(): {
-  addToSortedSet: Function,
-  exists: Function,
-  getBatchFromSortedSet: Function,
-  getScoreFromSortedSet: Function,
-  incrementScoreInSortedSet: Function,
-  getString: Function,
-  reset: Function,
-  setString: Function,
+  addToSortedSet: Function
+  exists: Function
+  getBatchFromSortedSet: Function
+  getFromList: Function
+  getLengthOfList: Function
+  getRangeFromList: Function
+  getScoreFromSortedSet: Function
+  getString: Function
+  incrementScoreInSortedSet: Function
+  popFromList: Function
+  pushToList: Function
+  reset: Function
+  setString: Function
 } {
   const prefix = chance.word() + NAMESPACE_DELIMITER
   const config = Object.assign({ keyPrefix: prefix }, { host })
@@ -131,15 +171,43 @@ function initialize(): {
     addToSortedSet: _.partial(addToSortedSet, redisClient),
     exists: _.partial(exists, redisClient),
     getBatchFromSortedSet: _.partial(getBatchFromSortedSet, redisClient),
+    getFromList: _.partial(getFromList, redisClient),
+    getLengthOfList: _.partial(getLengthOfList, redisClient),
+    getRangeFromList: _.partial(getRangeFromList, redisClient),
     getScoreFromSortedSet: _.partial(getScoreFromSortedSet, redisClient),
+    getString: _.partial(getString, redisClient),
     incrementScoreInSortedSet: _.partial(
       incrementScoreInSortedSet,
       redisClient,
     ),
-    getString: _.partial(getString, redisClient),
+    popFromList: _.partial(popFromList, redisClient),
+    pushToList: _.partial(pushToList, redisClient),
     reset: _.partial(reset, redisClient),
     setString: _.partial(setString, redisClient),
   }
+}
+
+/**
+ * Removes and gets the first element in a list.
+ */
+async function popFromList(redisClient, key: string): Promise<string> {
+  return await redisClient.lpop(key)
+}
+
+/**
+ * Appends a value to the list.
+ */
+async function pushToList(
+  redisClient,
+  {
+    key,
+    value,
+  }: {
+    key: string
+    value: string
+  },
+) {
+  await redisClient.rpush(key, value)
 }
 
 /**
