@@ -21,6 +21,9 @@ const commands = {
  */
 export async function handleMessageCreate(message: Message) {
   if (message.content[0] === PREFIX) {
+    // Acknowledge the message
+    await message.react('🔄')
+
     // Get the command name and arguments from the message
     const tokens = _.split(message.content, ' ')
     const commandName = _.head(tokens).substring(PREFIX.length)
@@ -33,8 +36,12 @@ export async function handleMessageCreate(message: Message) {
 
     try {
       await command.call(this, { args, message })
+      await message.clearReactions()
+      await message.react('👍')
     } catch (err) {
       await message.channel.send(COMMAND_ERROR_MESSAGE + ': ' + err)
+      await message.clearReactions()
+      await message.react('👎')
     }
   }
 }
