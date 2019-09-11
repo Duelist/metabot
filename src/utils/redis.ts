@@ -160,6 +160,7 @@ function initialize(): {
   incrementScoreInSortedSet: Function
   popFromList: Function
   pushToList: Function
+  removeFromList: Function
   reset: Function
   setString: Function
 } {
@@ -182,6 +183,7 @@ function initialize(): {
     ),
     popFromList: _.partial(popFromList, redisClient),
     pushToList: _.partial(pushToList, redisClient),
+    removeFromList: _.partial(removeFromList, redisClient),
     reset: _.partial(reset, redisClient),
     setString: _.partial(setString, redisClient),
   }
@@ -208,6 +210,23 @@ async function pushToList(
   },
 ) {
   await redisClient.rpush(key, value)
+}
+
+/**
+ * Removes the element at the index from the list.
+ */
+async function removeFromList(
+  redisClient,
+  {
+    index,
+    key,
+  }: {
+    index: number
+    key: string
+  },
+) {
+  await redisClient.lset(key, index, 'DELETED')
+  await redisClient.lrem(key, 0, 'DELETED')
 }
 
 /**
