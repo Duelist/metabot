@@ -7,6 +7,7 @@ import pingCommand from '@bot/commands/ping'
 import sonicCommand from '@bot/commands/sonic'
 import { VOICE_CHANNEL_NAME } from '@bot/commands/sonic/constants'
 import { COMMAND_ERROR_MESSAGE, PREFIX } from '@constants/metabot'
+import { prefix as configPrefix } from '@bot/configs/metabot-config.json'
 
 // TODO: Read commands from commands folder using command name as folder name
 const commands = {
@@ -16,17 +17,19 @@ const commands = {
   sonic: sonicCommand,
 }
 
+const prefix = configPrefix || PREFIX
+
 /**
  * Handles the Discord MESSAGE_CREATE event.
  */
 export async function handleMessageCreate(message: Message) {
-  if (message.content[0] === PREFIX) {
+  if (message.content[0] === prefix) {
     // Acknowledge the message
     await message.react('🔄')
 
     // Get the command name and arguments from the message
     const tokens = _.split(message.content, ' ')
-    const commandName = _.head(tokens).substring(PREFIX.length)
+    const commandName = _.head(tokens).substring(prefix.length)
     const args = _.filter(_.tail(tokens), token => !!token)
     const command = commands[commandName]
 
