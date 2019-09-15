@@ -11,7 +11,7 @@ import {
 import { initialize } from '@utils/redis'
 
 const chance = Chance.Chance()
-const redis = initialize()
+const redis = initialize('metacoins')
 
 /**
  * Determines if a registered function should be allowed to award metacoins.

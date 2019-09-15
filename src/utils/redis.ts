@@ -2,7 +2,7 @@ import Chance from 'chance'
 import Redis from 'ioredis'
 import _ from 'lodash'
 
-import { host } from '@configs/redis'
+import redisConfig from '@configs/redis-server.json'
 import { NAMESPACE_DELIMITER } from '@constants/redis'
 
 const chance = Chance.Chance()
@@ -148,24 +148,12 @@ async function isListEmpty(redisClient, key): Promise<boolean> {
 /**
  * Creates a Redis connection and returns utility functions.
  */
-function initialize(): {
-  addToSortedSet: Function
-  exists: Function
-  getBatchFromSortedSet: Function
-  getFromList: Function
-  getLengthOfList: Function
-  getRangeFromList: Function
-  getScoreFromSortedSet: Function
-  getString: Function
-  incrementScoreInSortedSet: Function
-  popFromList: Function
-  pushToList: Function
-  removeFromList: Function
-  reset: Function
-  setString: Function
-} {
-  const prefix = chance.word() + NAMESPACE_DELIMITER
-  const config = Object.assign({ keyPrefix: prefix }, { host })
+function initialize(key: string) {
+  const prefix = chance.word()
+  const config = {
+    host: redisConfig.host,
+    keyPrefix: [prefix, key].join(NAMESPACE_DELIMITER),
+  }
   const redisClient = new Redis(config)
 
   return {
