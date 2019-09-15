@@ -1,19 +1,23 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "esModuleInterop": true,
     "module": "commonjs",
     "outDir": "dist",
     "paths": {
-      "@bot/*": ["bot/*"],
+      "@commands/*": ["commands/*"],
       "@configs/*": ["configs/*"],
       "@constants/*": ["constants/*"],
-      "@template": ["template.js"],
+      "@events/*": ["events/*"],
+      "@handlers/*": ["handlers/*"],
+      "@interfaces/*": ["interfaces/*"],
+      "@Metabot": ["Metabot.js"],
+      "@services/*": ["services/*"],
       "@utils/*": ["utils/*"]
     },
     "resolveJsonModule": true,
     "rootDir": "src",
-    "sourceMap": true,
+    "sourceMap": false,
     "target": "es2020",
     "types": ["node"]
   }

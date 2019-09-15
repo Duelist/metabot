@@ -1,5 +1,6 @@
 # Configs
-src/bot/configs/metabot-config.json
+src/configs/*.json
+application.yml
 
 # Logs
 logs

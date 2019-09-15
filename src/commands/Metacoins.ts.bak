@@ -1,7 +1,12 @@
 import _ from 'lodash'
 
-import { MESSAGE } from '@bot/commands/metacoins/constants'
-import { register as metacoinsServiceRegister } from '@bot/services/metacoins'
+import { register as metacoinsServiceRegister } from '@services/metacoins'
+import template from '@utils/template'
+
+/**
+ * Message for getting a user's metacoins.
+ */
+const METACOIN_COUNT_MESSAGE = template`${0}: You currently have ${1} metacoins.`
 
 const metacoins = metacoinsServiceRegister()
 
@@ -23,7 +28,7 @@ export default async function message({
 
   if (!args || _.isEmpty(args)) {
     const coins = await metacoins.getMetacoinsForUser(author.id)
-    await channel.send(MESSAGE.METACOIN_COUNT(author.mention, coins.toString()))
+    await channel.send(METACOIN_COUNT_MESSAGE(author.mention, coins.toString()))
     return
   }
 

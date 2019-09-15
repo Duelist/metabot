@@ -1,0 +1,6 @@
+[{
+  "name": "lavalink_server",
+  "host": "localhost",
+  "port": 1001,
+  "auth": "<your-password>"
+}]

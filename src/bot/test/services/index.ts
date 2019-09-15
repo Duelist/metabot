@@ -1,3 +1,0 @@
-// describe('metacoins', () => {
-//   require('./metacoins')
-// })

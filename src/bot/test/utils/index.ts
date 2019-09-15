@@ -1,3 +1,0 @@
-// describe('metabot', () => {
-//   require('./metabot')
-// })
