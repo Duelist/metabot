@@ -2,7 +2,6 @@ import Chance from 'chance'
 import Redis from 'ioredis'
 import _ from 'lodash'
 
-import redisConfig from '@configs/redis-server.json'
 import { NAMESPACE_DELIMITER } from '@constants/redis'
 
 const chance = Chance.Chance()
@@ -151,7 +150,7 @@ async function isListEmpty(redisClient, key): Promise<boolean> {
 function initialize(key: string) {
   const prefix = chance.word()
   const config = {
-    host: redisConfig.host,
+    host: process.env.REDIS_HOST,
     keyPrefix: [prefix, key].join(NAMESPACE_DELIMITER),
   }
   const redisClient = new Redis(config)

@@ -1,6 +1,5 @@
 # Configs
 src/configs/*.json
-application.yml
 
 # Logs
 logs

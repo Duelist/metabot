@@ -3,23 +3,8 @@
 ## Installation
 
 - `yarn install`
-- Navigate to `node_modules/node-opus`
-- Run `node-gyp rebuild --python python2.7`
-
-`node-gyp` at the time of writing does not support python3. (Fun)
 
 ## Running the bot
 
-### Local
-
-- `yarn run bot-local`
-
-### Docker
-
-- `docker-compose up --build`
-
-## Testing
-
-- Run tests: `yarn test`
-- Run linting: `yarn run lint`
-- Run specific test: `yarn run test-grep <test>`
+- Requirements: Typescript's `tsc` command, `docker` & `docker-compose`
+- `yarn run metabot`

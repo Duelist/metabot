@@ -1,11 +1,9 @@
 import _ from 'lodash'
 
-import lavalinkServers from '@configs/lavalink-servers.json'
 import MetaEvent from '@interfaces/MetaEvent'
 import Metabot from '@Metabot'
 
 export default class Ready implements MetaEvent {
-
   client: Metabot
 
   constructor(client) {
@@ -21,7 +19,9 @@ export default class Ready implements MetaEvent {
   }
 
   async run() {
-    this.client.shoukaku.start(lavalinkServers, { id: this.client.user.id })
+    this.client.shoukaku.start(
+      [{ name: 'lavalink', host: 'lavalink', port: 2333, auth: 'lavalamp' }],
+      { id: this.client.user.id },
+    )
   }
-
 }

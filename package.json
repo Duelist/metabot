@@ -38,8 +38,9 @@
     "trailingComma": "all"
   },
   "scripts": {
+    "build-clean": "yarn run clean && tsc",
+    "metabot": "yarn run build-clean && docker-compose up --build",
     "bot": "env NODE_ENV=production node dist/Metabot.js",
-    "bot-local": "env DEBUG=* node dist/Metabot.js",
     "clean": "rm -rf dist/*",
     "lint": "eslint \"**/*.js\"",
     "pretest": "yarn run lint",

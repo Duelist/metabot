@@ -1,9 +1,12 @@
 FROM    node:latest
 
-RUN     mkdir -p /usr/src/metabot
-WORKDIR /usr/src/metabot/bot
+RUN     mkdir -p /usr/dist/metabot
+COPY    . /usr/dist/metabot
+WORKDIR /usr/dist/metabot/
 
-COPY    . /usr/src/metabot
-RUN     npm install
+RUN     yarn install
 
-CMD     ["npm", "run", "bot"]
+ADD     https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/dist/metabot/wait-for-it
+RUN     chmod +x /usr/dist/metabot/wait-for-it
+
+CMD     ./wait-for-it lavalink:2333 -- yarn run bot
