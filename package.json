@@ -42,9 +42,7 @@
     "metabot": "yarn run build-clean && docker-compose up --build",
     "bot": "env NODE_ENV=production node dist/Metabot.js",
     "clean": "rm -rf dist/*",
-    "lint": "eslint \"**/*.js\"",
-    "pretest": "yarn run lint",
-    "pretest-cover": "yarn run lint"
+    "lint": "eslint \"**/*.js\""
   },
   "_moduleAliases": {
     "@commands": "dist/commands",
